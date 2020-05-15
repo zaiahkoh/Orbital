@@ -1,9 +1,10 @@
 import React from "react";
 import './App.css';
-import { Options } from "./Containers/Options";
-import Dropdown from './Containers/ModuleTable';
+import { Options } from "./Components/Options";
+import Dropdown from './Containers/GEM Dropdown';
+import { Table } from './Containers/Core Modules'
 
-//import { Table } from "./Containers/ModuleTable";
+
 
 const items = [
   {
@@ -24,11 +25,18 @@ const items = [
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {data: null,
+    this.state = {
+      data: null,
       facultyOptions: '',
       major: '',
       specialisationOptions: '',
-      residence: 'N/A'}
+      residence: 'N/A',
+      coreModules: [
+        {code: "MA1521",
+         name: "Calculus for Computing",
+         link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}]
+         //NEED TO INPUT: array of objects with properties code, name, link to NUSMods description
+      }
     this.changeFaculty = this.changeFaculty.bind(this);
   }
   
@@ -71,6 +79,10 @@ class Main extends React.Component {
           <Dropdown title="GEQ: Asking Questions" items={items} />
           <Dropdown title="GES: Singapore Studies" items={items} />
           <Dropdown title="GET: Thinking and Expression" items={items} />
+
+          <Table
+            module={this.state.coreModules} />
+        
      </div>
    );
     }
