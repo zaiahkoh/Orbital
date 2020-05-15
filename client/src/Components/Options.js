@@ -1,26 +1,15 @@
 import React from "react";
 
 //list of faculties
-const faculties = ['Choose One','Arts and Social Sciences', 'Business', 
+const faculties = ['Choose Your Faculty','Arts and Social Sciences', 'Business', 
                   'Computing', 'Dentistry',
                   'Design & Environment', 'Engineering',
                   'Law', 'Medicine', 'Music','Science' ];
 
-//to map faculties as options
-const facultyOptions = faculties.map((faculties) => 
-  {if(faculties === 'Choose One') {
-    return (<option selected disabled>
-              {faculties}
-            </option>);
-  } else{
-    return (<option value={faculties} >
-              {faculties}
-            </option>);}
-  });
 
 //list of majors for FASS
 const fassAsianStudies = ['Chinese Language', 'Chinese Studies', 
-                          'Japanese Studies', 'MalayStudies', 
+                          'Japanese Studies', 'Malay Studies', 
                           'South Asian Studies', 'Southeast Asian Studies'];
 
 const fassHumanities = ['English Language', 'English Literature',
@@ -33,60 +22,22 @@ const fassSocialSciences = ['Communications and New Media', 'Economics',
 const fassMultidisciplinary = ['Global Studies', 
                               'Philosophy, Politics, and Economics'];
 
-const fassCombined = ['AsianStudies'].concat(fassAsianStudies, 
-                                            ['Humanities'],
-                                            fassHumanities,
-                                            ['Social Sciences'],
+const fassCombined = fassAsianStudies.concat(fassHumanities,
                                             fassSocialSciences,
-                                            ['Multidisciplinary'],
                                             fassMultidisciplinary);
-//to map FASS as options
-const fassOptions = fassCombined.map((fass) => {
-  if(fass === 'AsianStudies' 
-    || fass === 'Humanities' 
-    || fass === 'Social Sciences' 
-    || fass === 'Multidisciplinary') {
-      return (<option disabled>
-            {fass}
-            </option>);
-  } else{
-    return (<option value={faculties} >
-            {fass}
-            </option>);}
-  });
 
 //list of majors for business
 const business = ['Accountancy', 'Business Administration'];
-
-//to map Business as options
-const businessOptions = business.map((business) => 
-                          (<option value={business} >
-                            {business}
-                              </option>)
-                          );
 
 //list of majors for computing
 const computing = ['Business Analytics', 'Computer Engineering', 
                   'Computer Science', 'Information Security',
                   'Information Systems'];
 
-//to map computing as options
-const computingOptions = computing.map((computing) => 
-                          (<option value={computing} >
-                          {computing}
-                          </option>)
-                          );
-
 //list of majors for SDE
 const designAndEnvironment = ['Architecture', 'Industrial Design',
                               'Landscape Architecture', 
                               'Project & Facilities Management', 'Real Estate'];
-//to map SDE as options
-const SDEOptions = designAndEnvironment.map((SDE) => 
-                          (<option value={SDE} >
-                          {SDE}
-                          </option>)
-                          );
 
 //list of majors for engineering
 const engineering = ['Biomedical Engineering', 'Chemical Engineering',
@@ -95,22 +46,8 @@ const engineering = ['Biomedical Engineering', 'Chemical Engineering',
                       'Environmental Engineering', 'Industrial & Systems Engineering',
                       'Materials Science & Engineering', 'Mechanical Engineering'];
 
-//to map engineering as options
-const engineeringOptions = engineering.map((e) => 
-                          (<option value={e} >
-                          {e}
-                          </option>)
-                          );
-
 //list of majors for medicine
 const medicine = ['Medicine', 'Nursing'];
-
-//to map medicine as options
-const medicineOptions = medicine.map((e) => 
-                          (<option value={e} >
-                          {e}
-                          </option>)
-                          );
 
 //list of majors for science
 const science = ['Chemistry', 'Computational Biology', 
@@ -118,99 +55,89 @@ const science = ['Chemistry', 'Computational Biology',
                 'Food Science and Technology', 'Life Sciences', 'Mathematics',
                 'Pharmaceutical Science', 'Pharmacy', 'Physics', 'Statistics'];
 
-//to map science as options
-const scienceOptions = science.map((e) => 
-                          (<option value={e} >
-                          {e}
-                          </option>)
-                          );
-
 //list of specialisation for business
 const businessSpecialisation = ['N/A','Business Analytics', 
-                                'Innovation and Entrepreneurship',
-
-        ];
-const businessSpecialisationOptions = businessSpecialisation.map((e) => 
-    (<option value={e} >
-      {e}
-      </option>)
-    );
-
-
+                                'Innovation and Entrepreneurship'
+                              ];
 
 //list of residential colleges
 const residence = ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'];
-
-//to map residence as options
-const residenceOptions = residence.map((residence) => 
-  (<option value={residence} >
-    {residence}
-    </option>)
-  );
 
 export class Options extends React.Component {
   constructor(props) {
     super(props);
     this.handleFacultyChange = this.handleFacultyChange.bind(this);
+
   }
 
   //when users pick their faculty, it sends the choice to app.js
-  handleFacultyChange(e) {
+  handleFacultyChange(e, category) {
     let value = e.target.value;  
-    let faculty;
+    let majorOptions;
     let specialisation;
-   
-      if (value=== 'Arts and Social Sciences') {
-        faculty = fassOptions;
+    
+      if (value === 'Arts and Social Sciences') {
+        majorOptions = fassCombined;
+        specialisation = businessSpecialisation;
       } 
 
       else if(value === 'Business') {
-        faculty = businessOptions;
-        specialisation = businessSpecialisationOptions;
+        majorOptions = business;
+        specialisation = businessSpecialisation;
       }
 
       else if(value === 'Computing') {
-        faculty = computingOptions;
+        majorOptions = computing;
+        specialisation = businessSpecialisation;
       }
 
       else if(value === 'Design & Environment') {
-        faculty = SDEOptions;
+        majorOptions = designAndEnvironment;
+        specialisation = businessSpecialisation;
       }
 
       else if(value === 'Engineering') {
-        faculty = engineeringOptions;
+        majorOptions = engineering;
+        specialisation = businessSpecialisation;
       }
 
       else if(value === 'Medicine') {
-        faculty = medicineOptions;
+        majorOptions = medicine;
+        specialisation = businessSpecialisation;
       }
 
       else if(value === 'Science') {
-        faculty = scienceOptions;
+        majorOptions = science;
+        specialisation = businessSpecialisation;
       }
 
       else {
-        faculty = <option>N/A</option>
+        majorOptions = <option>N/A</option>
       }
-    this.props.onChange(faculty, specialisation);
+    this.props.onChange(value, majorOptions, specialisation);
   }
+  
+  
+  
 
   render() {
       return (
        <div>
-      <form action="fill in with the server destination " method="POST">
+      <form action="http://localhost:5001/" method="POST">
        <label>Your Faculty  </label>
        <select
-          id="Faculty" onChange={this.handleFacultyChange}>
-           {facultyOptions}
+          id="Faculty" 
+          onChange={this.handleFacultyChange}>
+           {this.props.facultyOptions}
         </select>   
         <br/>
         <br/>
 
         <label>Your Major  </label>
         <select
-          id="Major">
-           {this.props.facultyOptions}
+          id="Major"
+          onChange={this.handleFacultyChange}>
+           {this.props.majorOptions}
         </select>
         <br/>
         <br/>
@@ -226,11 +153,11 @@ export class Options extends React.Component {
         <label>Your Residential College  </label>
         <select
           id="Residence">
-           {residenceOptions}
+           {this.props.residenceOptions}
         </select>
         <br/>
         <br/>
-        
+
         <input type="submit" name="submit" value="Create Module Plan"/>
       </form>
       </div>

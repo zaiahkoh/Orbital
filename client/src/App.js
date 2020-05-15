@@ -27,17 +27,34 @@ class Main extends React.Component {
     super(props);
     this.state = {
       data: null,
-      facultyOptions: '',
+      facultyOptions: ['Choose Your Faculty','Arts and Social Sciences', 'Business', 
+      'Computing', 'Dentistry',
+      'Design & Environment', 'Engineering',
+      'Law', 'Medicine', 'Music','Science' ],
+      faculty: '',
+      majorOptions: [],
       major: '',
-      specialisationOptions: '',
-      residence: 'N/A',
+      specialisationOptions: [],
+      specialisation: '',
+      residenceOptions: ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'],
+      residence: '',
       coreModules: [
         {code: "MA1521",
          name: "Calculus for Computing",
-         link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}]
+         MCs: 4,
+         link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}
+        ],
          //NEED TO INPUT: array of objects with properties code, name, link to NUSMods description
+      specialisationModules: [
+        {code: "MA1531",
+         name: "Calculus not Computing",
+         MCs: 4,
+         link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}
+      ]
       }
     this.changeFaculty = this.changeFaculty.bind(this);
+    this.generateOptions =this.generateOptions.bind(this);
+    this.makeTable = this.makeTable.bind(this);
   }
   
   componentDidMount() {
@@ -58,22 +75,80 @@ class Main extends React.Component {
   };
 
   //receive the choice of faculty from options.js and change state of faculty
-  changeFaculty(newFaculty, newSpecialisation) {
+  changeFaculty(value, newMajorOptions, newSpecialisationOptions) {
     this.setState({
-      facultyOptions: newFaculty,
-      specialisationOptions: newSpecialisation
+      faculty: value,
+      majorOptions: newMajorOptions,
+      specialisationOptions: newSpecialisationOptions
     });
   }
+
+  //turn array of choices into options dropdown
+  generateOptions(choices) {
+    let func;
+    if(choices === 'faculty'){
+      func = this.state.facultyOptions
+    } else if(choices === 'major') {
+      func = this.state.majorOptions
+      
+    } else if(choices === 'specialisation') {
+      func = this.state.specialisationOptions
+    } else {
+      func = this.state.residenceOptions
+    }
+    return func.map((faculties) => {
+      if(faculties === 'Choose Your Faculty') {
+        return (<option selected disabled>
+               {faculties}
+               </option>);
+      } else{
+          return (<option value={faculties} >
+                  {faculties}
+                 </option>);}
+          
+    });
+  }
+
+  //takes in array of objects for modules and return a table
+  makeTable(item) {
+    let propfunction;
+      if (item === 'module'){
+        propfunction = this.state.coreModules;
+      }
+      else {
+        propfunction = this.state.specialisationModules;
+      }
+
+   return propfunction.map((module) => {
+        const { code, name, MCs, link } = module
+        return (
+            <div>
+                <tr key={code}>
+                    <td>{code}</td>
+                    <td>
+                        <a href={link} target="_blank">
+                            {name}
+                        </a>
+                    </td>
+                    <td>{MCs}</td>
+                </tr>
+            </div>
+        )
+   })
+}
 
   render() {
        return (
        <div className="App">
           <h1 className="App-title">Module Overview</h1>
 
-          <Options onChange={this.changeFaculty} 
-            facultyOptions={this.state.facultyOptions}
-            specialisationOptions={this.state.specialisationOptions}/>
-
+          <Options onChange={this.changeFaculty}
+            facultyOptions={this.generateOptions('faculty')} 
+            majorOptions={this.generateOptions('major')}
+            specialisationOptions={this.generateOptions('specialisation')}
+            residenceOptions={this.generateOptions()}/>
+          
+          <h3>General Elective Modules</h3>
           <Dropdown title="GER 1000: Quantitative Reasoning" items={items} />
           <Dropdown title="GEH: Human Cultures" items={items} />
           <Dropdown title="GEQ: Asking Questions" items={items} />
@@ -81,7 +156,8 @@ class Main extends React.Component {
           <Dropdown title="GET: Thinking and Expression" items={items} />
 
           <Table
-            module={this.state.coreModules} />
+            module={this.makeTable('module')}
+            specialisation={this.makeTable('specialisation')} />
         
      </div>
    );
