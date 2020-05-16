@@ -1,3 +1,23 @@
+//UPDATE: an array whose members are objects with one key (faculties), whose prop value
+//is an array to contain majors of every faculty 
+
+// if that particular major (eg. BBA) has a specialisation, then the line2 array 
+// will contain objects with one key(major) whose prop value is an array whose member is
+// specialisation majors
+
+//else if that major does not have a specialisation (eg. History), then the line2 array
+//will contain objects with one key (major) whose prop value is ['N/A']
+//see below for example
+
+dummyfac =  [{'Business': [{'Business Administration': ['Marketing', 'Finance']},
+                                {'Accountancy': ['N/A']}]},
+                {'FASS': {'History': ['N/A']},
+                        {'Sociology': ['N/A']}}],
+
+
+
+
+
 //1. list of faculty in array form example:
 
 const faculties = ['Arts and Social Sciences', 'Business', 
