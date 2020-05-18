@@ -30,6 +30,9 @@ function Dropdown({ title, items, multiSelect = false }) {
     return false;
   }
 
+  //function handleDoubleClick(item) {
+
+  //}
   return (
     <div className="dd-wrapper">
       <div
@@ -45,8 +48,11 @@ function Dropdown({ title, items, multiSelect = false }) {
       {open && (
         <ul className="dd-list">
           {items.map(item => (
-            <li className="dd-list-item" key={item.id}>
-              <button type="button" onClick={() => handleOnClick(item)}>
+            <li className="dd-list-item" key={item.id} >
+              <button type="button" 
+                onClick={() => handleOnClick(item)}
+                //onDoubleClick={() => handleDoubleClick(item)}
+                >
                 <span>{item.value}</span>
                 <span>{isItemInSelection(item) && <strong>Select</strong>}</span>
               </button>
@@ -63,3 +69,8 @@ const clickOutsideConfig = {
 };
 
 export default onClickOutside(Dropdown, clickOutsideConfig);
+
+
+
+
+

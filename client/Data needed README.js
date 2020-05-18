@@ -11,7 +11,7 @@
 
 dummyfac =  [{'Business': [{'Business Administration': ['Marketing', 'Finance']},
                                 {'Accountancy': ['N/A']}]},
-                {'FASS': {'History': ['N/A']},
+                {'FASS': [{'History': ['N/A']},
                         {'Sociology': ['N/A']}}],
 
 
@@ -52,7 +52,7 @@ const residence = ['CAPT', 'RC4', 'RVRC','Tembusu', 'USP'];
 const GEMs = ['GER: Quantitative Reasoning', 'GEH: Humanities',...];
 
 //TENTATIVE extension for what mod avail for each GEM: return an array, whose members are OBJECTS
-//whose props value are an array of OBJECTS with 3 props, id, name, number of MCs, link
+//whose props value are an array of OBJECTS with 4 props, id, name, number of MCs, link
 const gemMods = [
                     {GEH: [{id: GEH1001, name: 'GEH1000: Globalisation and New Media', MCs: 4, link: 'NUS MODS link'},
                           {id: GEH 1002, name: 'GEH 1002: lallalalal', MCs:4, link:},

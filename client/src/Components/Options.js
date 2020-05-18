@@ -67,57 +67,21 @@ export class Options extends React.Component {
   constructor(props) {
     super(props);
     this.handleFacultyChange = this.handleFacultyChange.bind(this);
-
+    this.handleMajorChange = this.handleMajorChange.bind(this);
   }
 
   //when users pick their faculty, it sends the choice to app.js
-  handleFacultyChange(e, category) {
-    let value = e.target.value;  
-    let majorOptions;
-    let specialisation;
-    
-      if (value === 'Arts and Social Sciences') {
-        majorOptions = fassCombined;
-        specialisation = businessSpecialisation;
-      } 
-
-      else if(value === 'Business') {
-        majorOptions = business;
-        specialisation = businessSpecialisation;
-      }
-
-      else if(value === 'Computing') {
-        majorOptions = computing;
-        specialisation = businessSpecialisation;
-      }
-
-      else if(value === 'Design & Environment') {
-        majorOptions = designAndEnvironment;
-        specialisation = businessSpecialisation;
-      }
-
-      else if(value === 'Engineering') {
-        majorOptions = engineering;
-        specialisation = businessSpecialisation;
-      }
-
-      else if(value === 'Medicine') {
-        majorOptions = medicine;
-        specialisation = businessSpecialisation;
-      }
-
-      else if(value === 'Science') {
-        majorOptions = science;
-        specialisation = businessSpecialisation;
-      }
-
-      else {
-        majorOptions = <option>N/A</option>
-      }
-    this.props.onChange(value, majorOptions, specialisation);
+  handleFacultyChange(e) {
+    let value = e.target.value;
+    let index = (e.target.selectedIndex - 1)
+    this.props.onFacultyChange(value, index);
   }
   
-  
+  handleMajorChange(e) {
+    let value = e.target.value;
+    let index = (e.target.selectedIndex - 1)
+    this.props.onMajorChange(value, index);
+  }
   
 
   render() {
@@ -128,6 +92,9 @@ export class Options extends React.Component {
        <select
           id="Faculty" 
           onChange={this.handleFacultyChange}>
+            <option selected disabled>
+              Choose Your Faculty
+             </option>
            {this.props.facultyOptions}
         </select>   
         <br/>
@@ -136,8 +103,11 @@ export class Options extends React.Component {
         <label>Your Major  </label>
         <select
           id="Major"
-          onChange={this.handleFacultyChange}>
-           {this.props.majorOptions}
+          onChange={this.handleMajorChange}>
+            (<option selected disabled>
+              Choose Your Major
+             </option>)
+           { this.props.majorOptions }
         </select>
         <br/>
         <br/>
@@ -145,6 +115,9 @@ export class Options extends React.Component {
         <label>Your Specialisation  </label>
         <select
           id="Specialisation">
+             (<option selected disabled>
+              Choose Your Specialisation
+             </option>)
            {this.props.specialisationOptions}
         </select>
         <br/>
@@ -153,12 +126,23 @@ export class Options extends React.Component {
         <label>Your Residential College  </label>
         <select
           id="Residence">
+             (<option selected disabled>
+              Choose Your Residence
+             </option>)
            {this.props.residenceOptions}
         </select>
         <br/>
         <br/>
 
-        <input type="submit" name="submit" value="Create Module Plan"/>
+        <input 
+          type="submit" 
+          name="submit" 
+          value="Create Module Plan" 
+          className="btn btn-secondary"/>
+        <br/>
+        <br/>
       </form>
       </div>
       )}};
+
+
