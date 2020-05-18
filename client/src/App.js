@@ -27,15 +27,15 @@ class Main extends React.Component {
         {"GEH: Human Culture": [{code: 'GEH1001', 
                                 name: 'Globalisation and New Media', 
                                 MCs: 4, 
-                                link: 'NUS MODS link'},
+                                link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
                                 {code: 'GEH1002', 
-                                name: 'lallalalal', 
+                                name: "Economic Issues in Dev World", 
                                 MCs:4, 
-                                link: 'asdfa'},
+                                link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
                                 {code: 'GEH23420', 
                                 name: 'lafjkljwe', 
                                 MCs: 4, 
-                                link: 'aser'}]}, //end of first object member
+                                link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}]}, //end of first object member
         
         {"GES: Singapore Studies": [{code: 'GES324230', 
                                     name: 'adkfjkjfklasj', 
@@ -75,7 +75,6 @@ class Main extends React.Component {
                {cat: "Unrestricted Module",
                 MCs: 20},
               ],
-    isModuleClicked: false
     }
     this.changeFaculty = this.changeFaculty.bind(this);
     this.changeMajor=this.changeMajor.bind(this);
@@ -83,6 +82,7 @@ class Main extends React.Component {
     this.makeTable = this.makeTable.bind(this);
     this.generateDropDown = this.generateDropDown.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleHover = this.handleHover.bind(this);
   }
   
   componentDidMount() {
@@ -203,8 +203,13 @@ class Main extends React.Component {
           return (
             <div>
                 <tr key={code}
-                    onClick={() => this.handleClick(code, name)}>
+                    onClick={() => this.handleClick(code, name, moduleCat)}
+                    >
+                    <a href={link}
+                      target="_blank"
+                      className="text-white text-decoration-none">
                     <td>{code}</td>
+                    </a>
                     <td>{name}</td>
                     <td>{MCs + 'MCs'}</td>
                 </tr>
@@ -236,7 +241,9 @@ class Main extends React.Component {
         const GEMCat = Object.keys(module)[0]
         return (
         <div>
-        <Dropdown title={this.state.isModuleClicked ? this.state.GEMTitle : GEMCat}
+        <Dropdown cat={GEMCat}
+          title={this.state.GEMTitle}
+          moduleCat={this.state.moduleCat}
           id={"GEM_" + i}
           target={"GEM_" + i}
         module={this.makeTable('GEM', GEMCat, i)} />
@@ -251,12 +258,19 @@ class Main extends React.Component {
     }
   }
 
-  handleClick(code, name) {
+  handleClick(code, name, moduleCat) {
     const title = code + ': ' + name;
-    this.setState({isModuleClicked: true,
-      GEMTitle: title});
+    this.setState({GEMTitle: title,
+                    moduleCat: moduleCat});
   }
 
+  handleHover() {
+    return(
+      <span>
+        Click
+      </span>
+    )
+  }
   
   render() {
        return (
@@ -338,4 +352,3 @@ class Main extends React.Component {
 
 
 export default Main;
-
