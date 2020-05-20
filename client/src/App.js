@@ -7,8 +7,7 @@ import { Options } from "./Components/Options";
 import { Dropdown } from './Containers/Dropdown';
 import { Table } from './Components/Module Table'
 
-let total = 0;
-
+let totalGEMMCs = 0;
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -23,14 +22,14 @@ class Main extends React.Component {
       specialisation: null,
       residenceOptions: ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'],
       residence: 'N/A',
-      GEMs: [
+      dummymodules: [{GEMs:[
         {"GEH: Human Culture": [{code: 'GEH1001', 
                                 name: 'Globalisation and New Media', 
                                 MCs: 4, 
                                 link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
                                 {code: 'GEH1002', 
                                 name: "Economic Issues in Dev World", 
-                                MCs:4, 
+                                MCs:2, 
                                 link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
                                 {code: 'GEH23420', 
                                 name: 'lafjkljwe', 
@@ -41,40 +40,50 @@ class Main extends React.Component {
                                     name: 'adkfjkjfklasj', 
                                     MCs: 4, 
                                     link: 'asdfew'}]} //end of object 2
-        ],
-      coreModules: [
-        {code: "MA1521",
-         name: "Calculus for Computing",
-         MCs: 4,
-         link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
-        ],
-         //NEED TO INPUT: array of objects with properties code, name, link to NUSMods description
-      specialisationModules: [
-        {code: "MA1531",
-         name: "Calculus not Computing",
-         MCs: 4,
-         link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
-         {code: "MA1531",
-         name: "Calculus not Computing",
-         MCs: 4,
-         link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}
-      ],
-      
-      unrestrictedModules: [{code: "MA1521",
+        ]},
+        {coreModules: [
+          {code: "MA1521",
+           name: "Calculus for Computing",
+           MCs: 4,
+           link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
+           {code: "MA1531",
+           name: "Calculus not Computing",
+           MCs: 4,
+           link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
+           {code: "MA1531",
+           name: "Calculus not Computing",
+           MCs: 4,
+           link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}
+          ]},
+        {specialisationModules: [
+          {code: "MA1531",
+           name: "Calculus not Computing",
+           MCs: 4,
+           link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
+           {code: "MA1531",
+           name: "Calculus not Computing",
+           MCs: 4,
+           link: "https://nusmods.com/modules/MA1521/calculus-for-computing"}
+        ]},
+        {unrestrictedModules: [{code: "MA1521",
       name: "Calculus for Computing",
       MCs: 4,
       link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
-     ],
+      ]}
+      ],
 
+      
+      
      summary: [{cat: "General Elective Module",
-                MCs: 20},
-               {cat: "Core Module",
-                MCs: 100},
-               {cat: "Specialisation Module",
-                MCs: 30},
-               {cat: "Unrestricted Module",
-                MCs: 20},
-              ],
+                MCs: 0},
+                {cat: "Core Module",
+                MCs: 0},
+                {cat: "Specialisation Module",
+                MCs: 0},
+                {cat: "Unrestricted Module",
+                MCs: 0}],
+    grandTotal: 0
+
     }
     this.changeFaculty = this.changeFaculty.bind(this);
     this.changeMajor=this.changeMajor.bind(this);
@@ -82,7 +91,8 @@ class Main extends React.Component {
     this.makeTable = this.makeTable.bind(this);
     this.generateDropDown = this.generateDropDown.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleHover = this.handleHover.bind(this);
+    this.countModule = this.countModule.bind(this);
+    this.getDropdownMCs = this.getDropdownMCs.bind(this);
   }
   
   componentDidMount() {
@@ -90,6 +100,8 @@ class Main extends React.Component {
   this.callBackendAPI()
     .then(res => this.setState({ data: res.express }))
     .catch(err => console.log(err));
+    
+
   }
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
   callBackendAPI = async () => {
@@ -170,12 +182,11 @@ class Main extends React.Component {
     if(item === 'summary') {
       return this.state.summary.map((module) => {
       const { cat, MCs } = module;
-      total += MCs;
       return(
         <div>
           <tr key={cat}>
             <td>{cat}</td>
-            <td>{MCs}</td>
+            <td>{MCs + 'MCs'}</td>
           </tr>
         </div>
       )
@@ -184,17 +195,17 @@ class Main extends React.Component {
 
     else{
     let propfunction;
-      if (item === 'module'){
-        propfunction = this.state.coreModules;
+      if (item === 'coreModule'){
+        propfunction = this.state.dummymodules[1].coreModules;
       }
       else if(item === 'specialisation') {
-        propfunction = this.state.specialisationModules;
+        propfunction = this.state.dummymodules[2].specialisationModules;
       } 
       else if(item === 'unrestricted') {
-        propfunction = this.state.unrestrictedModules;
+        propfunction = this.state.dummymodules[3].unrestrictedModules;
       } 
       else {
-        propfunction = this.state.GEMs[index][moduleCat]
+        propfunction = this.state.dummymodules[0].GEMs[index][moduleCat]
       }
 
    return propfunction.map((module) => {
@@ -202,8 +213,9 @@ class Main extends React.Component {
         if(item === 'GEM') {
           return (
             <div>
-                <tr key={code}
-                    onClick={() => this.handleClick(code, name, moduleCat)}
+                <tr key={code} data-toggle="tooltip" 
+                    title="Click row to select module, click on the module code for more information"
+                    onClick={() => this.handleClick(code, name, MCs, moduleCat)}
                     >
                     <a href={link}
                       target="_blank"
@@ -218,7 +230,7 @@ class Main extends React.Component {
         } else{
         return (
             <div>
-                <tr key={code}>
+                <tr key={code} >
                 <a href={link} 
                            target="_blank" 
                            className="text-white text-decoration-none">
@@ -234,43 +246,70 @@ class Main extends React.Component {
 }
 
   generateDropDown() {
+    let title;
     if(this.state.residence === 'N/A') {
+      const title = <h3>General Elective Modules</h3>;
+    }  
+      
       return (<div>
-      <h3>General Elective Modules</h3>
-      {this.state.GEMs.map((module, i) => {
+        {title}
+      {this.state.dummymodules[0].GEMs.map((module, i) => {
         const GEMCat = Object.keys(module)[0]
         return (
         <div>
         <Dropdown cat={GEMCat}
           title={this.state.GEMTitle}
           moduleCat={this.state.moduleCat}
+          MCTemp={this.state.MCTemp}
+          sendData={this.getDropdownMCs}
           id={"GEM_" + i}
           target={"GEM_" + i}
         module={this.makeTable('GEM', GEMCat, i)} />
         </div>
         )
       })}
-        </div>)
-    }
-    
-    else if(this.state.residence === 'CAPT') {
+        </div>);
 
-    }
+    
+  
   }
 
-  handleClick(code, name, moduleCat) {
+  handleClick(code, name, MCs, moduleCat) {
     const title = code + ': ' + name;
     this.setState({GEMTitle: title,
+                   MCTemp: MCs,
                     moduleCat: moduleCat});
   }
 
-  handleHover() {
-    return(
-      <span>
-        Click
-      </span>
-    )
-  }
+  countModule() {
+    const GEMs = this.state.totalGEMMCs;
+    const coreModules = this.state.dummymodules[1].coreModules.reduce((currentTotal, next) => {
+      return currentTotal + next.MCs} , 0);
+    const specialisationModules = this.state.dummymodules[2].specialisationModules.reduce((currentTotal, next) => {
+      return currentTotal + next.MCs} , 0);
+    const unrestrictedModules = this.state.dummymodules[3].unrestrictedModules.reduce((currentTotal, next) => {
+      return currentTotal + next.MCs} , 0);
+    const grandTotal = GEMs + coreModules + specialisationModules + unrestrictedModules;
+      this.setState({summary: [{cat: "General Elective Module",
+                               MCs: GEMs},
+                              {cat: "Core Module",
+                               MCs: coreModules},
+                              {cat: "Specialisation Module",
+                               MCs: specialisationModules},
+                              {cat: "Unrestricted Module",
+                               MCs: unrestrictedModules}],
+                    grandTotal: grandTotal
+                              });
+      
+    }
+  
+    getDropdownMCs(MCs) {
+      totalGEMMCs += MCs
+      this.setState({totalGEMMCs: totalGEMMCs}, () => this.countModule());
+    }
+  
+
+ 
   
   render() {
        return (
@@ -301,27 +340,10 @@ class Main extends React.Component {
               {this.generateDropDown()}
           </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <div className="col-lg col-md-4 col-sm-6">
               <Table
                 title="Core Modules"
-                module={this.makeTable('module')} />
+                module={this.makeTable('coreModule')} />
           </div>
 
           <div className="col-lg col-md-4 col-sm-6">
@@ -333,14 +355,15 @@ class Main extends React.Component {
           <div className="col-lg col-md-6 col-sm-6">
             <Table
                 title="Unrestricted Electives"
-                 module={this.makeTable('module')} />
+                 module={this.makeTable('unrestricted')} />
           </div>
+
 
           <div className="col-lg col-md-6">
             <Table
               title="Total Modular Credits"
               module={this.makeTable('summary')}
-              total={total}/>
+              total={this.state.grandTotal}/>
           </div>
 
         </div>

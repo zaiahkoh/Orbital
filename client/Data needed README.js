@@ -15,31 +15,6 @@ dummyfac =  [{'Business': [{'Business Administration': ['Marketing', 'Finance']}
                         {'Sociology': ['N/A']}}],
 
 
-
-
-
-//1. list of faculty in array form example:
-
-const faculties = ['Arts and Social Sciences', 'Business', 
-                  'Computing', 'Dentistry',
-                  'Design & Environment', 'Engineering',
-                  'Law', 'Medicine', 'Music','Science' ];
-
-//2. list of majors for each faculty in array form 
-// refer to Options.js in Components folder, I typed in all of it alr 
-// for FASS u can either give me segmented one or full list (refer to Options.js)
-
-const computing = ['Business Analytics', 'Computer Engineering', 
-                  'Computer Science', 'Information Security',
-                  'Information Systems'];
-
-//3. list of Specialisation for each major that has specialisation 
-//array form whose members are objects 
-// try to format it in {majorname}{Specialisation}
-// also group stuff that are compulsory and stuff that are optional
-
-const businessMarketing = ['a', 'b'];
-
 //4. list of Residential College in array form
 const residence = ['CAPT', 'RC4', 'RVRC','Tembusu', 'USP'];
 
