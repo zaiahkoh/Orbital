@@ -3,25 +3,44 @@ import $ from 'jquery';
 import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from "react";
-import { Options } from "./Components/Options";
+import { ModuleList } from "./Components/ModuleList";
 import { Dropdown } from './Containers/Dropdown';
-import { Table } from './Components/Module Table'
+import { Table } from './Components/Module Table';
+import { Login, Register } from './Pages/Login/LoginPage'
+import "./App.scss";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
+import { Nav } from "./Pages/navbar";
+
 
 let totalGEMMCs = 0;
-class Main extends React.Component {
+
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
       faculty: null,
-      dummyfac: [{'Business': [{'Business Administration': ['A', 'B']},
-                                {'Accountancy': ['C', 'D']}]},
-                {'FASS': [{'C': ['N/A']},
-                          {'D': ['N/A']}]}],
+      
       major: null,
       specialisation: null,
       residenceOptions: ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'],
       residence: 'N/A',
+      dummyfac: [{'Business': [{'Business Administration': ['A', 'B']},
+                                {'Accountancy': ['C', 'D']}]},
+                {'FASS': [{'C': ['N/A']},
+                          {'D': ['N/A']}]},
+                {
+                  'Computing': [
+                                  {'Computer Science': ['N/A']},
+                                  {'Business Analytics': ['N/A']}
+                  ]
+                }],
       dummymodules: [{GEMs:[
         {"GEH: Human Culture": [{code: 'GEH1001', 
                                 name: 'Globalisation and New Media', 
@@ -71,8 +90,177 @@ class Main extends React.Component {
       link: "https://nusmods.com/modules/MA1521/calculus-for-computing"},
       ]}
       ],
+      dummyrules: [{name: "ULR",
+                    tag: "ULR_2018",
+                    requirements: {"and": [{name: "Complete Quantitative Reasoning",
+                                          tag: "GER",
+                                          requirements: {"and": [
+                                                                {name: "Complete GER1000",
+                                                                 tag: "GER1000",
+                                                                 module: {code: "GER1000",
+                                                                          name: "Quantitative Reasoning",
+                                                                          MCs: 4}
+                                                                }
+                                                              ]
+                                                        }
+                                            },
 
-      
+                                            {name: "Complete Human Culture",
+                                             tag: "GEH",
+                                             requirements: {"or": [{name: "Complete Globalisation and New Media",
+                                                                    tag: "GEH1001",
+                                                                  module: {code: "GEH1001",
+                                                                           name: "Globalisation and New Media",
+                                                                           MCs: 4}
+                                                                    },
+                                 
+                                                                    {name: "Complete Economic Issues in Dev World",
+                                                                     tag: "GEH1001",
+                                                                     module: {code: "GEH1001",
+                                                                              name: "Globalisation and New Media",
+                                                                              MCs: 4}
+                                                                             }
+                                                                    ]
+                                                            },
+                                            }
+                                          ]
+                                    }
+                    },
+
+                   {name: "Core Modules",
+                    tag: "Core Modules 2018",
+                    requirement: {"and": [
+                                          {name: "Computer Science Foundation",
+                                           tag: "cs_foundation_2018",
+                                           requirement: {"and": [
+                                                                  {name: "Complete GER1000",
+                                                                  tag: "GER1000",
+                                                                  module: {code: "GER1000",
+                                                                           name: "Quantitative Reasoning",
+                                                                           MCs: 4}
+                                                                  },
+
+                                                                  {name: "Complete GER1000",
+                                                                   tag: "GER1000",
+                                                                   module: {code: "GER1000",
+                                                                            name: "Quantitative Reasoning",
+                                                                            MCs: 4}
+                                                                  },
+
+                                                                  {name: "Complete GER1000",
+                                                                 tag: "GER1000",
+                                                                 module: {code: "GER1000",
+                                                                          name: "Quantitative Reasoning",
+                                                                          MCs: 4}
+                                                                },
+
+                                                                {name: "Complete GER1000",
+                                                                 tag: "GER1000",
+                                                                 module: {code: "GER1000",
+                                                                          name: "Quantitative Reasoning",
+                                                                          MCs: 4}
+                                                                }
+                                                                ]
+                                                        }
+                                            },
+
+                                           {name: "Computer Science Breadth and Depth",
+                                           tag: "cs_foundation_2018",
+                                           requirement: {"condition": {"at least": [{rule: "CS Focus Area"}, {MCs: 12, minLevel: 4000}]},
+                                             
+                                            "or": [ {name: "CS Focus Area",
+                                                                   tag: "GER1000",
+                                                                   requirement: { 
+                                                                                  "or" : [
+                                                                                            {
+                                                                                              name: "Algorithms and Theory",
+                                                                                              tag: "algorithms",
+                                                                                              requirement: { "condition": {"at least": [{number: 3,
+                                                                                                                                        level: "any"},
+                                                                                                                                        {number: 1,
+                                                                                                                                        level: 4000}
+                                                                                                                                       ] 
+                                                                                                                          },
+                                                                                                              "or": [{name: "Ger1000",
+                                                                                                                    tag: "GER1000",
+                                                                                                                    module: {code: "GER1000",
+                                                                                                                             name: "Quantitative Reasoning",
+                                                                                                                             MCs: 4}
+                                                                                                                            
+                                                                                                                     },
+                                                                                                                     {name: "Complete GER1000",
+                                                                                                                      tag: "GER1000",
+                                                                                                                      module: {code: "GER1000",
+                                                                                                                              name: "Quantitative Reasoning",
+                                                                                                                              MCs: 4}
+                                                                                                                            
+                                                                                                                     },
+                                                                                                                     {name: "Complete GER1000",
+                                                                                                                    tag: "GER1000",
+                                                                                                                    module: {code: "GER1000",
+                                                                                                                             name: "Quantitative Reasoning",
+                                                                                                                             MCs: 4}
+                                                                                                                            
+                                                                                                                     },
+                                                                                                                     {name: "Complete GER1000",
+                                                                                                                    tag: "GER1000",
+                                                                                                                    module: {code: "GER1000",
+                                                                                                                             name: "Quantitative Reasoning",
+                                                                                                                             MCs: 4}
+                                                                                                                            
+                                                                                                                     },
+                                                                                                                     {name: "Complete GER1000",
+                                                                                                                      tag: "GER1000",
+                                                                                                                      module: {code: "GER1000",
+                                                                                                                             name: "Quantitative Reasoning",
+                                                                                                                             MCs: 4}
+                                                                                                                              
+                                                                                                                     },
+                                                                                                                    ]
+                                                                                                            }
+                                                                                            }
+                                                                                          ]
+                                                                                        }
+                                                                                      },
+                                                                                      
+                                                                      {name: "CP-coded",
+                                                                       tag: "CP-coded",
+                                                                       requirement: {"condition": {
+                                                                                                    "at most": {MCs: 12, 
+                                                                                                                minLevel: 4000}
+                                                                                                  },
+                                                                                      "or": [
+                                                                                              {
+                                                                                                name: "Complete GER1000",
+                                                                                                                    tag: "GER1000",
+                                                                                                                    module: {code: "GER1000",
+                                                                                                                             name: "Quantitative Reasoning",
+                                                                                                                             MCs: 4}
+                                                                                              },
+
+                                                                                              {
+                                                                                                name: "Complete GER1000",
+                                                                                                                    tag: "GER1000",
+                                                                                                                    module: {code: "GER1000",
+                                                                                                                             name: "Quantitative Reasoning",
+                                                                                                                             MCs: 4}
+                                                                                              }
+                                                                                      ] 
+                                                                                    }                        
+                                                                      }
+                                                          ]}
+                                                    },
+
+                                           {name: "Industrial Experience Requirement",
+                                           tag: "cs_foundation_2018",
+                                           requirement: {}},
+
+                                           {name: "IT Professionalism",
+                                           tag: "cs_foundation_2018",
+                                           requirement: {}}
+                    ]}},
+                   {unrestrictedModules: {} }
+                  ],
       
      summary: [{cat: "General Elective Module",
                 MCs: 0},
@@ -82,30 +270,36 @@ class Main extends React.Component {
                 MCs: 0},
                 {cat: "Unrestricted Module",
                 MCs: 0}],
-    grandTotal: 0
+    grandTotal: 0,
+    isLogginActive: true   //TEMPORARY
 
     }
     this.changeFaculty = this.changeFaculty.bind(this);
     this.changeMajor=this.changeMajor.bind(this);
+    this.changeSpecialisation= this.changeSpecialisation.bind(this);
+    this.changeResidence= this.changeResidence.bind(this);
     this.generateOptions =this.generateOptions.bind(this);
     this.makeTable = this.makeTable.bind(this);
     this.generateDropDown = this.generateDropDown.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.countModule = this.countModule.bind(this);
     this.getDropdownMCs = this.getDropdownMCs.bind(this);
+    this.changeState = this.changeState.bind(this);
+    this.receiveModuleRules=this.receiveModuleRules.bind(this);
   }
   
   componentDidMount() {
     // Call our fetch function below once the component mounts
   this.callBackendAPI()
-    .then(res => this.setState({ data: res.express }))
+    .then(res => this.setState({ data: res.express })) // this data should be dummyfac and residence
     .catch(err => console.log(err));
-    
+  
+  this.rightSide.classList.add('right');
 
   }
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
   callBackendAPI = async () => {
-  const response = await fetch('/express_backend');
+  const response = await fetch('http://localhost:5000/');
   const body = await response.json();
 
   if (response.status !== 200) {
@@ -130,6 +324,16 @@ class Main extends React.Component {
     });
   }
 
+  changeSpecialisation(value) {
+    this.setState({
+      specialisation: value,
+    });
+  }
+  changeResidence(value) {
+    this.setState({
+      residence: value,
+    });
+  }
 
   //turn array of choices into options dropdown
   generateOptions(choices) {
@@ -209,7 +413,9 @@ class Main extends React.Component {
       }
 
    return propfunction.map((module) => {
-        const { code, name, MCs, link } = module
+        const { code, name, MCs} = module
+        const desc = name.replace(/ /g, '-');
+        const link = `https://nusmods.com/modules/${code}/${desc}`
         if(item === 'GEM') {
           return (
             <div>
@@ -219,7 +425,8 @@ class Main extends React.Component {
                     >
                     <a href={link}
                       target="_blank"
-                      className="text-white text-decoration-none">
+                      rel="noopener noreferrer"
+                      className="text-decoration-none">
                     <td>{code}</td>
                     </a>
                     <td>{name}</td>
@@ -233,6 +440,7 @@ class Main extends React.Component {
                 <tr key={code} >
                 <a href={link} 
                            target="_blank" 
+                           rel="noopener noreferrer"
                            className="text-white text-decoration-none">
                     <td>{code}</td>
                     <td>{name}</td>
@@ -248,11 +456,11 @@ class Main extends React.Component {
   generateDropDown() {
     let title;
     if(this.state.residence === 'N/A') {
-      const title = <h3>General Elective Modules</h3>;
+      title = <h3>General Elective Modules</h3>;
     }  
       
       return (<div>
-        {title}
+      {title}
       {this.state.dummymodules[0].GEMs.map((module, i) => {
         const GEMCat = Object.keys(module)[0]
         return (
@@ -308,26 +516,54 @@ class Main extends React.Component {
       this.setState({totalGEMMCs: totalGEMMCs}, () => this.countModule());
     }
   
-
+    receiveModuleRules(rules) {
+      this.setState({rules: rules});
+    }
  
-  
+    changeState() {
+      const { isLogginActive } = this.state;
+
+      if (isLogginActive) {
+        this.rightSide.classList.remove("right");
+        this.rightSide.classList.add("left");
+      } else {
+        this.rightSide.classList.remove("left");
+        this.rightSide.classList.add("right");
+      }
+      this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
+    }
+    
   render() {
+      const { isLogginActive } = this.state;
+      const current = isLogginActive ? "Register" : "Login";
+      const currentActive = isLogginActive ? "login" : "register";
        return (
-       <div class="full-container bg-dark text-white">
+         
+
+
+
+       <div class="full-container">
          <div className="row">
-          <h1 className="display-3">
+          <h1 className="display-3 ml-4">
             Module Overview
           </h1>
         </div>
 
-       <div className="row text-left"> 
-          <Options onFacultyChange={this.changeFaculty}
+       <div className="row text-left ml-4"> 
+          <ModuleList onFacultyChange={this.changeFaculty}
                    onMajorChange={this.changeMajor}
-                   faculty={this.state.faculty}
+                   onSpecialisationChange={this.changeSpecialisation}
+                   onResidenceChange={this.changeResidence}
                    facultyOptions={this.generateOptions('faculty')}
                    majorOptions={this.generateOptions('major')}
                    specialisationOptions={this.generateOptions('specialisation')}
-                   residenceOptions={this.generateOptions()}/>
+                   residenceOptions={this.generateOptions('residence')}
+                   username="abc" //need to change
+                   major={this.state.major}
+                   specialisation={this.state.specialisation}
+                   residence={this.state.residence}
+                   receiveModuleRules={this.receiveModuleRules}
+                   />
         </div>
 
         <div className="row"> 
@@ -367,11 +603,49 @@ class Main extends React.Component {
           </div>
 
         </div>
+
+
+
+
+
+        <div className="App"> 
+        <div className="login">
+          <div className="container" ref={ref => (this.container = ref)}>
+            {isLogginActive && (
+              <Login containerRef={ref => (this.current = ref)} />
+            )}
+            {!isLogginActive && (
+              <Register containerRef={ref => (this.current = ref)} />
+            )}
+          </div>
+          <RightSide
+            current={current}
+            currentActive={currentActive}
+            containerRef={ref => (this.rightSide = ref)}
+            onClick={this.changeState.bind(this)}
+          />
+        </div>
+      </div>
+
         </div>
 
    );
     }
 }
 
+const RightSide = props => {
+  return (
+    <div
+      className="right-side"
+      ref={props.containerRef}
+      onClick={props.onClick}
+    >
+      <div className="inner-container">
+        <div className="text">{props.current}</div>
+      </div>
+    </div>
+  );
+};
 
-export default Main;
+
+export default App;

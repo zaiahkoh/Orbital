@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Main from './App';
+import { Router } from "react-router-dom"
 import * as serviceWorker from './serviceWorker';
+import App from './App';
 
 ReactDOM.render(
-    <Main />,
+    <App />,
   document.getElementById('app')
 );
 
@@ -13,3 +15,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 //serviceWorker.unregister();
+

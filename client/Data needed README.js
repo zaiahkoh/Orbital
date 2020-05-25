@@ -18,6 +18,9 @@ dummyfac =  [{'Business': [{'Business Administration': ['Marketing', 'Finance']}
 //4. list of Residential College in array form
 const residence = ['CAPT', 'RC4', 'RVRC','Tembusu', 'USP'];
 
+
+
+
 //5. a link to process all the inputs which will return the suggested module plan 
 //for create module plan button 
 
@@ -85,3 +88,70 @@ array [ {compulsory: [
 
 
 
+
+
+
+
+//IMPORTED FROM OPTIONS.JS
+//list of faculties
+const faculties = ['Choose Your Faculty','Arts and Social Sciences', 'Business', 
+                  'Computing', 'Dentistry',
+                  'Design & Environment', 'Engineering',
+                  'Law', 'Medicine', 'Music','Science' ];
+
+
+//list of majors for FASS
+const fassAsianStudies = ['Chinese Language', 'Chinese Studies', 
+                          'Japanese Studies', 'Malay Studies', 
+                          'South Asian Studies', 'Southeast Asian Studies'];
+
+const fassHumanities = ['English Language', 'English Literature',
+                        'History', 'Philosophy', 'Theater Studies'];
+
+const fassSocialSciences = ['Communications and New Media', 'Economics',
+                            'Geography', 'Political Science', 'Psychology',
+                            'Social Work', 'Sociology'];
+
+const fassMultidisciplinary = ['Global Studies', 
+                              'Philosophy, Politics, and Economics'];
+
+const fassCombined = fassAsianStudies.concat(fassHumanities,
+                                            fassSocialSciences,
+                                            fassMultidisciplinary);
+
+//list of majors for business
+const business = ['Accountancy', 'Business Administration'];
+
+//list of majors for computing
+const computing = ['Business Analytics', 'Computer Engineering', 
+                  'Computer Science', 'Information Security',
+                  'Information Systems'];
+
+//list of majors for SDE
+const designAndEnvironment = ['Architecture', 'Industrial Design',
+                              'Landscape Architecture', 
+                              'Project & Facilities Management', 'Real Estate'];
+
+//list of majors for engineering
+const engineering = ['Biomedical Engineering', 'Chemical Engineering',
+                     'Civil Engineering', 'Computer Engineering', 
+                      'Electrical Engineering', 'Engineering Science Programme',
+                      'Environmental Engineering', 'Industrial & Systems Engineering',
+                      'Materials Science & Engineering', 'Mechanical Engineering'];
+
+//list of majors for medicine
+const medicine = ['Medicine', 'Nursing'];
+
+//list of majors for science
+const science = ['Chemistry', 'Computational Biology', 
+                'Data Science & Analytics', 'Environmental Studies',
+                'Food Science and Technology', 'Life Sciences', 'Mathematics',
+                'Pharmaceutical Science', 'Pharmacy', 'Physics', 'Statistics'];
+
+//list of specialisation for business
+const businessSpecialisation = ['N/A','Business Analytics', 
+                                'Innovation and Entrepreneurship'
+                              ];
+
+//list of residential colleges
+const residence = ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'];
