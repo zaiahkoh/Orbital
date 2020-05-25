@@ -62,7 +62,7 @@ async function updateStuff() {
 }
 */
 
-const fast = Promise.all([getModuleList(2019), getDatabase('modtree')])
+const fast = Promise.all([getModuleList(2018), getDatabase('modtree')])
   .then(([data, db]) => {
     db.collection('modules').drop();
     db.collection('modules').insertMany(data);

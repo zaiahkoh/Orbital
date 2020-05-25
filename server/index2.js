@@ -23,10 +23,8 @@ function getDatabase(dbName) {
 
 //Takes in a collection reference and module code string and returns a Promise
 async function getModule(collection, module){
-  const one = await collection.find({'moduleCode': module});
-  const two = await one.toArray();
-  const output = await two[0];
-  return output;
+  const results = await collection.find({'moduleCode': module}).toArray();
+  return results[0];
 }
 
 //Takes in a collection reference and a rule tag string and returns a Promise
@@ -55,6 +53,15 @@ async function createRule(rule) {
     return output;
   }  
 }
+
+MongoClient.connect('mongodb://127.0.0.1:27017', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(client => {
+      const col = client.db('modtree').collection('modules');
+      return getModule(col, "CS1231");
+    })
+    .then(mod => {
+      console.log(mod);
+    })
 
 //Route handlers
 app.get('/', function (req, res) {
