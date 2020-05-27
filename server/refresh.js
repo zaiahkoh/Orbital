@@ -11,12 +11,12 @@ const https = require('https');
 app.use(bodyParser.urlencoded({ extended: true }))
 
 //Get module list from NUSmods API
-function getModuleList (acadYear) {
+function getModuleData (type ,acadYear) {
   return new Promise((resolve, reject) => {
 
     var startTime = new Date();
     const uri = 'https://api.nusmods.com/v2/' + acadYear + '-' + (acadYear + 1) 
-      + '/moduleList.json';
+      + '/module' + type + '.json';
 
     https.get(uri, (res) => {
       let data = '';
@@ -62,10 +62,10 @@ async function updateStuff() {
 }
 */
 
-const fast = Promise.all([getModuleList(2018), getDatabase('modtree')])
+const fast = Promise.all([getModuleData('Info' ,2018), getDatabase('modtree')])
   .then(([data, db]) => {
-    db.collection('modules').drop();
-    db.collection('modules').insertMany(data);
+    db.collection('moduleInfo_2018').drop();
+    db.collection('moduleInfo_2018').insertMany(data);
   })
   .then(_ => 
     console.log('All done')

@@ -34,7 +34,7 @@ async function getRule(collection, ruleTag){
   return array[0];
 }
 
-//Rule constructor: generates a full JS Object base on a rule in the database
+//Rule constructor: generates a full JS Object based on a rule in the database
 async function createRule(rule) {
   if (rule.startsWith('r_')){
     const db = await getDatabase('modtree');
@@ -74,6 +74,6 @@ app.get('/express_backend', function (req, res) {
   res.send({express: 'This line came from the Express server'});
 });
 
-app.listen(5000, function () {
-  console.log('Express server is listening on port 5000!');
+app.listen(27017, function () {
+  console.log('Express server is listening on port 3000!');
 });
