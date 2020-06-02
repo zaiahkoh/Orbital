@@ -1,1 +1,17 @@
-{"_id":"5ed4b8b30a85142ac8e1f305","name":"CS/CP/IFS modules","desc":"Complete 28 MCs of CS/CP/IFS-coded modules by satisfying the following conditions: Satisfy at least one CS Focus Area for BComp(CS) by completing 3 modules in the Area Primaries, with at least one module at level-4000 or above. Computer Science Foundation modules that appear in Area Primaries can be counted as one of the 3 modules towards satisfying a Focus Area. At least 12 MCs are at level-4000 or above. CP-coded modules must come from the following independent project modules: CP3106 Independent Project (4 MCs) CP3209 Undergraduate Research in Computing (8 MCs) CP4101 BComp Dissertation (12 MCs) CP4106 Computing Project (8 MCs) Or other suitable modules approved by the Department of Computer Science; At most 12 MCs of CP-coded independent project modules.","tag":"r_cs_cp_ifs"}
+Route 1: http://localhost:3000/rules/<rule_tag> (GET request)
+
+e.g. http://localhost:3000/rules/r_cs_cp_ifs
+
+{"_id":"5ed0d9a9a9225a12882ec26d","name":"University Level Requirements","desc":"Complete at least 20MCs worth of General Education Modules, with at least 1 module in each of the GEH, GEQ, GER, GES and GET pillars","tag":"r_ulr","sub":[{"_id":"5ed0dd49a9225a12882ec26e","name":"GEH Pillar","desc":"Complete a GEH-coded module","tag":"r_geh_pillar"},{"_id":"5ed0dd54a9225a12882ec26f","name":"GEQ Pillar","desc":"Complete a GEQ-coded module","tag":"r_geq_pillar"},{"_id":"5ed0dd60a9225a12882ec270","name":"GER Pillar","desc":"Complete a GER-coded module","tag":"r_ger_pillar"},{"_id":"5ed0dd6ca9225a12882ec271","name":"GES Pillar","desc":"Complete a GES-coded module","tag":"r_ges_pillar"},{"_id":"5ed0dd76a9225a12882ec272","name":"GET Pillar","desc":"Complete a GET-coded module","tag":"r_get_pillar"}]}
+
+Route 2: http://localhost:3000/eval (POST request)
+
+e.g.
+
+POST
+{
+modules: ["GET1028", "GEH1024"]
+}
+
+RESPONSE:
+{false}
