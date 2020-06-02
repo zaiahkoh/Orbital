@@ -1,9 +1,16 @@
 import React from 'react';
 import Board from './Board';
+import Rules from './Rules';
 import './plannertemp.css';
+import { Button } from 'react-bootstrap';
+
 
 class ModulePlannerPageTemp extends React.Component {
-   
+   constructor(props) {
+       super(props);
+
+   }
+    
     render () {
         return (
             <div className="container">
@@ -38,6 +45,11 @@ class ModulePlannerPageTemp extends React.Component {
                         generateModuleCards={this.generateModuleCards}>
                     
                 </Board>
+                <br/>
+                <Button>Evaluate</Button>
+                <br/>
+                <Rules/>
+                
                 
             </div>
         )

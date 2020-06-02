@@ -3,7 +3,7 @@ import AutoCompleteText from './AutocompleteText';
 import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import ModuleCard from './Card';
 
-let newModuleCodeTitle = [];
+
 
 class Board extends React.Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class Board extends React.Component {
         this.updateModuleCards = this.updateModuleCards.bind(this);
         this.generateModuleCards = this.generateModuleCards.bind(this);
     }
-    
+    newModuleCodeTitle = [];
     
     drop = e => {
         e.preventDefault();
@@ -35,9 +35,9 @@ class Board extends React.Component {
      }
 
     updateModuleCards(item) {
-        if (!newModuleCodeTitle.includes(item)) {
-            newModuleCodeTitle.push(item);
-            this.setState({moduleCodeTitle: newModuleCodeTitle});
+        if (!this.newModuleCodeTitle.includes(item)) {
+            this.newModuleCodeTitle.push(item);
+            this.setState({moduleCodeTitle: this.newModuleCodeTitle});
         }
     }
 
@@ -60,6 +60,7 @@ class Board extends React.Component {
     }
 
     render() {
+
         return (
             <div   
                 id={this.props.id}
@@ -73,6 +74,7 @@ class Board extends React.Component {
                 <Button onClick={this.handleButtonClick}>Add Module</Button>
             </div>
         )
+        
     }
     
 }
