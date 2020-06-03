@@ -1,33 +1,34 @@
 import React from 'react';
-import { Card } from 'react-bootstrap'
+import { Card, Button } from 'react-bootstrap';
+import { ItemTypes } from './itemType';
+import { useDrag } from 'react-dnd';
 
 function ModuleCard (props) {
-
-    const dragStart = e => {
-        const target = e.target;
-
-        e.dataTransfer.setData('card_id', target.id);
-
-        setTimeout(() => {
-            target.style.display = "none"
-        }, 0);
-    }
-
-    const dragOver = e => {
-        e.stopPropagation();
-    }
+    const [{ isDragging}, drag] = useDrag({
+        item: {
+            type: ItemTypes.CARD,
+            
+        },
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging()
+        })
+    })
+   
 
     return (
-        <Card
+        <Button
+            ref={drag}
             id={props.id}
             className={props.className}
-            draggable={props.draggable}
-            onDragStart={dragStart}
-            onDragOver={dragOver}
-            style={{width: '16rem'}}
+            style={{
+                width: '15rem',
+                opacity: isDragging ? 0 : 1,
+                cursor: 'grabbing'}}
         >
-            <Card.Title>{props.title}</Card.Title>
-        </Card>
+            <small>{props.title}</small>
+
+            <small>4MCs</small>
+        </Button>
     )
 }
 

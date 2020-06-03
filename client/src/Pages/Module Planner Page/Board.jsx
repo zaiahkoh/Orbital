@@ -1,82 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AutoCompleteText from './AutocompleteText';
 import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import ModuleCard from './Card';
+import { ItemTypes } from './itemType';
+import { useDrop } from 'react-dnd';
+//import generateCards from './generateCards'
 
 
 
-class Board extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isTextBoxOpen: false,
-            moduleCodeTitle: []};
-        this.handleButtonClick = this.handleButtonClick.bind(this);
-        this.updateModuleCards = this.updateModuleCards.bind(this);
-        this.generateModuleCards = this.generateModuleCards.bind(this);
-    }
-    newModuleCodeTitle = [];
+
+function Board (props) {
+    const [isTextBoxOpen, setIsTextBoxOpen] = useState(false);
+    const [moduleCodeTitle, setModuleCodeTitle] = useState([]);
+    const [displayCard, setDisplayCard] = useState();
+    const generateCards = () => moduleCodeTitle.map((item, i) => 
+            (<ModuleCard
+                id={"card_" + i}
+                className="card"
+                title={item}/>));
     
-    drop = e => {
-        e.preventDefault();
-        const card_id = e.dataTransfer.getData('card_id');
-        const card = document.getElementById(card_id);
-        card.style.display = 'block';
+    const [{ isOver }, drop] = useDrop({
+            accept: ItemTypes.CARD,
+            drop: (item, monitor) => (item.id),
+            collect: monitor => ({
+                isOver: !!monitor.isOver(),
+            }),
+    })
 
-        e.target.appendChild(card);
-    }
-
-    dragOver = e => {
-        e.preventDefault();
-    }
-
-    handleButtonClick() {
-        this.setState({isTextBoxOpen: !this.state.isTextBoxOpen});
+    function handleButtonClick() {
+        setIsTextBoxOpen(!isTextBoxOpen);
      }
 
-    updateModuleCards(item) {
-        if (!this.newModuleCodeTitle.includes(item)) {
-            this.newModuleCodeTitle.push(item);
-            this.setState({moduleCodeTitle: this.newModuleCodeTitle});
+    function updateModuleCards(item) {
+        let newModuleCodeTitle = moduleCodeTitle;
+        if (!newModuleCodeTitle.includes(item)) {
+            newModuleCodeTitle.push(item);
+            setModuleCodeTitle(newModuleCodeTitle);
+            setDisplayCard(generateCards);
         }
-    }
 
-    generateModuleCards() {
-        console.log('called');
-        return(
-            this.state.moduleCodeTitle.map((item, i) => {
-                return (
-                    <ModuleCard
-                        id={"card_" + i}
-                        className="card"
-                        draggable="true"
-                        title={item}>
-                    </ModuleCard>
-                )
-            })
-            
-        )
-        
     }
-
-    render() {
 
         return (
             <div   
-                id={this.props.id}
-                onDrop={this.drop}
-                onDragOver={this.dragOver}
+                ref={drop}
+                id={props.id}
             >
-                <h3>{this.props.year}</h3>
-                {this.generateModuleCards()}
-                {this.state.isTextBoxOpen && <AutoCompleteText updateModuleCards={this.updateModuleCards}/>}
+                <h3>{props.year + ' ' + props.semester}</h3>
+                {generateCards()}
+                {isTextBoxOpen && <AutoCompleteText updateModuleCards={updateModuleCards}/>}
                 
-                <Button onClick={this.handleButtonClick}>Add Module</Button>
+                <Button onClick={handleButtonClick}>Add Module</Button>
             </div>
         )
-        
-    }
-    
+   
 }
 
 export default Board;

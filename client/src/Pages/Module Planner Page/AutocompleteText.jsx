@@ -48,9 +48,6 @@ class AutoCompleteText extends React.Component {
                 const moduleCode = module[i].moduleCode
                 if(regex.test(moduleCode)) {
                     suggestions.push(`${moduleCode}: ${module[i].title}`);
-
-                } else if(value < moduleCode.toLowerCase()) {
-                    break;
                 }
             }
 
