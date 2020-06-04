@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import AutoCompleteText from './AutocompleteText';
-import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import ModuleCard from './Card';
 import { ItemTypes } from './itemType';
 import { useDrop } from 'react-dnd';
-//import generateCards from './generateCards'
+
 
 
 
@@ -13,15 +13,17 @@ function Board (props) {
     const [isTextBoxOpen, setIsTextBoxOpen] = useState(false);
     const [moduleCodeTitle, setModuleCodeTitle] = useState([]);
     const [displayCard, setDisplayCard] = useState();
-    const generateCards = () => moduleCodeTitle.map((item, i) => 
+    const generateCards = () => moduleCodeTitle.map((object, i) => 
             (<ModuleCard
-                id={"card_" + i}
+                id={object.moduleCode}
+                location={props.year + ' ' + props.semester}
                 className="card"
-                title={item}/>));
+                title={`${object.moduleCode}: ${object.title}`}
+                MCs={object.moduleCredit}/>));
     
     const [{ isOver }, drop] = useDrop({
             accept: ItemTypes.CARD,
-            drop: (item, monitor) => (item.id),
+            drop: (item, monitor) => console.log(item),
             collect: monitor => ({
                 isOver: !!monitor.isOver(),
             }),
@@ -31,10 +33,11 @@ function Board (props) {
         setIsTextBoxOpen(!isTextBoxOpen);
      }
 
-    function updateModuleCards(item) {
+    function updateModuleCards(object) {
+       object.location = props.year + ' ' + props.semester;
         let newModuleCodeTitle = moduleCodeTitle;
-        if (!newModuleCodeTitle.includes(item)) {
-            newModuleCodeTitle.push(item);
+        if (!newModuleCodeTitle.includes(object)) {
+            newModuleCodeTitle.push(object);
             setModuleCodeTitle(newModuleCodeTitle);
             setDisplayCard(generateCards);
         }
@@ -42,15 +45,19 @@ function Board (props) {
     }
 
         return (
+            <div>
+                <h3>{props.semester}</h3>
             <div   
                 ref={drop}
                 id={props.id}
+                style={{width: '20rem'}}
             >
-                <h3>{props.year + ' ' + props.semester}</h3>
-                {generateCards()}
-                {isTextBoxOpen && <AutoCompleteText updateModuleCards={updateModuleCards}/>}
-                
+
+            <div style={{width: '165px', height: !displayCard && '59px', outline: displayCard ? 'none' : '1px dotted'}}>{displayCard ? displayCard : 'Drop module here'}</div>
+            {isTextBoxOpen && <AutoCompleteText updateModuleCards={updateModuleCards}/>}
                 <Button onClick={handleButtonClick}>Add Module</Button>
+                
+                </div>
             </div>
         )
    

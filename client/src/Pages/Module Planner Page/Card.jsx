@@ -3,11 +3,12 @@ import { Card, Button } from 'react-bootstrap';
 import { ItemTypes } from './itemType';
 import { useDrag } from 'react-dnd';
 
-function ModuleCard (props) {
+const ModuleCard = props => {
     const [{ isDragging}, drag] = useDrag({
         item: {
             type: ItemTypes.CARD,
-            
+            id: props.id,
+            location: props.location
         },
         collect: monitor => ({
             isDragging: !!monitor.isDragging()
@@ -21,13 +22,13 @@ function ModuleCard (props) {
             id={props.id}
             className={props.className}
             style={{
-                width: '15rem',
+                width: '165px',
                 opacity: isDragging ? 0 : 1,
                 cursor: 'grabbing'}}
         >
             <small>{props.title}</small>
 
-            <small>4MCs</small>
+            <small>{props.MCs + ' MCs'}</small>
         </Button>
     )
 }

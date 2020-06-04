@@ -7,6 +7,7 @@ class AutoCompleteText extends React.Component {
         this.state = { module: null,
                        suggestions: [],
                        text: '',
+                       selectedModules: []
                      };
         this.handleTextChange = this.handleTextChange.bind(this);
         this.renderSuggestions = this.renderSuggestions.bind(this);
@@ -47,7 +48,7 @@ class AutoCompleteText extends React.Component {
             for(let i = 0; i < module.length; i++) {
                 const moduleCode = module[i].moduleCode
                 if(regex.test(moduleCode)) {
-                    suggestions.push(`${moduleCode}: ${module[i].title}`);
+                    suggestions.push(module[i]);
                 }
             }
 
@@ -55,8 +56,8 @@ class AutoCompleteText extends React.Component {
         this.setState(() => ({ suggestions, text: value }));
     }
 
-    handleListClick(item) {
-        this.props.updateModuleCards(item);
+    handleListClick(object) {
+        this.props.updateModuleCards(object);
         this.setState(() => ({suggestions: []})) 
     }
 
@@ -67,7 +68,7 @@ class AutoCompleteText extends React.Component {
         }
         return (
             <ul>
-                {suggestions.map((item) => <li onClick={() => this.handleListClick(item)}>{item}</li>)}
+                {suggestions.map((object) => <li onClick={() => this.handleListClick(object)}>{`${object.moduleCode}: ${object.title}`}</li>)}
             </ul>
         );
 
@@ -88,7 +89,8 @@ class AutoCompleteText extends React.Component {
                 <input 
                        value={text}
                        onChange={this.handleTextChange}
-                       type="text" />
+                       type="text"
+                       placeholder="Enter module code" />
                 {this.renderSuggestions()}
                 
                 </div>

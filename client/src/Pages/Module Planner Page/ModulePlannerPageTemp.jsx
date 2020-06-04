@@ -1,6 +1,7 @@
 import React from 'react';
 import Board from './Board';
 import Rules from './Rules';
+import YearDisplay from './YearDisplay';
 import './plannertemp.css';
 import { Button, Card } from 'react-bootstrap';
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
@@ -92,24 +93,10 @@ class ModulePlannerPageTemp extends React.Component {
     render () {
         return (
             <DndProvider backend={Backend}>
-            <div className="container">
-                <Board 
-                        id="board-1"
-                        className="board"
-                        year="Year 1"
-                        semester="Semester 1"
-                        generateModuleCards={this.generateModuleCards}>
-                    
-                </Board>
 
-                <Board 
-                        id="board-1"
-                        className="board"
-                        year="Year 2"
-                        semester="Semester 1"
-                        generateModuleCards={this.generateModuleCards}>
-                    
-                </Board>
+               <YearDisplay
+                        year="Year 1" />
+                
 
                 <Board 
                         id="board-1"
@@ -142,7 +129,7 @@ class ModulePlannerPageTemp extends React.Component {
                 </Card>
                 <br/>
                 
-            </div>
+
            </DndProvider>
         )
     }
