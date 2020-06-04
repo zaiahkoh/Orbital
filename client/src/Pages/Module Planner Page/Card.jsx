@@ -8,7 +8,6 @@ const ModuleCard = props => {
         item: {
             type: ItemTypes.CARD,
             id: props.id,
-            location: props.location
         },
         collect: monitor => ({
             isDragging: !!monitor.isDragging()

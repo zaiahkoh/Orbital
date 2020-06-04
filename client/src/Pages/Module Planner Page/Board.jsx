@@ -11,19 +11,21 @@ import { useDrop } from 'react-dnd';
 
 function Board (props) {
     const [isTextBoxOpen, setIsTextBoxOpen] = useState(false);
-    const [moduleCodeTitle, setModuleCodeTitle] = useState([]);
-    const [displayCard, setDisplayCard] = useState();
-    const generateCards = () => moduleCodeTitle.map((object, i) => 
-            (<ModuleCard
-                id={object.moduleCode}
-                location={props.year + ' ' + props.semester}
-                className="card"
-                title={`${object.moduleCode}: ${object.title}`}
-                MCs={object.moduleCredit}/>));
-    
+    //const [moduleCodeTitle, setModuleCodeTitle] = useState([]);
+    // const [displayCard, setDisplayCard] = useState();
+    const generateCards = () => selectedModules
+        .filter((object, i) => object.location === props.id)
+        .map((object, i) => 
+                (<ModuleCard
+                    id={object.moduleCode}
+                    location={props.id}
+                    className="card"
+                    title={`${object.moduleCode}: ${object.title}`}
+                    MCs={object.moduleCredit}/>));
+
     const [{ isOver }, drop] = useDrop({
             accept: ItemTypes.CARD,
-            drop: (item, monitor) => console.log(item),
+            drop: (item, monitor) => props.updateModuleLocation(item, props.id),
             collect: monitor => ({
                 isOver: !!monitor.isOver(),
             }),
@@ -33,18 +35,12 @@ function Board (props) {
         setIsTextBoxOpen(!isTextBoxOpen);
      }
 
-    function updateModuleCards(object) {
-       object.location = props.year + ' ' + props.semester;
-        let newModuleCodeTitle = moduleCodeTitle;
-        if (!newModuleCodeTitle.includes(object)) {
-            newModuleCodeTitle.push(object);
-            setModuleCodeTitle(newModuleCodeTitle);
-            setDisplayCard(generateCards);
-        }
+ 
 
-    }
+        const selectedModules = props.selectedModules;
 
         return (
+            
             <div>
                 <h3>{props.semester}</h3>
             <div   
@@ -53,8 +49,14 @@ function Board (props) {
                 style={{width: '20rem'}}
             >
 
-            <div style={{width: '165px', height: !displayCard && '59px', outline: displayCard ? 'none' : '1px dotted'}}>{displayCard ? displayCard : 'Drop module here'}</div>
-            {isTextBoxOpen && <AutoCompleteText updateModuleCards={updateModuleCards}/>}
+            <div style={{width: '165px', 
+                        height: (!selectedModules) && '59px', 
+                        outline: selectedModules ? 'none' : '1px dotted'}}>
+                            {selectedModules ? generateCards() : 'Drop module here'}
+            </div>
+            {isTextBoxOpen && <AutoCompleteText 
+                                            location={props.id}
+                                            updateSelectedModules={props.updateSelectedModules}/>}
                 <Button onClick={handleButtonClick}>Add Module</Button>
                 
                 </div>

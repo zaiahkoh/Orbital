@@ -11,7 +11,7 @@ import { DndProvider } from 'react-dnd';
 class ModulePlannerPageTemp extends React.Component {
    constructor(props) {
        super(props);
-       this.state = {   
+       this.state = {   selectedModules: null,
                         isLoading: false,
                         modulesSelected: ['MA1101R'],
                         rules: {_id:"5ed0d9a9a9225a12882ec26d",
@@ -68,6 +68,8 @@ class ModulePlannerPageTemp extends React.Component {
 
                                 },
         }
+        this.updateSelectedModules = this.updateSelectedModules.bind(this);
+        this.updateModuleLocation = this.updateModuleLocation.bind(this);
 
     }
 
@@ -87,34 +89,65 @@ class ModulePlannerPageTemp extends React.Component {
     //   }
     //   return body;
     // };
+
+    updateSelectedModules(object) {
+        let newSelectedModules = this.state.selectedModules ? this.state.selectedModules : [];
+        let unique = true;
+        
+        for(let i = 0; i < newSelectedModules.length; i++) {
+            if(newSelectedModules[i].moduleCode === object.moduleCode) {
+                unique = false;
+            }
+        }
+
+         if (!newSelectedModules.includes(object) && unique) {
+            newSelectedModules.push(object);
+            this.setState({selectedModules: newSelectedModules});
+             }
+            
+         
+         console.log(this.state.selectedModules);
+ 
+     }
     
+     updateModuleLocation(item, location) {
+        const moduleToChange = this.state.selectedModules.filter((object) => object.moduleCode === item.id);
+        moduleToChange[0].location =  location;
+        console.log(moduleToChange);
+        const changedModule = this.state.selectedModules.filter((object) => object.moduleCode !== item.id).concat(moduleToChange[0])
+        this.setState({selectedModules: changedModule})
+    }
     
     
     render () {
         return (
             <DndProvider backend={Backend}>
 
-               <YearDisplay
-                        year="Year 1" />
+                <YearDisplay
+                        year="Year 1"
+                        updateSelectedModules={this.updateSelectedModules}
+                        selectedModules={this.state.selectedModules}
+                        updateModuleLocation={this.updateModuleLocation} />
+
+                <YearDisplay
+                        year="Year 2"
+                        updateSelectedModules={this.updateSelectedModules}
+                        selectedModules={this.state.selectedModules}
+                        updateModuleLocation={this.updateModuleLocation} /> 
+
+                <YearDisplay
+                        year="Year 3"
+                        updateSelectedModules={this.updateSelectedModules}
+                        selectedModules={this.state.selectedModules}
+                        updateModuleLocation={this.updateModuleLocation} />
+
+                <YearDisplay
+                        year="Year 4"
+                        updateSelectedModules={this.updateSelectedModules}
+                        selectedModules={this.state.selectedModules}
+                        updateModuleLocation={this.updateModuleLocation} /> 
                 
 
-                <Board 
-                        id="board-1"
-                        className="board"
-                        year="Year 3"
-                        semester="Semester 1"
-                        generateModuleCards={this.generateModuleCards}>
-                    
-                </Board>
-
-                <Board 
-                        id="board-1"
-                        className="board"
-                        year="Year 4"
-                        semester="Semester 1"
-                        generateModuleCards={this.generateModuleCards}>
-                    
-                </Board>
                 <br/>
 
                 <Button onClick={() => {this.setState({callBackendNow: true})}}>Evaluate</Button>

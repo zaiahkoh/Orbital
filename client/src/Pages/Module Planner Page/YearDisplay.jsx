@@ -1,9 +1,9 @@
-import React , { useState } from 'react';
+import React , { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import Board from './Board';
 
 function YearDisplay(props) {
-    //const []
+
 
     return (
         <div>
@@ -13,9 +13,11 @@ function YearDisplay(props) {
                 <div className="row">
                     <div className="col">
                         <Board 
-                                id="board-1"
+                                updateSelectedModules={props.updateSelectedModules}
+                                selectedModules={props.selectedModules}
+                                updateModuleLocation={props.updateModuleLocation}
+                                id={props.year + " " + "Semester 1"}
                                 className="board"
-                                year="Year 1"
                                 semester="Semester 1">
                             
                         </Board>
@@ -23,9 +25,11 @@ function YearDisplay(props) {
 
                     <div className="col">
                         <Board 
-                                id="board-1"
+                                updateSelectedModules={props.updateSelectedModules}
+                                selectedModules={props.selectedModules}
+                                updateModuleLocation={props.updateModuleLocation}
+                                id={props.year + " " + "Semester 2"}
                                 className="board"
-                                year="Year 2"
                                 semester="Semester 2">
                             
                         </Board>

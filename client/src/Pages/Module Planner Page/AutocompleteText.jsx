@@ -7,7 +7,7 @@ class AutoCompleteText extends React.Component {
         this.state = { module: null,
                        suggestions: [],
                        text: '',
-                       selectedModules: []
+
                      };
         this.handleTextChange = this.handleTextChange.bind(this);
         this.renderSuggestions = this.renderSuggestions.bind(this);
@@ -57,7 +57,8 @@ class AutoCompleteText extends React.Component {
     }
 
     handleListClick(object) {
-        this.props.updateModuleCards(object);
+        object.location = this.props.location;
+        this.props.updateSelectedModules(object);
         this.setState(() => ({suggestions: []})) 
     }
 
