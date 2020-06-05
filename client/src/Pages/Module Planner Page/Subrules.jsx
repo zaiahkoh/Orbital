@@ -22,7 +22,7 @@ class Subrules extends React.Component {
         };
         this.setState({isLoading: true});
 
-        await fetch('https://jsonplaceholder.typicode.com/posts', requestOptions)
+        await fetch('http://172.31.21.121:3000/rules/r_cs_degree', requestOptions)
             .then(async response => {
                 const status = await response.json();
 

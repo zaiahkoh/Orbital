@@ -12,35 +12,14 @@ class AutoCompleteText extends React.Component {
         this.handleTextChange = this.handleTextChange.bind(this);
         this.renderSuggestions = this.renderSuggestions.bind(this);
         this.suggestionsSelected = this.suggestionsSelected.bind(this);
-        this.callBackendAPI = this.callBackendAPI.bind(this);
         this.handleListClick = this.handleListClick.bind(this);
     }
-
-    componentDidMount() {
-        // Call our fetch function below once the component mounts
-      this.callBackendAPI()
-        .then(res => this.setState({ module: res }))
-        .catch(err => console.log(err));
-      
-
-    }
-      // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-    callBackendAPI = async () => {
-      const response = await fetch('https://api.nusmods.com/v2/2019-2020/moduleInfo.json', {'accept': 'application/json'});
-      const body = await response.json();
-    
-      if (response.status !== 200) {
-        throw Error(body.message) 
-      }
-      console.log(body);
-      return body;
-    };
-
 
     handleTextChange (e) {
         const value = e.target.value;
         let suggestions = [];
-        const { module } = this.state;
+        const module = this.props.module;
+        console.log(module);
         
         if (value.length > 0) {
             const regex = new RegExp(`^${value}`, 'i');

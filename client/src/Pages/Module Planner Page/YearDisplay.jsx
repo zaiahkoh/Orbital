@@ -18,7 +18,8 @@ function YearDisplay(props) {
                                 updateModuleLocation={props.updateModuleLocation}
                                 id={props.year + " " + "Semester 1"}
                                 className="board"
-                                semester="Semester 1">
+                                semester="Semester 1"
+                                module={props.module}>
                             
                         </Board>
                     </div>
@@ -30,7 +31,8 @@ function YearDisplay(props) {
                                 updateModuleLocation={props.updateModuleLocation}
                                 id={props.year + " " + "Semester 2"}
                                 className="board"
-                                semester="Semester 2">
+                                semester="Semester 2"
+                                module={props.module}>
                             
                         </Board>
                     </div>

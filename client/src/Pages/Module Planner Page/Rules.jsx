@@ -7,7 +7,6 @@ class Rules extends React.Component {
         super(props);
         this.state = {
                         isLoading: false,
-                        
                      }
         this.generateRules = this.generateRules.bind(this);
     }

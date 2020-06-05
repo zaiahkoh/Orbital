@@ -1,6 +1,7 @@
 import React from 'react';
 import Board from './Board';
 import Rules from './Rules';
+import TrashBox from './TrashBox';
 import YearDisplay from './YearDisplay';
 import './plannertemp.css';
 import { Button, Card } from 'react-bootstrap';
@@ -13,82 +14,92 @@ class ModulePlannerPageTemp extends React.Component {
        super(props);
        this.state = {   selectedModules: null,
                         isLoading: false,
-                        modulesSelected: ['MA1101R'],
-                        rules: {_id:"5ed0d9a9a9225a12882ec26d",
-                                name:"Degree Requirement",
-                                desc:"Complete at least 20MCs worth of General Education Modules, with at least 1 module in each of the GEH, GEQ, GER, GES and GET pillars",
-                                tag:"r_ulr",
-                                sub:[
-                                        {_id:"5ed0dd49a9225a12882ec26e",
-                                        name:"University Level Requirement",
-                                        desc:"Complete a GEH-coded module",
-                                        tag:"r_geh_pillar",
-                                        sub: [
-                                                {_id:"5ed0dd54a9225a12882ec26f",
-                                                name:"GEQ Pillar",
-                                                desc:"Complete a GEQ-coded module",
-                                                tag:"r_geq_pillar"},
+                        rules: []
+                        // // rules: {_id:"5ed0d9a9a9225a12882ec26d",
+                        // //         name:"Degree Requirement",
+                        // //         desc:"Complete at least 20MCs worth of General Education Modules, with at least 1 module in each of the GEH, GEQ, GER, GES and GET pillars",
+                        // //         tag:"r_ulr",
+                        // //         sub:[
+                        // //                 {_id:"5ed0dd49a9225a12882ec26e",
+                        // //                 name:"University Level Requirement",
+                        // //                 desc:"Complete a GEH-coded module",
+                        // //                 tag:"r_geh_pillar",
+                        // //                 sub: [
+                        // //                         {_id:"5ed0dd54a9225a12882ec26f",
+                        // //                         name:"GEQ Pillar",
+                        // //                         desc:"Complete a GEQ-coded module",
+                        // //                         tag:"r_geq_pillar"},
                                                 
-                                                {_id:"5ed0dd60a9225a12882ec270",
-                                                name:"GER Pillar",
-                                                desc:"Complete a GER-coded module",
-                                                tag:"r_ger_pillar"},
+                        // //                         {_id:"5ed0dd60a9225a12882ec270",
+                        // //                         name:"GER Pillar",
+                        // //                         desc:"Complete a GER-coded module",
+                        // //                         tag:"r_ger_pillar"},
                                                 
-                                                {_id:"5ed0dd6ca9225a12882ec271",
-                                                name:"GES Pillar",
-                                                desc:"Complete a GES-coded module",
-                                                tag:"r_ges_pillar"},
+                        // //                         {_id:"5ed0dd6ca9225a12882ec271",
+                        // //                         name:"GES Pillar",
+                        // //                         desc:"Complete a GES-coded module",
+                        // //                         tag:"r_ges_pillar"},
                                                 
-                                                {_id:"5ed0dd76a9225a12882ec272",
-                                                name:"GET Pillar",
-                                                desc:"Complete a GET-coded module",
-                                                tag:"r_get_pillar"}
-                                            ]},
+                        // //                         {_id:"5ed0dd76a9225a12882ec272",
+                        // //                         name:"GET Pillar",
+                        // //                         desc:"Complete a GET-coded module",
+                        // //                         tag:"r_get_pillar"}
+                        // //                     ]},
                                         
-                                        {_id:"5ed0dd54a9225a12882ec26f",
-                                        name:"GEQ Pillar",
-                                        desc:"Complete a GEQ-coded module",
-                                        tag:"r_geq_pillar"},
+                        // //                 {_id:"5ed0dd54a9225a12882ec26f",
+                        // //                 name:"GEQ Pillar",
+                        // //                 desc:"Complete a GEQ-coded module",
+                        // //                 tag:"r_geq_pillar"},
                                         
-                                        {_id:"5ed0dd60a9225a12882ec270",
-                                        name:"GER Pillar",
-                                        desc:"Complete a GER-coded module",
-                                        tag:"r_ger_pillar"},
+                        // //                 {_id:"5ed0dd60a9225a12882ec270",
+                        // //                 name:"GER Pillar",
+                        // //                 desc:"Complete a GER-coded module",
+                        // //                 tag:"r_ger_pillar"},
                                         
-                                        {_id:"5ed0dd6ca9225a12882ec271",
-                                        name:"GES Pillar",
-                                        desc:"Complete a GES-coded module",
-                                        tag:"r_ges_pillar"},
+                        // //                 {_id:"5ed0dd6ca9225a12882ec271",
+                        // //                 name:"GES Pillar",
+                        // //                 desc:"Complete a GES-coded module",
+                        // //                 tag:"r_ges_pillar"},
                                         
-                                        {_id:"5ed0dd76a9225a12882ec272",
-                                        name:"GET Pillar",
-                                        desc:"Complete a GET-coded module",
-                                        tag:"r_get_pillar"}
-                                    ]
+                        // //                 {_id:"5ed0dd76a9225a12882ec272",
+                        // //                 name:"GET Pillar",
+                        // //                 desc:"Complete a GET-coded module",
+                        // //                 tag:"r_get_pillar"}
+                        // //             ]
 
-                                },
+                        //         },
         }
         this.updateSelectedModules = this.updateSelectedModules.bind(this);
         this.updateModuleLocation = this.updateModuleLocation.bind(this);
 
     }
 
-    // componentDidMount() {
-    //     // Call our fetch function below once the component mounts
-    //   this.callBackendAPI()
-    //     .then(res => this.setState({ data: res.express }))
-    //     .catch(err => console.log(err));
-    // }
-    //   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-    // callBackendAPI = async () => {
-    //   const response = await fetch('http://localhost:5000/rules/r_cs_degree');
-    //   const body = await response.json();
+    componentDidMount() {
+        // Call our fetch function below once the component mounts
+        this.callBackendAPI('NUSMods')
+            .then(res => this.setState({ module : res }))
+            .catch(err => console.log(err));
+
+        this.callBackendAPI('Rules')
+            .then(res => this.setState({ rules : res }))
+            .catch(err => console.log(err));
+
     
-    //   if (response.status !== 200) {
-    //     throw Error(body.message) 
-    //   }
-    //   return body;
-    // };
+    }
+    
+      // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
+    callBackendAPI = async (backend) => {
+        let link = backend === 'NUSMods' ? 'https://api.nusmods.com/v2/2019-2020/moduleInfo.json' 
+                        : 'http://172.31.21.121:3000/';
+        const response = await fetch(link, {'accept': 'application/json'});
+        const body = await response.json();
+    
+      if (response.status !== 200) {
+        throw Error(body.message) 
+      }
+      console.log(body);
+      return body;
+    }
 
     updateSelectedModules(object) {
         let newSelectedModules = this.state.selectedModules ? this.state.selectedModules : [];
@@ -111,11 +122,16 @@ class ModulePlannerPageTemp extends React.Component {
      }
     
      updateModuleLocation(item, location) {
-        const moduleToChange = this.state.selectedModules.filter((object) => object.moduleCode === item.id);
-        moduleToChange[0].location =  location;
-        console.log(moduleToChange);
-        const changedModule = this.state.selectedModules.filter((object) => object.moduleCode !== item.id).concat(moduleToChange[0])
-        this.setState({selectedModules: changedModule})
+         let changedModule;
+         if(!location) {
+             changedModule = this.state.selectedModules.filter((object) => object.moduleCode !== item.id);
+         } else {
+            const moduleToChange = this.state.selectedModules.filter((object) => object.moduleCode === item.id);
+            moduleToChange[0].location =  location;
+            changedModule = this.state.selectedModules.filter((object) => object.moduleCode !== item.id).concat(moduleToChange[0])
+         }
+         this.setState({selectedModules: changedModule});
+        console.log(changedModule);
     }
     
     
@@ -127,26 +143,33 @@ class ModulePlannerPageTemp extends React.Component {
                         year="Year 1"
                         updateSelectedModules={this.updateSelectedModules}
                         selectedModules={this.state.selectedModules}
-                        updateModuleLocation={this.updateModuleLocation} />
+                        updateModuleLocation={this.updateModuleLocation}
+                        module={this.state.module} />
 
                 <YearDisplay
                         year="Year 2"
                         updateSelectedModules={this.updateSelectedModules}
                         selectedModules={this.state.selectedModules}
-                        updateModuleLocation={this.updateModuleLocation} /> 
+                        updateModuleLocation={this.updateModuleLocation}
+                        module={this.state.module} /> 
 
                 <YearDisplay
                         year="Year 3"
                         updateSelectedModules={this.updateSelectedModules}
                         selectedModules={this.state.selectedModules}
-                        updateModuleLocation={this.updateModuleLocation} />
+                        updateModuleLocation={this.updateModuleLocation}
+                        module={this.state.module} />
 
                 <YearDisplay
                         year="Year 4"
                         updateSelectedModules={this.updateSelectedModules}
                         selectedModules={this.state.selectedModules}
-                        updateModuleLocation={this.updateModuleLocation} /> 
+                        updateModuleLocation={this.updateModuleLocation}
+                        module={this.state.module} /> 
                 
+                <TrashBox
+                        updateModuleLocation={this.updateModuleLocation}/>
+
 
                 <br/>
 
