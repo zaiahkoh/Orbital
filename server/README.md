@@ -17,4 +17,4 @@ tag: "r_cs_degree"
 }
 
 RESPONSE:
-{false}
+false
