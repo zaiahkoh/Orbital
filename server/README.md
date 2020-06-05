@@ -10,7 +10,9 @@ e.g.
 
 POST
 {
-modules: ["GET1028", "GEH1024"],
+plan: {
+  modules: ["GET1028", "GEH1024"]
+  },
 tag: "r_cs_degree"
 }
 
