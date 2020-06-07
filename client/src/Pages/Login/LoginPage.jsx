@@ -4,6 +4,9 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import RightSide from "./RightSide";
 import "../../App.scss";
+import FacebookLogin from "./Facebook";
+import Facebook from "./Facebook";
+import Google from "./Google";
 
 export class LoginPage extends React.Component {
     constructor(props){
@@ -33,10 +36,13 @@ export class LoginPage extends React.Component {
       const currentActive = isLogginActive ? "login" : "register";
         return (
             <div className="base-container">
+               {/* <Facebook /> */}
+                <Google />
             <div className="login">
             <div className="container" ref={ref => (this.container = ref)}>
               {isLogginActive && (
                 <Login containerRef={ref => (this.current = ref)} />
+               
               )}
               {!isLogginActive && (
                 <Register containerRef={ref => (this.current = ref)} />
@@ -49,6 +55,7 @@ export class LoginPage extends React.Component {
                     onClick={this.changeLoginState.bind(this)}
                 />
           </div>
+          
           </div>
         )
     }

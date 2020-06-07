@@ -13,9 +13,9 @@ import {
   useParams
 } from "react-router-dom";
 import { ModTreeNav } from "./navbar";
-import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPageTemp";
+import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
 import { CAPCalculatorPage } from "./Pages/CAP Calculator Page/CAPCalculatorPage";
-import AutoCompleteText from './Pages/Module Planner Page/AutocompleteText';
+
 
 
 let totalGEMMCs = 0;

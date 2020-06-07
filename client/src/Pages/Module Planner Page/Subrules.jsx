@@ -1,62 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Spinner } from "react-bootstrap";
 
-class Subrules extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {  isLoading: false,
-                        
-                     }
+function Subrules(props) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRuleFulfilled, setIsRuleFulfilled] = useState();
+    const [isBackendCalled, setIsBackendCalled] = useState(false);
+    const modules = props.selectedModules ? props.selectedModules.map((object) => object.moduleCode) : null;
+    const updateCallBackendNow = props.updateCallBackendNow;
 
-    }
-
-    async callBackendFunc(ruleTag) {
-        const link = "http://localhost:5000/rules/" + ruleTag;
-        const requestOptions = {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json',
-                        'accept': 'application/json'            
-            },
-            body: JSON.stringify({modules: this.props.modulesSelected})
-        };
-        this.setState({isLoading: true});
-
-        await fetch('http://172.31.21.121:3000/rules/r_cs_degree', requestOptions)
-            .then(async response => {
+    useEffect(() => {
+        console.log('updated');
+        const callBackendFunc = async (ruleTag) => {
+            try{
+                const link = "http://172.31.21.121:3000/eval/";
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json',
+                                'accept': 'application/json'            
+                    },
+                    body: JSON.stringify({ plan: {modules: modules},
+                                           tag: props.ruleTag
+                                        })
+                };
+                setIsLoading(true);
+                
+                
+                const response = await fetch(link, requestOptions);
                 const status = await response.json();
 
                 if(!response.ok) {
                     throw new Error("An error has occurred")
+                } else {
+                    setIsRuleFulfilled(status);
+                    setIsLoading(false);
+                    setIsBackendCalled(true);
+                    
                 }
 
-                return status;
-            })
-            .then (status => {
-                this.setState({status: status,
-                                isLoading: false});
-                alert('success');
-            })
-            .catch(error => {
-                      this.setState({ errorMessage: error.toString(),
-                                      isLoading: false
-                        });
-                      console.error('There was an error!', error);
-                  });
+            } catch(error) {
+                          setIsLoading(false);
+                          console.error('There was an error!', error);
+                        };
+        };
 
-    }
+        if(props.callBackendNow) {
+                callBackendFunc(props.ruleTag);
+                props.updateCallBackendNow();
 
-    render() {
-        return (    <div>
-                        <Card.Title>{this.props.ruleName}</Card.Title>
-                        {this.state.isLoading && <Spinner animation="border" variant="success" role="status" as="span">
-                            <span className="sr-only">Loading...</span>
-                        </Spinner>}
-                        {this.props.callBackendNow && this.callBackendFunc(this.props.ruleTag)}
-                    </div>
-                )
+        } 
+        props.updateCallBackendNow();
         
-    }
+    }, [props.callBackendNow]);
+
+    return (    
+        <div>
+            <Card.Title 
+                        style={{color: isBackendCalled ? (isRuleFulfilled ? 'green' : 'red') : 'black'}}>{props.ruleName}</Card.Title>
+            {isLoading && <Spinner animation="border" variant="success" role="status" as="span">
+                <span className="sr-only">Loading...</span>
+            </Spinner>}
+        </div>
+    )
+
 }
 
 export default Subrules;

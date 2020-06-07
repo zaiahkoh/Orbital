@@ -4,8 +4,7 @@ import "./AutocompleteText.css";
 class AutoCompleteText extends React.Component {
     constructor (props) {
         super(props);
-        this.state = { module: null,
-                       suggestions: [],
+        this.state = { suggestions: [],
                        text: '',
 
                      };
@@ -19,7 +18,6 @@ class AutoCompleteText extends React.Component {
         const value = e.target.value;
         let suggestions = [];
         const module = this.props.module;
-        console.log(module);
         
         if (value.length > 0) {
             const regex = new RegExp(`^${value}`, 'i');

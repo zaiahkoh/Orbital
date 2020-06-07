@@ -26,13 +26,16 @@ class Rules extends React.Component {
                                             <Subrules
                                                 ruleName={rule.name}
                                                 ruleTag={rule.tag}
-                                                callBackendNow={this.props.callBackendNow}/>
+                                                callBackendNow={this.props.callBackendNow}
+                                                selectedModules={this.props.selectedModules}
+                                                updateCallBackendNow={this.props.updateCallBackendNow}/>
                                             
                                             {(rule.sub && 
                                                 <Rules
                                                     rules={rule.sub}
                                                     callBackendNow={this.props.callBackendNow}
-                                                    modulesSelected={this.props.modulesSelected}/>)}
+                                                    selectedModules={this.props.selectedModules}
+                                                    updateCallBackendNow={this.props.updateCallBackendNow}/>)}
                                         </ul>
                                     )
                             )
@@ -44,8 +47,7 @@ class Rules extends React.Component {
     render() {
         return (
             <div>
-            <br/>
-            {this.generateRules()}
+                {this.generateRules()}
             </div>
         )
     }

@@ -30,6 +30,9 @@ export class ModTreeNav extends React.Component {
                      <Nav.Link href="/cap-calculator">
                             CAP Calculator
                      </Nav.Link>
+                     <Nav.Link href="/">
+                            Logout
+                     </Nav.Link>
 
                  <Navbar.Toggle aria-controls="basic-navbar-nav" />
             </Navbar>
