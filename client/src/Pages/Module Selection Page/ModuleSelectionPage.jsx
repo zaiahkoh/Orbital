@@ -1,5 +1,5 @@
 import React from "react";
-import { ModuleList } from "./ModuleList";
+// import { ModuleList } from "./ModuleList";
 import { Dropdown } from './Dropdown';
 import { Table } from './Module Table';
 
@@ -259,11 +259,11 @@ export class ModuleSelectionPage extends React.Component {
     
     
         }
-        this.changeFaculty = this.changeFaculty.bind(this);
-        this.changeMajor=this.changeMajor.bind(this);
-        this.changeSpecialisation= this.changeSpecialisation.bind(this);
-        this.changeResidence= this.changeResidence.bind(this);
-        this.generateOptions =this.generateOptions.bind(this);
+        // this.changeFaculty = this.changeFaculty.bind(this);
+        // this.changeMajor=this.changeMajor.bind(this);
+        // this.changeSpecialisation= this.changeSpecialisation.bind(this);
+        // this.changeResidence= this.changeResidence.bind(this);
+        // this.generateOptions =this.generateOptions.bind(this);
         this.makeTable = this.makeTable.bind(this);
         this.generateDropDown = this.generateDropDown.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -289,78 +289,78 @@ export class ModuleSelectionPage extends React.Component {
       return body;
     };
     
-      //receive the choice of faculty from options.js and change state of faculty
-      changeFaculty(value, index) {
-        this.setState({
-          faculty: value,
-          facIndex: index,
-          major: null
-        });
-      }
+      //receive the choice of faculty from module.js and change state of faculty
+    //   changeFaculty(value, index) {
+    //     this.setState({
+    //       faculty: value,
+    //       facIndex: index,
+    //       major: null
+    //     });
+    //   }
     
-      changeMajor(value, index) {
-        this.setState({
-          major: value,
-          majorIndex: index
-        });
-      }
+    //   changeMajor(value, index) {
+    //     this.setState({
+    //       major: value,
+    //       majorIndex: index
+    //     });
+    //   }
     
-      changeSpecialisation(value) {
-        this.setState({
-          specialisation: value,
-        });
-      }
-      changeResidence(value) {
-        this.setState({
-          residence: value,
-        });
-      }
+    //   changeSpecialisation(value) {
+    //     this.setState({
+    //       specialisation: value,
+    //     });
+    //   }
+    //   changeResidence(value) {
+    //     this.setState({
+    //       residence: value,
+    //     });
+    //   }
     
-      //turn array of choices into options dropdown
-      generateOptions(choices) {
-        let facIndex = this.state.facIndex;
-      if(choices === 'faculty'){
-        return this.state.dummyfac.map((obj) => {
-          return (
-          <option value={Object.keys(obj)}>
-            {Object.keys(obj)}
-          </option>
-          );
-        });
-      } else if(choices === 'major') {
-          if(this.state.faculty) {
-        return this.state.dummyfac
-               [facIndex]
-               [this.state.faculty].map((obj) => {
-                      return (
-                        <option value={Object.keys(obj)}>
-                          {Object.keys(obj)}
-                        </option>
-                      )
-                  }
-        )}
-      } else if(choices === 'specialisation') {
-          if(this.state.major && this.state.faculty) {
-          return this.state.dummyfac
-                 [facIndex]
-                 [this.state.faculty][this.state.majorIndex][this.state.major].map((item) => {
-                      return (
-                        <option>
-                          {item}
-                        </option>
-                      )
-                    }    
-          )}
-      } else {
-        return this.state.residenceOptions.map((obj) => {
-          return (
-          <option value={obj}>
-            {obj}
-          </option>
-          );
-        });
-      }
-    }
+    //   //turn array of choices into options dropdown
+    //   generateOptions(choices) {
+    //     let facIndex = this.state.facIndex;
+    //   if(choices === 'faculty'){
+    //     return this.state.dummyfac.map((obj) => {
+    //       return (
+    //       <option value={Object.keys(obj)}>
+    //         {Object.keys(obj)}
+    //       </option>
+    //       );
+    //     });
+    //   } else if(choices === 'major') {
+    //       if(this.state.faculty) {
+    //     return this.state.dummyfac
+    //            [facIndex]
+    //            [this.state.faculty].map((obj) => {
+    //                   return (
+    //                     <option value={Object.keys(obj)}>
+    //                       {Object.keys(obj)}
+    //                     </option>
+    //                   )
+    //               }
+    //     )}
+    //   } else if(choices === 'specialisation') {
+    //       if(this.state.major && this.state.faculty) {
+    //       return this.state.dummyfac
+    //              [facIndex]
+    //              [this.state.faculty][this.state.majorIndex][this.state.major].map((item) => {
+    //                   return (
+    //                     <option>
+    //                       {item}
+    //                     </option>
+    //                   )
+    //                 }    
+    //       )}
+    //   } else {
+    //     return this.state.residenceOptions.map((obj) => {
+    //       return (
+    //       <option value={obj}>
+    //         {obj}
+    //       </option>
+    //       );
+    //     });
+    //   }
+    // }
     
       //takes in array of objects for modules and return a table
       makeTable(item, moduleCat, index) {
@@ -509,7 +509,7 @@ export class ModuleSelectionPage extends React.Component {
  </h1>
 </div>
 
-<div className="row text-left ml-4"> 
+{/* <div className="row text-left ml-4"> 
  <ModuleList onFacultyChange={this.changeFaculty}
           onMajorChange={this.changeMajor}
           onSpecialisationChange={this.changeSpecialisation}
@@ -524,7 +524,7 @@ export class ModuleSelectionPage extends React.Component {
           residence={this.state.residence}
           receiveModuleRules={this.receiveModuleRules}
           />
-</div>
+</div> */}
 
 <div className="row"> 
 

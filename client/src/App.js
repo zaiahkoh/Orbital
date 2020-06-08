@@ -15,6 +15,8 @@ import {
 import { ModTreeNav } from "./navbar";
 import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
 import { CAPCalculatorPage } from "./Pages/CAP Calculator Page/CAPCalculatorPage";
+import FirstSetting from './Pages/Login/FirstSetting';
+import PrivateRoute from './Components/PrivateRoute';
 
 
 
@@ -28,10 +30,11 @@ class App extends React.Component {
          <div>
            <ModTreeNav/>
            <Switch>
-             <Route exact path="/" component={LoginPage}/>
-             <Route path="/select-modules" component={ModuleSelectionPage}/>
-             <Route path="/module-planner" component={ModulePlannerPageTemp}/>
-             <Route path="/cap-calculator" component={CAPCalculatorPage}/> 
+             <Route exact path="/login" component={LoginPage}/>
+             <PrivateRoute path="/select-modules" component={ModuleSelectionPage}/>
+             <PrivateRoute path="/module-planner" component={ModulePlannerPageTemp}/>
+             <PrivateRoute path="/cap-calculator" component={CAPCalculatorPage}/> 
+             <PrivateRoute path="/first-setting" component={FirstSetting}/> 
            </Switch>
          </div>
    );

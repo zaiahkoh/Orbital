@@ -1,15 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import logoImg from "./textLogo.svg";
 import { Navbar, Nav } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import "./Page/LoginPage/style.scss"
+import NavIcon from "./Components/NavIcon";
 
 export class ModTreeNav extends React.Component {
     
     render() {
         return (
-            <Navbar bg="dark" variant="dark" expand="xl" sticky="top">
+            <Navbar className="navbar" bg='dark' style={{color: '#11224b' }} expand="xl" sticky="top">
                 <Navbar.Brand href="/module-planner">
                     <img
                     alt=""
@@ -30,8 +30,14 @@ export class ModTreeNav extends React.Component {
                      <Nav.Link href="/cap-calculator">
                             CAP Calculator
                      </Nav.Link>
-                     <Nav.Link href="/">
-                            Logout
+                     <Nav.Link href="/login">
+                            Account Settings
+                     </Nav.Link>
+
+                     {/* <NavIcon icon={this.props.userProfilePicture} /> */}
+                     {/* <NavIcon icon={logoImg} /> */}
+                     <Nav.Link href="/first-setting">
+                         First Setting
                      </Nav.Link>
 
                  <Navbar.Toggle aria-controls="basic-navbar-nav" />

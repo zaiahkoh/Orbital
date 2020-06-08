@@ -2,7 +2,7 @@ import React from "react";
 
 
 
-export class ModuleList extends React.Component {
+export class Options extends React.Component {
   constructor(props) {
     super(props);
     this.handleFacultyChange = this.handleFacultyChange.bind(this);
@@ -110,10 +110,45 @@ export class ModuleList extends React.Component {
         <br/>
         <br/>
 
+        <label>Year of Matriculation  </label>
+        <select
+          id="matriculationYear"
+          onChange={this.handleSpecialisationChange}>
+             (<option selected disabled>
+              Choose Your Year of Matriculation
+             </option>)
+           {this.props.matriculationYearOptions}
+        </select>
+        <br/>
+        <br/>
+
+        <label>Target Graduation Year</label>
+        <select
+          id="graduationYear"
+          onChange={this.handleSpecialisationChange}>
+             (<option selected disabled>
+              Choose Your Year of Matriculation
+             </option>)
+           {this.props.matriculationYearOptions}
+        </select>
+        <br/>
+        <br/>
+
+        <label>Current CAP</label>
+        <input 
+          type='number' 
+          id='currentCAP' 
+          name='currentCAP'
+          min='1.0'
+          max='5.0'
+          step='0.01'/>
+        <br/>
+        <br/>
+
         <input 
           type="submit" 
           name="submit" 
-          value="Create Module Plan" 
+          value="Save Settings" 
           className="btn btn-secondary"/>
         <br/>
         <br/>

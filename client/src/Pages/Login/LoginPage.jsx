@@ -36,7 +36,7 @@ export class LoginPage extends React.Component {
       const currentActive = isLogginActive ? "login" : "register";
         return (
             <div className="base-container">
-               {/* <Facebook /> */}
+           
                 <Google />
             <div className="login">
             <div className="container" ref={ref => (this.container = ref)}>
@@ -55,7 +55,7 @@ export class LoginPage extends React.Component {
                     onClick={this.changeLoginState.bind(this)}
                 />
           </div>
-          
+              <Facebook />
           </div>
         )
     }

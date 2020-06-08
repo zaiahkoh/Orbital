@@ -1,5 +1,6 @@
  import React from 'react';
  import FacebookLogin from 'react-facebook-login'
+import { Redirect } from 'react-router-dom';
 
  class Facebook extends React.Component {
     constructor(props) {
@@ -28,7 +29,8 @@
          let fbContent;
 
          if(this.state.isLoggedIn) {
-            fbContent = <h1>I am logged in</h1>;
+            // fbContent = <Redirect to = {{ pathname: 'first-settings'}};
+            fbContent = <h3>I am logged in</h3>
          } else {
              fbContent = (<FacebookLogin
                 appId="258228452184257"
