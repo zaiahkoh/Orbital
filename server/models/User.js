@@ -18,6 +18,13 @@ const UserSchema = new Schema({
   residential: {
     type: String,
     required: true
+  },
+  graduationYear: {
+      type: String,
+      required: true
+  },
+  modPlan: {
+      type: Object
   }
 });
 module.exports = User = mongoose.model("users", UserSchema);
