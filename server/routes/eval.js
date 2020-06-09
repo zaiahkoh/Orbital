@@ -5,13 +5,12 @@ const getDb = require('../utils/mongo').getDb;
 const assert = require('assert');
 
 module.exports = router;
-console.log(getDb());
 const getCollection = (col) => getDb().collection(col);
 
 //Used to receive a ruleTag that starts with 'r_' and returns the corresponding
 //JS Object from the Mongo Database
 async function getRule(ruleTag) {
-  return await getCollection('rules').findOne({tag: 'r_de_basic'});
+  return await getCollection('rules').findOne({tag: ruleTag});
 }
 
 //Takes in a ruleTag string and returns a function that is executed on a modPlan
