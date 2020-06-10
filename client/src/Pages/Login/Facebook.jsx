@@ -7,7 +7,6 @@ import { Redirect } from 'react-router-dom';
         super(props);
     
         this.state = {
-            isLoggedIn: false,
             userID: '',
             name: '',
             email: '',
@@ -17,7 +16,7 @@ import { Redirect } from 'react-router-dom';
 
     responseFacebook = response => {
         console.log(response);
-        this.setState({isLoggedIn: true});
+        //this.props.updateLoginStatus(true);
     };
 
     componentClicked = () => {
@@ -28,9 +27,11 @@ import { Redirect } from 'react-router-dom';
      render() {
          let fbContent;
 
-         if(this.state.isLoggedIn) {
-            // fbContent = <Redirect to = {{ pathname: 'first-settings'}};
-            fbContent = <h3>I am logged in</h3>
+         if(this.props.isLoggedIn) {
+            fbContent = <Redirect to= {{ 
+                pathname: 'first-setting'}} />
+
+
          } else {
              fbContent = (<FacebookLogin
                 appId="258228452184257"

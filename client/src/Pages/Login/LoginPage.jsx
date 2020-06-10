@@ -37,7 +37,10 @@ export class LoginPage extends React.Component {
         return (
             <div className="base-container">
            
-                <Google />
+                <Google 
+                  isLoggedIn={this.props.isLoggedIn}
+                  updateLoginStatus={this.props.updateLoginStatus}
+                  location={this.props.location} />
             <div className="login">
             <div className="container" ref={ref => (this.container = ref)}>
               {isLogginActive && (
@@ -55,7 +58,10 @@ export class LoginPage extends React.Component {
                     onClick={this.changeLoginState.bind(this)}
                 />
           </div>
-              <Facebook />
+              <Facebook 
+                isLoggedIn={this.props.isLoggedIn}
+                updateLoginStatus={this.props.updateLoginStatus}
+                location={this.props.location}/>
           </div>
         )
     }

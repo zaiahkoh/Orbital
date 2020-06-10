@@ -1,40 +1,41 @@
 import React from 'react';
-import GoogleLogin from 'react-google-login'
+import { GoogleLogout, GoogleLogin } from 'react-google-login'
+import { Redirect } from 'react-router-dom';
+
 
 class Google extends React.Component {
    constructor(props) {
        super(props);
    
        this.state = {
-           isLoggedIn: false,
            userID: '',
            name: '',
            email: '',
-           picture: ''
+           picture: '',
        };
    }
 
    responseGoogle = response => {
        console.log(response);
-       this.setState({isLoggedIn: true});
+       //this.props.updateLoginStatus(true);
    };
 
-   componentClicked = () => {
-
-   };
-
+   errorGoogle = response => { 
+        console.error(response)
+        }
 
     render() {
         let googleContent;
+        const {from} = this.props.location || { from: { pathname: '/'}}
 
-        if(this.state.isLoggedIn) {
-           googleContent = <h1>I am logged in</h1>;
+        if(this.props.isLoggedIn) {
+           googleContent = <Redirect to={from} />
         } else {
             googleContent = ( <GoogleLogin
-                clientId="927830728167-1r5k5c965jr1ldp9b6humbumouumj6gn.apps.googleusercontent.com"
-                buttonText="Login"
+                clientId="927830728167-j7pr2smu9kh840umahsm0smg4j8qcu8a.apps.googleusercontent.com"
+                buttonText="Login with Gmail"
                 onSuccess={this.responseGoogle}
-                onFailure={this.responseGoogle}
+                onFailure={this.errorGoogle}
                 cookiePolicy={'single_host_origin'}
               />);
         }

@@ -9,34 +9,78 @@ import { Login, Register, LoginPage } from './Pages/Login/LoginPage'
 import {
   Switch,
   Route,
-  useRouteMatch,
-  useParams
 } from "react-router-dom";
 import { ModTreeNav } from "./navbar";
 import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
 import { CAPCalculatorPage } from "./Pages/CAP Calculator Page/CAPCalculatorPage";
 import FirstSetting from './Pages/Login/FirstSetting';
 import PrivateRoute from './Components/PrivateRoute';
+import { Provider } from "react-redux";
+import store from './store';
 
 
 
 let totalGEMMCs = 0;
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false
+    }
+
+    this.updateLoginStatus = this.updateLoginStatus.bind(this);
+  }
+
+  updateLoginStatus(status) {
+    this.setState({isLoggedIn: status});
+  }
 
   render() {
       
        return (
-         <div>
-           <ModTreeNav/>
+         <Provider store={store}>
+           <ModTreeNav />
+           
            <Switch>
-             <Route exact path="/login" component={LoginPage}/>
-             <PrivateRoute path="/select-modules" component={ModuleSelectionPage}/>
-             <PrivateRoute path="/module-planner" component={ModulePlannerPageTemp}/>
-             <PrivateRoute path="/cap-calculator" component={CAPCalculatorPage}/> 
-             <PrivateRoute path="/first-setting" component={FirstSetting}/> 
+            <Route 
+                exact path="/" 
+                component={() => 
+                  <LoginPage 
+                    isLoggedIn={this.state.isLoggedIn} 
+                    updateLoginStatus={this.updateLoginStatus}
+                    location/>}/>
+             <Route 
+                exact path="/login" 
+                component={() => 
+                  <LoginPage 
+                    isLoggedIn={this.state.isLoggedIn} 
+                    updateLoginStatus={this.updateLoginStatus}
+                    location/>}/>
+
+             <PrivateRoute 
+                path="/select-modules" 
+                component={ModuleSelectionPage} 
+                isLoggedIn={this.state.isLoggedIn}/>
+
+             <PrivateRoute 
+                path="/module-planner" 
+                component={ModulePlannerPageTemp} 
+                isLoggedIn={this.state.isLoggedIn}/>
+
+             <PrivateRoute 
+                path="/cap-calculator" 
+                component={CAPCalculatorPage} 
+                isLoggedIn={this.state.isLoggedIn}/> 
+
+             <PrivateRoute 
+                path="/first-setting" 
+                component={FirstSetting} 
+                isLoggedIn={this.state.isLoggedIn}/> 
+
+              <Route component={() => <div className="display-2"><strong>404 NOT FOUND</strong></div>}/>
            </Switch>
-         </div>
+         </Provider>
    );
     }
 }
