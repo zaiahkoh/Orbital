@@ -7,7 +7,7 @@ const getCollection = (col) => getDb().collection(col);
 //Used to receive a ruleTag that starts with 'r_' and returns the corresponding
 //JS Object from the Mongo Database
 async function getRule(ruleTag) {
-  return await getCollection('rules').findOne({tag: ruleTag});
+  return await getCollection('exposed_rules').findOne({tag: ruleTag});
 }
 
 async function expandRule(rule) {

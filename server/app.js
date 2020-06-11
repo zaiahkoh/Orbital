@@ -23,9 +23,8 @@ mongoUtil.connectToServer( function( err, client ) {
 } );
 
 const mongoose = require('mongoose');
-const db = require("./config/keys").mongoURI;
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/modtree-test', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost:27017/modtree-test', { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log("MongoDB successfully connected"))
 .catch(err => console.log(err));
 
