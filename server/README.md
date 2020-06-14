@@ -43,5 +43,13 @@ Also relies on NUSmods API to run functions.
 > 
 > Else, will respond with 200 SUCCESS and a JSON object containing the registered username and email
 
-
-
+> POST /login
+> 
+> Receives a request body containing the following:
+> 
+> * email: String //Email string
+> * password: String //Password
+> 
+> If there are errors, will respond with a 400 ERROR and a JSON object containing a list of errors
+>
+> Else, will respond with 200 SUCCESS and a JSON object containing a JSON Web Token under the Bearer schema
