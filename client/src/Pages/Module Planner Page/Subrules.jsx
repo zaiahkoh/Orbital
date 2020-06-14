@@ -12,7 +12,7 @@ function Subrules(props) {
         console.log('updated');
         const callBackendFunc = async (ruleTag) => {
             try{
-                const link = "http://172.31.21.121:3000/eval/";
+                const link = "http://http://172.19.171.105:3000/eval/";
                 const requestOptions = {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json',

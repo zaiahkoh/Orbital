@@ -37,7 +37,7 @@ class ModulePlannerPageTemp extends React.Component {
       // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
     callBackendAPI = async (backend) => {
         let link = backend === 'NUSMods' ? 'https://api.nusmods.com/v2/2018-2019/moduleInfo.json' 
-                        : 'http://172.31.21.121:3000/rules/r_cs_degree';
+                        : 'http://172.19.171.105:3000/rules/r_cs_degree';
         const response = await fetch(link, {'accept': 'application/json',
                                              'content-type': 'application/json'});
         const body = await response.json();
