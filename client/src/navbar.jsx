@@ -6,30 +6,40 @@ import { Link } from "react-router-dom";
 //import "./Page/LoginPage/style.scss"
 import NavIcon from "./Components/NavIcon";
 
-export class ModTreeNav extends React.Component {
+export class PrivateNav extends React.Component {
     render() {
       return (
         <div className="navbar-fixed">
           {/* <nav className="z-depth-0"> */}
             {/* <div className="nav-wrapper white"> */}
               <Link
-                to="/"
+                to="/select-modules"
                 style={{
                   fontFamily: "monospace"
                 }}
                 className="col s5 brand-logo center black-text"
               >
-                Landing
+                Select Module
               </Link>
 
               <Link
-                to="/loginreal"
+                to="/module-planner"
                 style={{
                   fontFamily: "monospace"
                 }}
                 className="col s5 brand-logo center black-text"
               >
-                Login
+                Module Planner
+              </Link>
+
+              <Link
+                to="/cap-calculator"
+                style={{
+                  fontFamily: "monospace"
+                }}
+                className="col s5 brand-logo center black-text"
+              >
+                CAP Calculator
               </Link>
             {/* </div> */}
           {/* </nav> */}
