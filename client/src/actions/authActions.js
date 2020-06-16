@@ -4,24 +4,35 @@ import jwt_decode from "jwt-decode";
 import {
   GET_ERRORS,
   SET_CURRENT_USER,
-  USER_LOADING
+  USER_LOADING,
+  USER_REGISTERED
 } from "./types";
+
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
+  axios.defaults.timeout = 2000;
   axios
     .post("http://172.19.162.53:3000/user/register", userData)
-    .then(res => history.push("/login")) // re-direct to login on successful register
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
+    .then(res => dispatch(setUserRegistered())) // re-direct to login on successful register
+    .catch(err => {
+      if(err.response) {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      }
+
+      else {
+        window.location.replace("/500-error")
+      }
+    }
     );
 };
 
 // Login - get user token
-export const loginUser = userData => dispatch => {
+export const loginUser = (userData, status) => dispatch => {
+  axios.defaults.timeout = 2000;
   axios
     .post("http://172.19.162.53:3000/user/login", userData)
     .then(res => {
@@ -34,21 +45,30 @@ export const loginUser = userData => dispatch => {
       // Decode token to get user data
       const decoded = jwt_decode(token);
       // Set current user
-      dispatch(setCurrentUser(decoded));
+      dispatch(setCurrentUser(decoded, status));
     })
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
+    .catch(err => {
+      if(err.response) {
+        console.log('res called')
+        console.log(err.response.status)
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      } else {
+        window.location.replace("/500-error")
+      } 
+    
+    }
     );
 };
 
 // Set logged in user
-export const setCurrentUser = decoded => {
+export const setCurrentUser = (decoded, status) => {
   return {
     type: SET_CURRENT_USER,
-    payload: decoded
+    payload: decoded,
+    firstTimeRegistered: status
   };
 };
 
@@ -59,6 +79,13 @@ export const setUserLoading = () => {
   };
 };
 
+// User registered
+export const setUserRegistered = () => {
+  return {
+    type: USER_REGISTERED
+  };
+};
+
 // Log user out
 export const logoutUser = () => dispatch => {
   // Remove token from local storage
@@ -66,5 +93,5 @@ export const logoutUser = () => dispatch => {
   // Remove auth header for future requests
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
-  dispatch(setCurrentUser({}));
+  dispatch(setCurrentUser({}, false));
 };

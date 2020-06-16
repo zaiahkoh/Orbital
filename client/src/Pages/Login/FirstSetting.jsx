@@ -1,5 +1,6 @@
 import React from 'react';
 import { Options } from '../Module Selection Page/ModuleList';
+import { Link } from 'react-router-dom';
 
 class FirstSetting extends React.Component {
 constructor(props) {
@@ -132,6 +133,16 @@ changeFaculty(value, index) {
           specialisation={this.state.specialisation}
           residence={this.state.residence}
           />
+
+              <Link
+                to="/dashboard"
+                style={{
+                  fontFamily: "monospace"
+                }}
+                className="col s5 brand-logo center black-text"
+              >
+                dashboard
+              </Link>
             </div>
         );
     }

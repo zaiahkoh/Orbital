@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { registerUser } from "../../actions/authActions";
+import { registerUser, loginUser } from "../../actions/authActions";
 import classnames from "classnames";
+import isEmpty from "is-empty";
+import { cssNumber } from "jquery";
 
 class Register extends React.Component {
     constructor() {
@@ -16,36 +18,46 @@ class Register extends React.Component {
           errors: {}
         };
       }
-    
-    componentDidMount() {
-    // If logged in and user navigates to Register page, should redirect them to dashboard
-        if (this.props.auth.isAuthenticated) {
-            this.props.history.push("/dashboard");
-        }
-    }
-      
+  
     componentWillReceiveProps(nextProps) {
-        if (nextProps.errors) {
+
+      if (nextProps.errors) {
           this.setState({
             errors: nextProps.errors
           });
+        } 
+        
+      if(nextProps.auth.firstTimeRegistered) {
+        if(!nextProps.auth.isAuthenticated) {
+          const userData = {
+            email: this.state.email,
+            password: this.state.password
+          };  
+          this.props.loginUser(userData, true)
+        } 
+         else {
+          this.props.history.push('/first-setting');
         }
+      
       }
+    }
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
       };
 
     onSubmit = e => {
-        e.preventDefault();
-        const newUser = {
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            password2: this.state.password2
-            };
-    this.props.registerUser(newUser, this.props.history); 
-      };
+      e.preventDefault();
+
+      const newUser = {
+          name: this.state.name,
+          email: this.state.email,
+          password: this.state.password,
+          password2: this.state.password2
+          };
+  
+      this.props.registerUser(newUser, this.props.history); 
+    };
 
     render() {
         const { errors } = this.state;
@@ -119,6 +131,7 @@ class Register extends React.Component {
 }
 
 Register.propTypes = {
+  loginUser: PropTypes.func.isRequired,
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -131,5 +144,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { registerUser }
+  { registerUser, loginUser }
 )(withRouter(Register));

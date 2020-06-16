@@ -1,6 +1,7 @@
 import {
     SET_CURRENT_USER,
-    USER_LOADING
+    USER_LOADING,
+    USER_REGISTERED
   } from "../actions/types";
 
   const isEmpty = require("is-empty");
@@ -8,7 +9,8 @@ import {
   const initialState = {
     isAuthenticated: false,
     user: {},
-    loading: false
+    loading: false,
+    firstTimeRegistered: false
   };
   
   export default function(state = initialState, action) {
@@ -17,8 +19,14 @@ import {
         return {
           ...state,
           isAuthenticated: !isEmpty(action.payload),
-          user: action.payload
+          user: action.payload,
+          firstTimeRegistered: action.firstTimeRegistered
         };
+      case USER_REGISTERED:
+        return {
+          ...state,
+          firstTimeRegistered: true
+        }
       case USER_LOADING:
         return {
           ...state,

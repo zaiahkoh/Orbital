@@ -26,6 +26,8 @@ import LoginTemp from "./Components/auth/Login";
 import PrivateRouteTemp from "./Components/PrivateRoute";
 import Dashboard from "./Components/dashboard/Dashboard";
 
+import ServerError from './Pages/Error Page/ServerError';
+
 import store from './store';
 
 // Check for token to keep user logged in
@@ -79,7 +81,9 @@ class App extends React.Component {
                 exact path="/first-setting" 
                 component={FirstSetting} /> 
 
+            <Route exact path="/500-error" component={ServerError}/>
             <Route component={() => <div className="display-2"><strong>404 NOT FOUND</strong></div>}/>
+            
           </Switch>
 
            </div>

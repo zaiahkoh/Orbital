@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
+import { Spinner } from "react-bootstrap";
 
 
 class Login extends React.Component {
@@ -22,9 +23,9 @@ class Login extends React.Component {
         this.props.history.push("/dashboard");
       }
     }
-    
+
     componentWillReceiveProps(nextProps) {
-        if (nextProps.auth.isAuthenticated) {
+        if (nextProps.auth.isAuthenticated && !nextProps.auth.firstTimeRegistered) {
           this.props.history.push("/dashboard"); // push user to dashboard when they login
         }
 
@@ -45,7 +46,7 @@ class Login extends React.Component {
             email: this.state.email,
             password: this.state.password
           };  
-      this.props.loginUser(userData); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
+      this.props.loginUser(userData, false); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
     };
     
     render(){
@@ -94,6 +95,7 @@ class Login extends React.Component {
 
               <a href="#">Forgot your password?</a>
               <button type="submit">Sign In</button>
+              {this.props.auth.loading && <Spinner animation="border" variant="success" role="status" as="span"></Spinner>}
           </form>
       );
     }
