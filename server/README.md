@@ -53,3 +53,10 @@ Also relies on NUSmods API to run functions.
 > If there are errors, will respond with a 400 ERROR and a JSON object containing a list of errors
 >
 > Else, will respond with 200 SUCCESS and a JSON object containing a JSON Web Token under the Bearer schema
+
+### '/account'
+> GET /
+>
+> The request must include a JSON Web Token in the Authorisation header under the Bearer schema
+> 
+> Returns all information about the user as a JS Object
