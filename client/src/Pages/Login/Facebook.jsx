@@ -1,47 +1,55 @@
- import React from 'react';
- import FacebookLogin from 'react-facebook-login'
-import { Redirect } from 'react-router-dom';
+import React from 'react';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/authActions";
+import { registerUser } from "../../actions/authActions";
+
 
  class Facebook extends React.Component {
-    constructor(props) {
-        super(props);
     
-        this.state = {
-            userID: '',
-            name: '',
-            email: '',
-            picture: ''
-        };
-    }
-
     responseFacebook = response => {
         console.log(response);
-        //this.props.updateLoginStatus(true);
+        const userData = {
+            network: 'facebook',
+            token: response.accessToken
+        };
+            this.props.loginUser(userData, false, true);
+
     };
 
-    componentClicked = () => {
-
-    };
- 
+    failureFacebook = () => {
+        this.props.history.push('./500-error');
+    }
 
      render() {
-         let fbContent;
-
-         if(this.props.isLoggedIn) {
-            fbContent = <Redirect to= {{ 
-                pathname: 'first-setting'}} />
-
-
-         } else {
-             fbContent = (<FacebookLogin
-                appId="258228452184257"
-                autoLoad={true}
-                fields="name,email,picture"
-                onClick={this.componentClicked}
-                callback={this.responseFacebook} />);
-         }
-         return <div>{fbContent}</div>;
+        let fbContent = (<FacebookLogin
+            appId="258228452184257"
+            fields="name, email, picture"
+            callback={this.responseFacebook}
+            onFailure={this.failureFacebook}
+            render={renderProps => (
+                <i class="fab fa-facebook-f" onClick={renderProps.onClick}/>
+            )}
+            />);
+         
+         return <a>{fbContent}</a>;
      }
  }
  
- export default Facebook;
+ Facebook.propTypes = {
+    loginUser: PropTypes.func.isRequired,
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+  };
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser, loginUser }
+)(Facebook);

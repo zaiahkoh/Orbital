@@ -1,46 +1,56 @@
 import React from 'react';
-import { GoogleLogout, GoogleLogin } from 'react-google-login'
-import { Redirect } from 'react-router-dom';
+import { GoogleLogin } from 'react-google-login'
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/authActions";
+import { registerUser } from "../../actions/authActions";
+
 
 
 class Google extends React.Component {
-   constructor(props) {
-       super(props);
-   
-       this.state = {
-           userID: '',
-           name: '',
-           email: '',
-           picture: '',
-       };
-   }
 
-   responseGoogle = response => {
-       console.log(response);
-       //this.props.updateLoginStatus(true);
-   };
+    responseGoogle = response => {
+        console.log(response);
+        const userData = {
+            network: 'google',
+            token: response.tokenObj.id_token
+        };
+            this.props.loginUser(userData, false, true);
+        
+    };
 
-   errorGoogle = response => { 
-        console.error(response)
-        }
+    errorGoogle = () => { 
+        this.props.history.push('./500-error');
+    }
 
     render() {
-        let googleContent;
-        const {from} = this.props.location || { from: { pathname: '/'}}
+        let googleContent = (<GoogleLogin
+            clientId="55325972325-f4g43dqq9dt6b3n33ct320ibsir8e5e3.apps.googleusercontent.com"
+            onSuccess={this.responseGoogle}
+            onFailure={this.errorGoogle}
+            cookiePolicy={'single_host_origin'}
+            render={renderProps => (
+                <i class="fab fa-google-plus-g" onClick={renderProps.onClick} disabled={renderProps.disabled}/>
+                )}
+            />);
 
-        if(this.props.isLoggedIn) {
-           googleContent = <Redirect to={from} />
-        } else {
-            googleContent = ( <GoogleLogin
-                clientId="927830728167-j7pr2smu9kh840umahsm0smg4j8qcu8a.apps.googleusercontent.com"
-                buttonText="Login with Gmail"
-                onSuccess={this.responseGoogle}
-                onFailure={this.errorGoogle}
-                cookiePolicy={'single_host_origin'}
-              />);
-        }
-        return <div>{googleContent}</div>;
+        return <a>{googleContent}</a>;
     }
 }
 
-export default Google;
+ Google.propTypes = {
+    loginUser: PropTypes.func.isRequired,
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+  };
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser, loginUser }
+)(Google);

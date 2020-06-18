@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser, loginUser } from "../../actions/authActions";
 import classnames from "classnames";
-import isEmpty from "is-empty";
-import { cssNumber } from "jquery";
+import Facebook from "./Facebook";
+import Google from "./Google";
 
 class Register extends React.Component {
     constructor() {
@@ -56,7 +56,7 @@ class Register extends React.Component {
           password2: this.state.password2
           };
   
-      this.props.registerUser(newUser, this.props.history); 
+      this.props.registerUser(newUser, false); 
     };
 
     render() {
@@ -65,9 +65,9 @@ class Register extends React.Component {
             <form noValidate onSubmit={this.onSubmit}>
                 <h1>Create Account</h1>
                 <div className="social-container">
-                    <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-                    <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-                    <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
+                  <Facebook source="register"/>
+                  <Google source="register"/>
+                  <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
                 </div>
                 <span>or use your email for registration</span>
                 

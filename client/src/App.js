@@ -1,16 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import $ from 'jquery';
-import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from "react";
 import { ModuleSelectionPage } from "./Pages/Module Selection Page/ModuleSelectionPage"
 import { LoginPage } from './Pages/Login/LoginPage'
-//import "./App.scss";
+import "./login.css";
 import {
   Switch,
   Route,
 } from "react-router-dom";
-import { PrivateNav } from "./navbar";
+// import { PrivateNav } from "./navbar";
+import { ModTreeNav } from './navbar';
 import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
 import { CAPCalculatorPage } from "./Pages/CAP Calculator Page/CAPCalculatorPage";
 import FirstSetting from './Pages/Login/FirstSetting';
@@ -20,9 +19,7 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
-import Landing from "./Pages/Login/Landing"
-import RegisterTemp from "./Components/auth/Register";
-import LoginTemp from "./Components/auth/Login";
+
 import PrivateRouteTemp from "./Components/PrivateRoute";
 import Dashboard from "./Components/dashboard/Dashboard";
 
@@ -45,7 +42,7 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
-    window.location.href = "./";
+    window.location.href = "./login";
   }
 }
 
@@ -56,7 +53,7 @@ class App extends React.Component {
   render() {
        return (
          <div>
-          <PrivateNav />
+          <ModTreeNav class="navbar" />
 
           <Switch>
           <Route exact path="/" component={LoginPage} />

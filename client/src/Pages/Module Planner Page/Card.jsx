@@ -19,7 +19,7 @@ const ModuleCard = props => {
         <Button
             ref={drag}
             id={props.id}
-            className={props.className}
+            className="button"
             style={{
                 width: '165px',
                 opacity: isDragging ? 0 : 1,

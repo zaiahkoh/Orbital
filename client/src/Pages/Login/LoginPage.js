@@ -1,5 +1,4 @@
 import React from "react";
-import "./login.css";
 import Login from './Login';
 import Register from './Register';
 
@@ -22,17 +21,17 @@ export class LoginPage extends React.Component{
 
     render() {
         return(
-            <div class="container" id="container">
-            <div class="form-container sign-up-container">
+            <div className="container" id="container">
+            <div className="form-container sign-up-container">
                 <Register/>
                 
             </div>
     
-            <div class="form-container sign-in-container">
+            <div className="form-container sign-in-container">
                 <Login/>
             </div>
            
-            <div class="overlay-container">
+            <div className="overlay-container">
                 <div class="overlay">
                     <div class="overlay-panel overlay-left">
                         <h1>Welcome Back!</h1>

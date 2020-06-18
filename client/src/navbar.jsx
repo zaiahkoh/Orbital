@@ -3,90 +3,47 @@ import logoImg from "./textLogo.svg";
 import { Navbar, Nav } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
-//import "./Page/LoginPage/style.scss"
+// import "./Page/LoginPage/style.scss"
 import NavIcon from "./Components/NavIcon";
 
-export class PrivateNav extends React.Component {
-    render() {
-      return (
-        <div className="navbar-fixed">
-          {/* <nav className="z-depth-0"> */}
-            {/* <div className="nav-wrapper white"> */}
-              <Link
-                to="/select-modules"
-                style={{
-                  fontFamily: "monospace"
-                }}
-                className="col s5 brand-logo center black-text"
-              >
-                Select Module
-              </Link>
-
-              <Link
-                to="/module-planner"
-                style={{
-                  fontFamily: "monospace"
-                }}
-                className="col s5 brand-logo center black-text"
-              >
-                Module Planner
-              </Link>
-
-              <Link
-                to="/cap-calculator"
-                style={{
-                  fontFamily: "monospace"
-                }}
-                className="col s5 brand-logo center black-text"
-              >
-                CAP Calculator
-              </Link>
-            {/* </div> */}
-          {/* </nav> */}
-        </div>
-      );
-    }
-  }
 
 
-// export class ModTreeNav extends React.Component {
+export class ModTreeNav extends React.Component {
     
-//     render() {
-//         return (
-//             <Navbar className="navbar" bg='dark' style={{color: '#11224b' }} expand="xl" sticky="top">
-//                 <Navbar.Brand href="/module-planner">
-//                     <img
-//                     alt=""
-//                     src={logoImg}
-//                     width="150"
-//                     height="30"
-//                     className="d-inline-block align-top"
-//                     />{' '}
-
-//                 </Navbar.Brand>
+    render() {
+        return (
+            <Navbar className="navbar" expand="xl" sticky="top">
+                <Navbar.Brand href="/module-planner" className="navbrand">
+                    <img
+                    alt=""
+                    src={logoImg}
+                    width="150"
+                    height="30"
+                    className="d-inline-block align-top"
+                    />{' '}
+                </Navbar.Brand>
                 
-//                     <Nav.Link href="/select-modules" className="text=white text-decoration-none">
-//                             Select Module
-//                     </Nav.Link>
-//                      <Nav.Link href="/module-planner">
-//                             Module Planner
-//                      </Nav.Link>
-//                      <Nav.Link href="/cap-calculator">
-//                             CAP Calculator
-//                      </Nav.Link>
-//                      <Nav.Link href="/login">
-//                             Account Settings
-//                      </Nav.Link>
+                    <Nav.Link href="/select-modules" className="navlink">
+                            Select Module
+                    </Nav.Link>
+                     <Nav.Link href="/module-planner" className="navlink">
+                            Module Planner
+                     </Nav.Link>
+                     <Nav.Link href="/cap-calculator" className="navlink">
+                            CAP Calculator
+                     </Nav.Link>
+                     <Nav.Link href="/dashboard" className="navlink">
+                            Dashboard
+                     </Nav.Link>
 
-//                      {/* <NavIcon icon={this.props.userProfilePicture} /> */}
-//                      {/* <NavIcon icon={logoImg} /> */}
-//                      <Nav.Link href="/first-setting">
-//                          First Setting
-//                      </Nav.Link>
+                     {/* <NavIcon icon={this.props.userProfilePicture} /> */}
+                     {/* <NavIcon icon={logoImg} /> */}
+                     <Nav.Link href="/settings/academics" className="navlink">
+                         First Setting
+                     </Nav.Link>
 
-//                  <Navbar.Toggle aria-controls="basic-navbar-nav" />
-//             </Navbar>
+            </Navbar>
 
-//       )
-//    }
-// }
+      )
+   }
+}

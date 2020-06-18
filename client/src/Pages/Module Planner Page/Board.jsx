@@ -60,7 +60,6 @@ function Board (props) {
                 (<ModuleCard
                     id={object.moduleCode}
                     location={props.id}
-                    className="card"
                     title={`${object.moduleCode}: ${object.title}`}
                     MCs={object.moduleCredit}/>));
 
@@ -112,7 +111,7 @@ function Board (props) {
                                             location={props.id}
                                             updateSelectedModules={props.updateSelectedModules}
                                             module={props.module}/>}
-                <Button onClick={handleButtonClick}>Add Module</Button>
+                <Button className="button" onClick={handleButtonClick}>Add Module</Button>
                 
                 </div>
             </div>

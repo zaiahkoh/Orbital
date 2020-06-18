@@ -10,11 +10,12 @@ import {
 
 
 // Register User
-export const registerUser = (userData, history) => dispatch => {
+export const registerUser = (userData, social) => dispatch => {
+  const link = social ? "http://172.19.162.53:3000/user/sociallogin" : "http://172.19.162.53:3000/user/register"
   axios.defaults.timeout = 2000;
   axios
-    .post("http://172.19.162.53:3000/user/register", userData)
-    .then(res => dispatch(setUserRegistered())) // re-direct to login on successful register
+    .post(link, userData)
+    .then(res => dispatch(setUserRegistered())) 
     .catch(err => {
       if(err.response) {
         dispatch({
@@ -31,10 +32,11 @@ export const registerUser = (userData, history) => dispatch => {
 };
 
 // Login - get user token
-export const loginUser = (userData, status) => dispatch => {
+export const loginUser = (userData, status, social) => dispatch => {
+  const link = social ? "http://172.19.162.53:3000/user/sociallogin" : "http://172.19.162.53:3000/user/login"
   axios.defaults.timeout = 2000;
   axios
-    .post("http://172.19.162.53:3000/user/login", userData)
+    .post(link, userData)
     .then(res => {
       // Save to localStorage
 // Set token to localStorage
@@ -49,8 +51,6 @@ export const loginUser = (userData, status) => dispatch => {
     })
     .catch(err => {
       if(err.response) {
-        console.log('res called')
-        console.log(err.response.status)
         dispatch({
           type: GET_ERRORS,
           payload: err.response.data

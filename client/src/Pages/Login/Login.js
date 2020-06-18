@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
-import { Spinner } from "react-bootstrap";
+import Facebook from "./Facebook";
+import Google from "./Google";
 
 
 class Login extends React.Component {
@@ -46,7 +47,7 @@ class Login extends React.Component {
             email: this.state.email,
             password: this.state.password
           };  
-      this.props.loginUser(userData, false); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
+      this.props.loginUser(userData, false, false); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
     };
     
     render(){
@@ -55,9 +56,9 @@ class Login extends React.Component {
           <form noValidate onSubmit={this.onSubmit}>
               <h1>Sign in</h1>
               <div class="social-container">
-                  <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                  <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                  <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                  <Facebook source="login"/>
+                  <Google source="login"/>
+                  <a href="#" class="social"><i class="fab fa-instagram"></i></a>
               </div>
               <span>or use your account</span>
 
@@ -95,7 +96,6 @@ class Login extends React.Component {
 
               <a href="#">Forgot your password?</a>
               <button type="submit">Sign In</button>
-              {this.props.auth.loading && <Spinner animation="border" variant="success" role="status" as="span"></Spinner>}
           </form>
       );
     }
