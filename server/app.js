@@ -8,6 +8,7 @@ const indexRouter = require('./routes/index');
 const evalRouter = require('./routes/eval');
 const rulesRouter = require('./routes/rules');
 const userRouter = require("./routes/user");
+const accountRouter = require('./routes/account');
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,7 +20,6 @@ require('./config/passport')(passport);
 //Connect to Mongo database
 mongoUtil.connectToServer( function( err, client ) {
   if (err) console.log(err);
-  
 } );
 
 const mongoose = require('mongoose');
@@ -33,8 +33,20 @@ app.use('/', indexRouter);
 app.use('/eval', evalRouter);
 app.use('/rules', rulesRouter);
 app.use('/user', userRouter);
+app.use('/account', passport.authenticate('jwt', {session: false}), accountRouter);
+
 
 //Start the server
 app.listen(port, () => {
     console.log(`Express server is listening on port ${port}!`);
 });
+
+
+/*
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+
+https.createServer(options, app).listen(3000);
+*/

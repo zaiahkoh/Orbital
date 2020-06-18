@@ -79,7 +79,7 @@ module.exports = RuleSchema = {
           errors.params = 'invalid references in "list" parameter'
         }
       }
-    } else if (func === 'mcs' || func === 'nTrue') {
+    } else if (func === 'mcs' || func === 'nTrue' || func === 'nModules') {
       if ( isEmpty(params.n) ) {
         errors.params = `undefined "n" for ${func}`;
       } else {

@@ -3,6 +3,7 @@ const router = express.Router();
 const getMod = require('../api/nusmods').getMod;
 const getDb = require('../utils/mongo').getDb;
 const assert = require('assert');
+const parseMod = require('../utils/parseMod');
 
 module.exports = router;
 const getCollection = (col) => getDb().collection(col);
@@ -54,8 +55,15 @@ async function compile(ruleTag) {
 async function planned(ruleObj) {
   var params = ruleObj.params;
   assert(params['moduleCode'] !== undefined);
-  const mod = params.moduleCode;  
-  return (modPlan) => modPlan.modules.includes(mod);
+  const mod = params.moduleCode;
+
+  const noSuffix = parseMod(mod).no_suffix;
+
+  return (modPlan) => {
+    const noSuffixList = modPlan.modules.map(str => parseMod(str).no_suffix);
+    console.log(noSuffixList);
+    return noSuffixList.includes(noSuffix);
+  }  
 }
 
 //Returns true if all of the sub functions return true
@@ -115,37 +123,6 @@ function mcs(ruleObj) {
 //Filters the modPlan for certain modules and passes it to the next function
 async function filter(ruleObj) {
   var params = ruleObj.params;
-  //console.log(params);
-  function parseMod (moduleCode) {
-    const isLetter = (char) => (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-    var prefix = '';
-    var number = '';
-    var suffix = '';
-
-    var c = moduleCode.charAt(0);
-    while(isLetter(c) && moduleCode.length !== 0) {
-      prefix += c;
-      moduleCode = moduleCode.substr(1);
-      c = moduleCode.charAt(0);
-    }
-    while(!isLetter(c) && moduleCode.length !== 0) {
-      number += c;
-      moduleCode = moduleCode.substr(1);
-      c = moduleCode.charAt(0);
-    }
-    while(isLetter(c) && moduleCode.length !== 0) {
-      suffix += c;
-      moduleCode = moduleCode.substr(1);
-      c = moduleCode.charAt(0);
-    }
-
-    return {
-      prefix: prefix, 
-      number: number, 
-      suffix: suffix, 
-      level: number.charAt(0)
-    };
-  }
 
   function checkFor (moduleCode, attribute, acceptedVals) {
     key = parseMod(moduleCode)[attribute];
@@ -225,5 +202,10 @@ router.post('/', (req, res) => {
 
 router.get('/test', (req, res) => {
   eval('r_cs_degree', {modules: ['GEH1045', 'GES1024']})
+  .then(bool => res.send(JSON.stringify(bool)));
+})
+
+router.get('/test2', (req, res) => {
+  eval('r_de_basic', {modules: ['CS1101S', 'ACC1701']})
   .then(bool => res.send(JSON.stringify(bool)));
 })
