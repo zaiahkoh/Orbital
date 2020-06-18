@@ -54,6 +54,16 @@ Also relies on NUSmods API to run functions.
 >
 > Else, will respond with 200 SUCCESS and a JSON object containing a JSON Web Token under the Bearer schema
 
+> POST /sociallogin
+>
+> Receives a request body containing the following:
+> 
+> network: String ['facebook', 'google']
+> token: String (access_token for Facebook and id_token for Google)
+> 
+> If the user has not signed up before, the server will automatically create an account and return a JWT for future authentication.
+> If the user has already signed up, returns a JWT that is linked to the existing account.
+
 ### '/account'
 > GET /
 >
