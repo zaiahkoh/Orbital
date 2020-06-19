@@ -12,7 +12,7 @@ import {
 import { ModTreeNav } from './navbar';
 import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
 import { CAPCalculatorPage } from "./Pages/CAP Calculator Page/CAPCalculatorPage";
-import FirstSetting from './Pages/Login/FirstSetting';
+import FirstSetting from './Settings/FirstSetting';
 
 import PrivateRoute from './Components/PrivateRoute';
 import jwt_decode from "jwt-decode";
@@ -75,7 +75,7 @@ class App extends React.Component {
                 component={CAPCalculatorPage} /> 
 
             <PrivateRouteTemp 
-                exact path="/first-setting" 
+                exact path="/settings/academics" 
                 component={FirstSetting} /> 
 
             <Route exact path="/500-error" component={ServerError}/>

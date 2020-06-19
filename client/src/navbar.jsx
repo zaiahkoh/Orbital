@@ -3,7 +3,6 @@ import logoImg from "./textLogo.svg";
 import { Navbar, Nav } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
-// import "./Page/LoginPage/style.scss"
 import NavIcon from "./Components/NavIcon";
 
 
@@ -38,8 +37,8 @@ export class ModTreeNav extends React.Component {
 
                      {/* <NavIcon icon={this.props.userProfilePicture} /> */}
                      {/* <NavIcon icon={logoImg} /> */}
-                     <Nav.Link href="/settings/academics" className="navlink">
-                         First Setting
+                     <Nav.Link href="/settings" className="navlink">
+                         Settings
                      </Nav.Link>
 
             </Navbar>

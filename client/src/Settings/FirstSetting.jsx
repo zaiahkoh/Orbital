@@ -1,5 +1,5 @@
 import React from 'react';
-import { Options } from '../Module Selection Page/ModuleList';
+import { Options } from '../Pages/Module Selection Page/ModuleList';
 import { Link } from 'react-router-dom';
 
 class FirstSetting extends React.Component {
