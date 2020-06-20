@@ -58,8 +58,8 @@ Also relies on NUSmods API to run functions.
 >
 > Receives a request body containing the following:
 > 
-> network: String ['facebook', 'google']
-> token: String (access_token for Facebook and id_token for Google)
+> * network: String ['facebook', 'google']
+> * token: String (access_token for Facebook and id_token for Google)
 > 
 > If the user has not signed up before, the server will automatically create an account and return a JWT for future authentication.
 > If the user has already signed up, returns a JWT that is linked to the existing account.
@@ -77,11 +77,11 @@ Also relies on NUSmods API to run functions.
 > Should include a request body with the attributes of the user that the client wants to update
 > Possible attributes are
 > 
-> modPlan: String
-> name: String
-> residential: String
+> * modPlan: String
+> * name: String
+> * residential: String
 > 
 > If successful, responds with 200 OK and JSON with attributes
-> success: Boolean (true if update successful)
-> updated: Object (list of attributes that were updated)
+> * success: Boolean (true if update successful)
+> * updated: Object (list of attributes that were updated)
 > 
