@@ -70,3 +70,18 @@ Also relies on NUSmods API to run functions.
 > The request must include a JSON Web Token in the Authorisation header under the Bearer schema
 > 
 > Returns all information about the user as a JS Object
+
+> PUT /
+> 
+> The request must include a JSON Web Token in the Authorisation header under the Bearer schema
+> Should include a request body with the attributes of the user that the client wants to update
+> Possible attributes are
+> 
+> modPlan: String
+> name: String
+> residential: String
+> 
+> If successful, responds with 200 OK and JSON with attributes
+> success: Boolean (true if update successful)
+> updated: Object (list of attributes that were updated)
+> 
