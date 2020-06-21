@@ -1,5 +1,8 @@
 import React from 'react';
 import "./AutocompleteText.css";
+import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import { setSelectedModules } from "../../actions/modplanActions";
 
 class AutoCompleteText extends React.Component {
     constructor (props) {
@@ -34,8 +37,9 @@ class AutoCompleteText extends React.Component {
     }
 
     handleListClick(object) {
-        object.location = this.props.location;
-        this.props.updateSelectedModules(object);
+        const module = object;
+        module.location = this.props.location;
+        this.props.setSelectedModules(module, this.props.modplan.selectedModules)
         this.setState(() => ({suggestions: []})) 
     }
 
@@ -74,10 +78,19 @@ class AutoCompleteText extends React.Component {
                 
                 </div>
 
-                <h1>{this.state.moduleCode}</h1>    
+                {/* <h1>{this.state.moduleCode}</h1>     */}
                 </div>
         )
     }
 }
 
-export default AutoCompleteText;
+AutoCompleteText.propTypes = {
+    setSelectedModules: PropTypes.func.isRequired,
+    modplan: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    modplan: state.modplan
+});
+
+export default connect(mapStateToProps, { setSelectedModules })(AutoCompleteText);

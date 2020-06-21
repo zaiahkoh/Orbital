@@ -5,9 +5,7 @@ import Subrules from './Subrules';
 class Rules extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-                        isLoading: false,
-                     }
+        
         this.generateRules = this.generateRules.bind(this);
     }
 

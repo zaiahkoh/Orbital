@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Card, Spinner } from "react-bootstrap";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { setCallBackendNow } from "../../actions/modplanActions";
 
 function Subrules(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isRuleFulfilled, setIsRuleFulfilled] = useState();
     const [isBackendCalled, setIsBackendCalled] = useState(false);
-    const modules = props.selectedModules ? props.selectedModules.map((object) => object.moduleCode) : null;
-    const updateCallBackendNow = props.updateCallBackendNow;
+    const modules = props.modplan.selectedModules ? props.modplan.selectedModules.map((object) => object.moduleCode) : null;
 
     useEffect(() => {
-        console.log('updated');
         const callBackendFunc = async (ruleTag) => {
             try{
                 const link = "http://172.19.162.53:3000/eval/";
@@ -34,7 +35,6 @@ function Subrules(props) {
                     setIsRuleFulfilled(status);
                     setIsLoading(false);
                     setIsBackendCalled(true);
-                    
                 }
 
             } catch(error) {
@@ -43,12 +43,11 @@ function Subrules(props) {
                         };
         };
 
-        if(props.callBackendNow) {
+        if(props.modplan.callBackendNow) {
                 callBackendFunc(props.ruleTag);
-                props.updateCallBackendNow();
-
+                props.setCallBackendNow(false);
         } 
-        props.updateCallBackendNow();
+        // props.updateCallBackendNow();
         
     }, [props.callBackendNow]);
 
@@ -64,4 +63,13 @@ function Subrules(props) {
 
 }
 
-export default Subrules;
+Subrules.propTypes = {
+    setCallBackendNow: PropTypes.func.isRequired,
+    modplan: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    modplan: state.modplan
+});
+
+export default connect(mapStateToProps, { setCallBackendNow }) (Subrules);

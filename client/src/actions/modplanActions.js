@@ -72,7 +72,8 @@ export const setCallBackendNow = (status) => dispatch => {
     }
 }
 
-export const setSelectedModules = (object, selectedModules) => dispatch =>  {
+export const setSelectedModules = (object, selectedModules) => {
+   console.log('action')
     return { 
         type: SET_SELECTED_MODULES,
         moduleAdded: object,

@@ -86,24 +86,25 @@ class ModulePlannerPageTemp extends React.Component {
     }
     
     render () {
+        const module = this.props.modplan.modules
         return (
             <DndProvider backend={Backend} >
                 <div className="container-module-planner">
                     <YearDisplay
                             year="Year 1"
-                            module={this.state.module} />
+                            module={this.props.modplan.modules} />
 
                     <YearDisplay
                             year="Year 2"
-                            module={this.state.module} /> 
+                            module={this.props.modplan.modules}/> 
 
                     <YearDisplay
                             year="Year 3"
-                            module={this.state.module} />
+                            module={this.props.modplan.modules} />
 
                     <YearDisplay
                             year="Year 4"
-                            module={this.state.module} /> 
+                            module={this.props.modplan.modules} /> 
                     
                     <TrashBox/>
 
@@ -116,10 +117,7 @@ class ModulePlannerPageTemp extends React.Component {
                     <br/>
                     <Card>
                         <Rules
-                            rules={this.state.rules}
-                            callBackendNow={this.state.callBackendNow}
-                            selectedModules={this.state.selectedModules}
-                            updateCallBackendNow={this.updateCallBackendNow}/>
+                            rules={this.props.modplan.rules}/>
                     </Card>
                     <br/>
                 </div>
@@ -130,6 +128,7 @@ class ModulePlannerPageTemp extends React.Component {
 
 ModulePlannerPageTemp.propTypes = {
     callBackendAPI: PropTypes.func.isRequired,
+    setCallBackendNow: PropTypes.func.isRequired,
     modplan: PropTypes.object.isRequired
 }
 

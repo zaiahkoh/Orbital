@@ -8,8 +8,6 @@ import {
 } from "../actions/types";
 
 const initialState = {
-    isBoardFilled: false,
-    isTextBoxOpen: false,
     selectedModules: [], 
     callBackendNow: false,
     rules: [],
@@ -43,6 +41,7 @@ export default function (state = initialState, action) {
             }
         
         case SET_SELECTED_MODULES:
+            console.log('reducer')
             let unique = true;
             let indexOfDuplicate;
             const {moduleAdded, currentSelectedModules} = action;

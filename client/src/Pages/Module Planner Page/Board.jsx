@@ -4,25 +4,26 @@ import { Card, Button } from 'react-bootstrap';
 import ModuleCard from './Card';
 import { ItemTypes } from './itemType';
 import { useDrop } from 'react-dnd';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
 
 
 function Board (props) {
     const [isBoardFilled, setIsBoardFilled] = useState(false);
     const [isTextBoxOpen, setIsTextBoxOpen] = useState(false);
-    
-    // const [selectedModules, setSelectedModules] = useState();
     const [display, setDisplay] = useState();
     const selectedModules = props.selectedModules;
     
     useEffect(() => { 
             updateIsBoardFilled();
             if(selectedModules) {
-                // generateCards();
+                generateCards();
             }
            
     }, [props.selectedModules])
         
-    const generateCards = () => selectedModules
+    const generateCards = () => props.modplan.selectedModules
         .filter((object, i) => object.location === props.id)
         .map((object, i) => 
                 (<ModuleCard
@@ -75,7 +76,6 @@ function Board (props) {
             </div>
             {isTextBoxOpen && <AutoCompleteText 
                                             location={props.id}
-                                            updateSelectedModules={props.updateSelectedModules}
                                             module={props.module}/>}
                 <Button className="button" onClick={handleButtonClick}>Add Module</Button>
                 
@@ -85,5 +85,13 @@ function Board (props) {
    
 }
 
-export default Board;
+Board.propType = {
+    modplan: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    modplan: state.modplan
+});
+
+export default connect(mapStateToProps) (Board);
 
