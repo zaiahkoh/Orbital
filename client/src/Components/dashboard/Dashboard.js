@@ -32,6 +32,7 @@ return (
             >
               Logout
             </button>
+            <a href="https://nusmods.com" target="_blank">NUS Mods</a>
           </div>
         </div>
       </div>

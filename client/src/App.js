@@ -8,8 +8,9 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-// import { PrivateNav } from "./navbar";
-import { ModTreeNav } from './navbar';
+
+import { PrivateNav } from './Components/Navbar/PrivateNav';
+import { PublicNav } from './Components/Navbar/PublicNav';
 import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
 import { CAPCalculatorPage } from "./Pages/CAP Calculator Page/CAPCalculatorPage";
 import FirstSetting from './Settings/FirstSetting';
@@ -26,6 +27,8 @@ import Dashboard from "./Components/dashboard/Dashboard";
 import ServerError from './Pages/Error Page/ServerError';
 
 import store from './store';
+import { connect } from 'react-redux';
+
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -52,8 +55,10 @@ class App extends React.Component {
   
   render() {
        return (
-         <div>
-          <ModTreeNav class="navbar" />
+        <div>
+          {this.props.isAuthenticated ? <PrivateNav class="navbar" /> : <PublicNav class="navbar" />}
+          
+          
 
           <Switch>
           <Route exact path="/" component={LoginPage} />
@@ -89,9 +94,11 @@ class App extends React.Component {
     }
 }
 
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
 
-
-export default App;
+export default connect(mapStateToProps)(App);
 
 
 

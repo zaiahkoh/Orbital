@@ -26,7 +26,7 @@ const ModuleCard = props => {
                 cursor: 'grabbing'}}
         >
             <small>{props.title}</small>
-
+                <br/>
             <small>{props.MCs + ' MCs'}</small>
         </Button>
     )

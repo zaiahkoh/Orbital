@@ -1,13 +1,11 @@
 import React from "react";
-import logoImg from "./textLogo.svg";
+import logoImg from "../../textLogo.svg";
 import { Navbar, Nav } from "react-bootstrap"
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from "react-router-dom";
-import NavIcon from "./Components/NavIcon";
+import NavIcon from "../NavIcon";
 
 
 
-export class ModTreeNav extends React.Component {
+export class PrivateNav extends React.Component {
     
     render() {
         return (
@@ -25,15 +23,18 @@ export class ModTreeNav extends React.Component {
                     <Nav.Link href="/select-modules" className="navlink">
                             Select Module
                     </Nav.Link>
-                     <Nav.Link href="/module-planner" className="navlink">
-                            Module Planner
-                     </Nav.Link>
-                     <Nav.Link href="/cap-calculator" className="navlink">
-                            CAP Calculator
-                     </Nav.Link>
-                     <Nav.Link href="/dashboard" className="navlink">
-                            Dashboard
-                     </Nav.Link>
+
+                    <Nav.Link href="/module-planner" className="navlink">
+                        Module Planner
+                    </Nav.Link>
+
+                    <Nav.Link href="/cap-calculator" className="navlink">
+                        CAP Calculator
+                    </Nav.Link>
+
+                    <Nav.Link href="/dashboard" className="navlink">
+                        Dashboard
+                    </Nav.Link>
 
                      {/* <NavIcon icon={this.props.userProfilePicture} /> */}
                      {/* <NavIcon icon={logoImg} /> */}

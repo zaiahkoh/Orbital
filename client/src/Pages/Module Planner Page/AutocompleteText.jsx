@@ -65,6 +65,7 @@ class AutoCompleteText extends React.Component {
             <div>
                 <div className="AutoCompleteText">
                 <input 
+                       className="autocomplete-input"
                        value={text}
                        onChange={this.handleTextChange}
                        type="text"
