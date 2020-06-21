@@ -9,15 +9,9 @@ client.connect(function (err, client) {
   col.find().toArray()
   .then(arr => {
 
-    for (i = 0; i < arr.length; i++) {
-      //console.log(arr[i].tag);
-    }
+    //Do something
+
   });
-
-  //console.log('All checks completed');
-  //col.findOne({tag: "fake tag"}).then(console.log);
-
-
 
   async function helper (tag) {
     const obj = await col.findOne({tag: tag});
@@ -35,38 +29,14 @@ client.connect(function (err, client) {
       return result;
     }
   } 
-  
-helper('r_cs_degree').then(console.log);
 
-  function stringify (obj, level) {
-    var result = obj.tag
-
-    var lines = '';
-    for (i = 0; i < level; i++) {
-      lines += '-';
-    }
-
-    if (obj.sub !== undefined) {
-      for (j = 0; j < obj.sub.length; j++) {
-        result += '\n' + lines + stringify(obj.sub[j], level + 1);
-        console.log(j);
-      }
-    }
-    return result;
-  }
-
-  const test = {
-    tag: 'swee',
-    exists: true
-  }
-
-  function alt (obj) {
-    return obj.sub !== undefined
-      ? {tag: obj.tag, sub: obj.sub.map(alt)}
+  function alt (obj, depth) {
+    return obj.sub !== undefined && depth > 0
+      ? {tag: obj.tag, sub: obj.sub.map(obj => alt(obj, depth - 1))}
       : {tag: obj.tag};
   }
 
-  helper('r_cs_degree').then(alt).then(foo => console.log(util.inspect(foo, {showHidden: false, depth: null})));
+  helper('r_cs_degree').then(obj => alt(obj, 2)).then(foo => console.log(util.inspect(foo, {showHidden: false, depth: null})));
   
 
   //helper('r_cs_degree').then(obj => console.log(stringify(obj, 1)));

@@ -26,3 +26,7 @@ client.connect(function (err, client) {
   col.findOne({tag: 'fake_tag'}).then(console.log);
   console.log(parseMod('CS1101S'));
 })
+
+const yeet = 'r_de_outer/r_de_inner'.split('/');
+yeet.shift();
+console.log(yeet);

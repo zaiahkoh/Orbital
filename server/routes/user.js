@@ -12,6 +12,24 @@ const User = require('../models/User');
 const { query } = require("express");
 const { profileEnd } = require("console");
 
+function createJWT (user, callback) {
+  const payload = {
+    id: user.id,
+    name: user.name,
+    email: user.email
+  }
+  jwt.sign(
+    payload,
+    keys.secretOrKey,
+    {
+      expiresIn: 31556926 // 1 year in seconds
+    },
+    (err, token) => {
+      callback(err, token);
+    }
+  );
+}
+
 router.post('/register', (req, res) => {
   //Form validation
   const {errors, isValid} = validateRegisterInput(req.body);
@@ -20,7 +38,7 @@ router.post('/register', (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email, sociallogin: 'local' }).then(user => {
+  User.findOne({ email: req.body.email, socialLogin: 'local' }).then(user => {
     if (user) {
       return res.status(409).json({ email: "Email already exists" });
     } else {
@@ -28,7 +46,7 @@ router.post('/register', (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        sociallogin: 'local'
+        socialLogin: 'local'
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
@@ -55,7 +73,7 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   // Find user by email
-  User.findOne({ email }).then(user => {
+  User.findOne({ email: email, socialLogin: 'local' }).then(user => {
     // Check if user exists
     if (!user) {
       return res.status(404).json({ emailnotfound: "Email not found" });
@@ -98,24 +116,6 @@ async function validateWithProvider (network, socialToken) {
   })
 }
 
-function createJWT (user, callback) {
-  const payload = {
-    id: user.id,
-    name: user.name,
-    email: user.email
-  }
-  jwt.sign(
-    payload,
-    keys.secretOrKey,
-    {
-      expiresIn: 31556926 // 1 year in seconds
-    },
-    (err, token) => {
-      callback(err, token);
-    }
-  );
-}
-
 router.post('/sociallogin', (req, res) => {
   var network = req.body.network;
   var token = req.body.token;
@@ -123,7 +123,7 @@ router.post('/sociallogin', (req, res) => {
     if (profile.error) {
       res.status(400).json(profile.error);
     } else {
-      User.findOne({email: profile.email, sociallogin: network}).then(user => {
+      User.findOne({email: profile.email, socialLogin: network}).then(user => {
         if (user) {
           createJWT(user, (err, token) => {
             res.json({
@@ -136,7 +136,7 @@ router.post('/sociallogin', (req, res) => {
           const newUser = new User({
             name: profile.name,
             email: profile.email,
-            sociallogin: network
+            socialLogin: network
           });
           //Save new User in database
           newUser.save()

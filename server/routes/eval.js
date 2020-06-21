@@ -9,43 +9,78 @@ module.exports = router;
 const getCollection = (col) => getDb().collection(col);
 
 //Used to receive a ruleTag that starts with 'r_' and returns the corresponding
-//JS Object from the Mongo Database
+//JS Object from the Mongo Database. Can also search for nested rule Objects
+//when expressed with slashes '/'. E.g. 'r_de_outer/r_de_inner'
 async function getRule(ruleTag) {
-  return await getCollection('rules').findOne({tag: ruleTag});
+  const path = ruleTag.split('/');
+  const root = path.shift();
+  const rootObj = await getCollection('rules').findOne({tag: root});
+
+  //Navigate the root Rule Object until it reaches the inner rule Object
+  function recurse (obj, path) {
+    if (path.length < 1) {
+      //Base case
+      return obj;
+
+    } else if (obj.func == 'filter') {
+      assert(obj.params.next == path.shift());
+      //Recursive Call
+      return recurse(obj.params.next, path);
+
+    } else if (['and', 'or', 'nTrue'].includes(obj.func)) {
+      var nextRule;
+      const list = obj.params.list;
+      const tag = path.shift();
+      for (i = 0; i < list.length; i++) {
+        if (typeof list[i] == 'object' && list[0].tag == tag) {
+          nextRule = list[i];
+        }
+      }
+      //Recursive call
+      return recurse(nextRule, path);
+    }
+  }
+
+  return recurse(rootObj, path);
 }
 
 //Takes in a ruleTag string and returns a function that is executed on a modPlan
 //to return a boolean value of whether the rule is satisfied by the modPlan
 async function compile(ruleTag) {
-  //console.log(ruleTag);
-  if (ruleTag.startsWith('?')) {
-    moduleCode = ruleTag.substr(1);
-    return planned({params: {'moduleCode': moduleCode}});
 
-  } else if (ruleTag.startsWith('r_')) {
-    return getRule(ruleTag)
-    .then(ruleObj => { 
+  //If the input is a ruleTag String, then query the database for the
+  //corresponding rule Object and compile again using the object
+  if (typeof ruleTag == 'string') {
 
-      if (ruleObj.func === 'and') {
-        return and(ruleObj);
-      } else if (ruleObj.func === 'or') {
-        return or(ruleObj);
-      } else if (ruleObj.func === 'mcs') {
-        return mcs(ruleObj);
-      } else if (ruleObj.func === 'filter') {
-        return filter(ruleObj);
-      } else if (ruleObj.func === 'notEmpty') {
-        return notEmpty(ruleObj);
-      } else if (ruleObj.func === 'nTrue') {
-        return nTrue(ruleObj);
-      } else if (ruleObj.func === 'nModules') {
-        return nModules(ruleObj);
-      } else {
-        throw('func not recognised');
-      }
+    if (ruleTag.startsWith('?')) {
+      moduleCode = ruleTag.substr(1);
+      return planned({params: {'moduleCode': moduleCode}});
+  
+    } else if (ruleTag.startsWith('r_')) {
+      return getRule(ruleTag).then(compile);
+    }
 
-    })
-
+  //Take in a rule Object and returns an async function that takes in a modPlan
+  //and returns a boolean
+  } else if (typeof ruleTag == 'object') { 
+    ruleObj = ruleTag;
+    if (ruleObj.func === 'and') {
+      return and(ruleObj);
+    } else if (ruleObj.func === 'or') {
+      return or(ruleObj);
+    } else if (ruleObj.func === 'mcs') {
+      return mcs(ruleObj);
+    } else if (ruleObj.func === 'filter') {
+      return filter(ruleObj);
+    } else if (ruleObj.func === 'notEmpty') {
+      return notEmpty(ruleObj);
+    } else if (ruleObj.func === 'nTrue') {
+      return nTrue(ruleObj);
+    } else if (ruleObj.func === 'nModules') {
+      return nModules(ruleObj);
+    } else {
+      throw('func not recognised');
+    }
   } else {
     console.error('unrecognised ruleTag');
   }
@@ -61,7 +96,7 @@ async function planned(ruleObj) {
 
   return (modPlan) => {
     const noSuffixList = modPlan.modules.map(str => parseMod(str).no_suffix);
-    console.log(noSuffixList);
+    //console.log(noSuffixList);
     return noSuffixList.includes(noSuffix);
   }  
 }
@@ -72,7 +107,7 @@ async function and(ruleObj) {
   assert(params['list'] !== undefined, '"and" list not provided');
   var funcArray = await Promise.all(params.list.map(compile));
   return async (modPlan) => {
-    var boolArray = await Promise.all(funcArray.map(func => func(modPlan)))
+    var boolArray = await Promise.all(funcArray.map(func => func(modPlan)));
     return boolArray.every(bool => bool);
   }
 }
@@ -98,7 +133,7 @@ async function nTrue(ruleObj) {
     : params.n
   var funcArray = await Promise.all(params.list.map(compile));
   return async (modPlan) => {
-    var boolArray = await Promise.all(funcArray.map(func => func(modPlan)))
+    var boolArray = await Promise.all(funcArray.map(func => func(modPlan)));
     return boolArray.reduce((a, b) => a + b, 0) >= n;
   }
 }
@@ -121,6 +156,10 @@ function mcs(ruleObj) {
 }
 
 //Filters the modPlan for certain modules and passes it to the next function
+//Filtering happens in the following sequence:
+//First only allow the specified modules
+//Then filter by prefix and level
+//Then reintroduced the excepted modules
 async function filter(ruleObj) {
   var params = ruleObj.params;
 
@@ -137,6 +176,11 @@ async function filter(ruleObj) {
     //console.log(modPlan);
     var modList = modPlan.modules;
 
+    if (params.modules !== undefined) {
+      const allowed = params.modules;
+      modList = modList.filter(mod => allowed.includes(mod));
+    }
+
     if (params.prefix !== undefined) {
       const allowed = typeof params.prefix === 'string'
         ? [params.prefix]
@@ -151,11 +195,6 @@ async function filter(ruleObj) {
       modList = modList.filter(mod => checkFor(mod, 'level', allowed));
     }
 
-    if (params.modules !== undefined) {
-      const allowed = params.modules;
-      modList = modList.filter(mod => allowed.includes(mod));
-    }
-
     if (params.except !== undefined) {
       const allowed = params.except;
       const exception = modPlan.modules.filter(mod => allowed.includes(mod));
@@ -168,11 +207,13 @@ async function filter(ruleObj) {
   
 }
 
+//Checks if the modPlan is not empty
 async function notEmpty (ruleObj) {
   var params = ruleObj.params;
   return (modPlan) => (modPlan.modules.length !== 0);
 }
 
+//Checks if the modPlan contains at least n number of modules
 async function nModules (ruleObj) {
   var params = ruleObj.params;
   assert(params['n'] !== undefined);
@@ -203,9 +244,14 @@ router.post('/', (req, res) => {
 router.get('/test', (req, res) => {
   eval('r_cs_degree', {modules: ['GEH1045', 'GES1024']})
   .then(bool => res.send(JSON.stringify(bool)));
-})
+});
 
 router.get('/test2', (req, res) => {
   eval('r_de_basic', {modules: ['CS1101S', 'ACC1701']})
   .then(bool => res.send(JSON.stringify(bool)));
-})
+});
+
+router.get('/test3', (req, res) => {
+  eval('r_de_external', {modules: ['DAO1704', 'DAO2702', 'BSP1703C', 'BSP2701', 'ACC1701', 'CS1101']})
+  .then(bool => res.send(JSON.stringify(bool)));
+});

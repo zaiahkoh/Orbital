@@ -1,15 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const User = require('../models/User');
-const extractToken = require("passport-jwt").ExtractJwt.fromAuthHeaderAsBearerToken();
-const secretOrKey = require('../config/keys').secretOrKey;
-const jwt = require('jsonwebtoken');
 
 module.exports = router;
-
-function verifyAndGetUser(req, callback) {
-
-}
 
 router.get('/', (req, res) => {
   var user = req.user;
@@ -18,16 +10,24 @@ router.get('/', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-  var jwtPayload = jwt.verify(extractToken(req), secretOrKey);
-  if (!jwtPayload.email) {
-    res.status(400).json({ tokenError: 'Missing email tag in token payload'})
-  } else {
-    User.findOne({email: jwtPayload.email}).then(user => {
-      if (!user) {
-        res.status(404).json({ emailnotfound: 'Email not found' })
-      } else {
-        
+  var user = req.user;
+  const {modPlan, name, residential} = req.body;
+  if (modPlan) user.modPlan = modPlan;
+  if (name) user.name = name;
+  if (residential) user.residential = residential;
+  user.save()
+  .then(user => {
+    res.status(200).json({
+      success: true,
+      updated: {
+        modPlan: modPlan,
+        name: name,
+        residential: residential
       }
-    })
-  }
+    });
+  })
+  .catch(err => {
+    res.status(400).json({error: err.path});
+    console.log(err);
+  });
 })

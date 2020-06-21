@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  sociallogin: {
+  socialLogin: {
     type: String,
     required: true,
     enum: ['facebook', 'google']
