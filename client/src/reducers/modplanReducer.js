@@ -4,7 +4,8 @@ import {
     SET_RULES,
     SET_CALL_BACKEND_NOW,
     SET_SELECTED_MODULES,
-    SET_MODULE_LOCATION 
+    SET_MODULE_LOCATION,
+    SET_CURRRENT_SEMESTER 
 } from "../actions/types";
 
 const initialState = {
@@ -41,48 +42,59 @@ export default function (state = initialState, action) {
             }
         
         case SET_SELECTED_MODULES:
-            console.log('reducer')
             let unique = true;
             let indexOfDuplicate;
-            const {moduleAdded, currentSelectedModules} = action;
+            const module = [...action.currentSelectedModules];
+            const { moduleAdded } = action;
     
-            for(let i = 0; i < currentSelectedModules.length; i++) {
-                if(currentSelectedModules[i].moduleCode === moduleAdded.moduleCode) {
+            for(let i = 0; i < module.length; i++) {
+                if(module[i].moduleCode === moduleAdded.moduleCode) {
                     unique = false;
                     indexOfDuplicate = i;
                 }
             }
 
-            if (!currentSelectedModules.includes(moduleAdded)) {
+            if (!module.includes(moduleAdded)) {
                 if(unique) {
-                    currentSelectedModules.push(moduleAdded);
+                    module.push(moduleAdded);
                 } else {
-                    currentSelectedModules.splice(indexOfDuplicate, 1);
-                    currentSelectedModules.push(moduleAdded);           
+                    
+                    module.splice(indexOfDuplicate, 1);
+                    module.push(moduleAdded);           
                 }
             }
 
             return {
                 ...state, 
-                selectedModules: currentSelectedModules    
+                selectedModules: module
             }
 
         case SET_MODULE_LOCATION: 
-            const { item, location, modules } = action;
+            const { item, location, AY } = action;
+            const modulesToFilter = action.modules
             let changedModule;
 
             if(!location) {
-                changedModule = modules.filter((object) => object.moduleCode !== item.id);
+                changedModule = modulesToFilter.filter((object) => object.moduleCode !== item.id);
             } else {
-            const moduleToChange = modules.filter((object) => object.moduleCode === item.id);
-            moduleToChange[0].location =  location;
-            changedModule = modules.filter((object) => object.moduleCode !== item.id).concat(moduleToChange[0])
+                const temp = modulesToFilter.filter((object) => object.moduleCode === item.id);
+                const moduleToChange = [...temp];
+                moduleToChange[0].location =  location;
+                moduleToChange[0].AY = AY;
+                changedModule = modulesToFilter.filter((object) => object.moduleCode !== item.id).concat(moduleToChange)
             }
            
             return {
                 ...state,
                 selectedModules: changedModule
             }
+        
+        case SET_CURRRENT_SEMESTER:
+           return {
+               ...state,
+               AY: action.AY,
+               semester: action.semester
+           }
 
         default:
             return state

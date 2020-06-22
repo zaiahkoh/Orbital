@@ -47,9 +47,8 @@ function Subrules(props) {
                 callBackendFunc(props.ruleTag);
                 props.setCallBackendNow(false);
         } 
-        // props.updateCallBackendNow();
         
-    }, [props.callBackendNow]);
+    }, [props.modplan.callBackendNow]);
 
     return (    
         <div>

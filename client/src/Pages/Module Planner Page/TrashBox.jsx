@@ -2,14 +2,15 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from './itemType';
-
+import { setModuleLocation } from '../../actions/modplanActions';
+import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 
 function TrashBox (props) {
 
     const [{ isOver }, drop] = useDrop({
         accept: ItemTypes.CARD,
-        // drop: (item, monitor) => console.log(item),
-        drop: (item, monitor) => props.updateModuleLocation(item, null),
+        drop: (item) => props.setModuleLocation(item, null, null, props.modplan.selectedModules),
         collect: monitor => ({
             isOver: !!monitor.isOver(),
         }),
@@ -26,4 +27,13 @@ function TrashBox (props) {
     )
 }
 
-export default TrashBox;
+TrashBox.propType = {
+    setModuleLocation: PropTypes.func.isRequired,
+    modplan: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    modplan: state.modplan
+});
+
+export default connect(mapStateToProps, { setModuleLocation }) (TrashBox);

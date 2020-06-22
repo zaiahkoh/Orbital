@@ -5,13 +5,16 @@ import Board from './Board';
 function YearDisplay(props) {
     return (
         <div className="year-display">
-        <h2 className="year-title">{props.year}</h2>
+
         <Card style={{width: '360px'}}>
+            <Card.Title>{props.year}</Card.Title>
+            <Card.Subtitle>{props.AY}</Card.Subtitle>
             <Card.Body>
                 <div className="row">
                     <div className="col">
                         <Board 
                                 id={props.year + " " + "Semester 1"}
+                                AY={props.AY}
                                 className="board"
                                 semester="Semester 1"
                                 module={props.module}>
@@ -22,6 +25,7 @@ function YearDisplay(props) {
                     <div className="col">
                         <Board 
                                 id={props.year + " " + "Semester 2"}
+                                AY={props.AY}
                                 className="board"
                                 semester="Semester 2"
                                 module={props.module}>
@@ -29,7 +33,7 @@ function YearDisplay(props) {
                         </Board>
                     </div>
                 </div>
-                <h5>Total MCs</h5>
+
             </Card.Body>
         </Card>
         </div>

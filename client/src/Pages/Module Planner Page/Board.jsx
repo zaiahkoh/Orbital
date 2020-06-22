@@ -6,6 +6,7 @@ import { ItemTypes } from './itemType';
 import { useDrop } from 'react-dnd';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { setModuleLocation } from "../../actions/modplanActions";
 
 
 
@@ -13,28 +14,26 @@ function Board (props) {
     const [isBoardFilled, setIsBoardFilled] = useState(false);
     const [isTextBoxOpen, setIsTextBoxOpen] = useState(false);
     const [display, setDisplay] = useState();
-    const selectedModules = props.selectedModules;
+    const selectedModules = props.modplan.selectedModules;
+    let totalMCs = 0;
     
     useEffect(() => { 
             updateIsBoardFilled();
-            if(selectedModules) {
-                generateCards();
-            }
-           
-    }, [props.selectedModules])
+    }, [selectedModules])
         
-    const generateCards = () => props.modplan.selectedModules
+    const generateCards = selectedModules
         .filter((object, i) => object.location === props.id)
-        .map((object, i) => 
-                (<ModuleCard
+        .map((object, i) => {
+                totalMCs += Number(object.moduleCredit)
+                return (<ModuleCard
                     id={object.moduleCode}
                     location={props.id}
                     title={`${object.moduleCode}: ${object.title}`}
-                    MCs={object.moduleCredit}/>));
+                    MCs={object.moduleCredit}/>)});
 
     const [{ isOver }, drop] = useDrop({
             accept: ItemTypes.CARD,
-            drop: (item, monitor) => props.updateModuleLocation(item, props.id),
+            drop: (item) => props.setModuleLocation(item, props.id, props.AY, selectedModules),
             collect: monitor => ({
                 isOver: !!monitor.isOver(),
             }),
@@ -47,18 +46,13 @@ function Board (props) {
     function updateIsBoardFilled() {
         if(selectedModules && selectedModules.filter((object, i) => object.location === props.id).length > 0) {
             setIsBoardFilled(true);
-            // console.log('isboard updated to true')
-            // console.log('inside' + isBoardFilled)
             
         } else {
             setIsBoardFilled(false);
-            // console.log('isboard updated to false')
         }
-        // console.log('out ' + isBoardFilled)
     }
  
 
-        
         return (
             
             <div>
@@ -72,12 +66,14 @@ function Board (props) {
             <div className="" style={{width: '165px', 
                         height: (!isBoardFilled) && '59px', 
                         outline: isBoardFilled ? 'none' : '1px dotted'}}>
-                            {isBoardFilled ? generateCards() : 'Drop module here'}
+                            {isBoardFilled ? generateCards : 'Drop module here'}
             </div>
             {isTextBoxOpen && <AutoCompleteText 
+                                            AY={props.AY}
                                             location={props.id}
                                             module={props.module}/>}
                 <Button className="button" onClick={handleButtonClick}>Add Module</Button>
+                <h5>Total MCs: {totalMCs}</h5>
                 
                 </div>
             </div>
@@ -93,5 +89,5 @@ const mapStateToProps = state => ({
     modplan: state.modplan
 });
 
-export default connect(mapStateToProps) (Board);
+export default connect(mapStateToProps, { setModuleLocation }) (Board);
 

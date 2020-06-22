@@ -35,25 +35,24 @@ export class Options extends React.Component {
     this.props.onResidenceChange(value);
   }
   
-  requestRules = async() => {
-    try{
-      const response = await fetch('http://localhost:5001/', { cache: 'no-cache'})
-      if(response.ok) {
-        const jsonResponse = await response.json();
-        console.log(jsonResponse);
-      }
-    }
-    catch(error){
-      alert('nope');
-      console.log(error);
-    }
-  }
+  // requestRules = async() => {
+  //   try{
+  //     const response = await fetch('http://localhost:5001/', { cache: 'no-cache'})
+  //     if(response.ok) {
+  //       const jsonResponse = await response.json();
+  //       console.log(jsonResponse);
+  //     }
+  //   }
+  //   catch(error){
+  //     alert('nope');
+  //     console.log(error);
+  //   }
+  // }
 
     
 
   handleSubmit(e) {
     e.preventDefault();
-    this.requestRules();
     
   }
 
@@ -134,7 +133,7 @@ export class Options extends React.Component {
         <br/>
         <br/>
 
-        <label>Current CAP</label>
+        {/* <label>Current CAP</label>
         <input 
           type='number' 
           id='currentCAP' 
@@ -143,7 +142,7 @@ export class Options extends React.Component {
           max='5.0'
           step='0.01'/>
         <br/>
-        <br/>
+        <br/> */}
 
         <input 
           type="submit" 

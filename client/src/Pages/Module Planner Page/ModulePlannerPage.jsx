@@ -8,27 +8,41 @@ import { Button, Card } from 'react-bootstrap';
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { connect } from 'react-redux';
-import { callBackendAPI, setCallBackendNow } from '../../actions/modplanActions';
+import { callBackendAPI, setCallBackendNow, setCurrentSemester } from '../../actions/modplanActions';
+import { updateUserSettings } from "../../actions/settingsActions";
 import PropTypes from 'prop-types';
 import isEmpty from 'is-empty'
 
 
 class ModulePlannerPageTemp extends React.Component {
-   constructor(props) {
-       super(props);
-       this.state = {   selectedModules: null,
-                        callBackendNow: false,
-                        rules: []
-        }
-        // this.updateSelectedModules = this.updateSelectedModules.bind(this);
-        // this.updateModuleLocation = this.updateModuleLocation.bind(this);
-        // this.updateCallBackendNow = this.updateCallBackendNow.bind(this);
-
-    }
 
     componentDidMount() {
-        this.props.callBackendAPI('Rules');
-        this.props.callBackendAPI('NUSMods');
+        if(isEmpty(this.props.modplan.rules)) {
+            this.props.callBackendAPI('Rules');
+        }
+        
+        if(isEmpty(this.props.modplan.modules)){
+            this.props.callBackendAPI('NUSMods');
+        }
+
+        if(!this.props.modplan.AY) {
+            const time = new Date();
+            const month = time.getMonth() + 1;
+            const year = time.getFullYear();
+            const isSem2 = (month <= 7);
+            let currentSemester;
+            let currentAY;
+
+            if(isSem2) {
+                currentAY = `${year - 1}/${year}`
+                currentSemester = "Semester 2"
+            } else {
+                currentAY = `${year}/${year + 1}`
+                currentSemester = "Semester 1"
+            }
+
+            this.props.setCurrentSemester(currentAY, currentSemester);
+        }
     }
     
     // updateSelectedModules(object) {
@@ -77,7 +91,6 @@ class ModulePlannerPageTemp extends React.Component {
 
     handleEvalButtonClick() {
         const modules = this.props.modplan.selectedModules;
-        console.log(modules);
         if (isEmpty(modules)) {
             alert('Please add modules before evaluating');
         } else {
@@ -92,27 +105,32 @@ class ModulePlannerPageTemp extends React.Component {
                 <div className="container-module-planner">
                     <YearDisplay
                             year="Year 1"
+                            AY="2018/2019"
                             module={this.props.modplan.modules} />
 
                     <YearDisplay
                             year="Year 2"
+                            AY="2019/2020"
                             module={this.props.modplan.modules}/> 
 
                     <YearDisplay
                             year="Year 3"
+                            AY="2020/2021"
                             module={this.props.modplan.modules} />
 
                     <YearDisplay
                             year="Year 4"
+                            AY="2022/2023"
                             module={this.props.modplan.modules} /> 
                     
-                    <TrashBox/>
+                    <TrashBox
+                            module={this.props.modplan.selectedModules}/>
 
 
                     <br/>
 
                     <Button className="button" id="eval-button" onClick={() => this.handleEvalButtonClick()}>Evaluate</Button>
-                    <Button className="button" onClick={() => {}}>Save</Button>
+                    <Button className="button" onClick={() => this.props.updateUserSettings("modplan", this.props.modplan.selectedModules)} >Save</Button>
                     <br/>
                     <br/>
                     <Card>
@@ -129,6 +147,8 @@ class ModulePlannerPageTemp extends React.Component {
 ModulePlannerPageTemp.propTypes = {
     callBackendAPI: PropTypes.func.isRequired,
     setCallBackendNow: PropTypes.func.isRequired,
+    setCurrentSemester: PropTypes.func.isRequired,
+    updateUserSettings: PropTypes.func.isRequired,
     modplan: PropTypes.object.isRequired
 }
 
@@ -136,4 +156,4 @@ const mapStateToProps = state => ({
     modplan: state.modplan
 });
 
-export default connect(mapStateToProps, { callBackendAPI, setCallBackendNow }) (ModulePlannerPageTemp);
+export default connect(mapStateToProps, { callBackendAPI, setCallBackendNow, setCurrentSemester, updateUserSettings }) (ModulePlannerPageTemp);

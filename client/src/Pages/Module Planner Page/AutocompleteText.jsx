@@ -37,8 +37,9 @@ class AutoCompleteText extends React.Component {
     }
 
     handleListClick(object) {
-        const module = object;
+        const module = {...object};
         module.location = this.props.location;
+        module.AY = this.props.AY
         this.props.setSelectedModules(module, this.props.modplan.selectedModules)
         this.setState(() => ({suggestions: []})) 
     }
@@ -78,7 +79,6 @@ class AutoCompleteText extends React.Component {
                 
                 </div>
 
-                {/* <h1>{this.state.moduleCode}</h1>     */}
                 </div>
         )
     }

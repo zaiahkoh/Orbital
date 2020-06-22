@@ -1,6 +1,7 @@
 import React from "react";
 import logoImg from "../../textLogo.svg";
 import { Navbar, Nav } from "react-bootstrap"
+import { Link } from 'react-router-dom';
 
 export class PublicNav extends React.Component {
     
@@ -17,13 +18,13 @@ export class PublicNav extends React.Component {
                     />{' '}
                 </Navbar.Brand>
                 
-                    <Nav.Link href="/" className="navlink">
+                    <Link href="/" className="navlink">
                         About
-                    </Nav.Link>
+                    </Link>
                      
-                     <Nav.Link href="/login" className="navlink">
+                     <Link href="/login" className="navlink">
                          Login
-                     </Nav.Link>
+                     </Link>
 
             </Navbar>
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Options } from '../Pages/Module Selection Page/ModuleList';
 import { Link } from 'react-router-dom';
+import axios from "axios";
 
-class FirstSetting extends React.Component {
+class AcadSettings extends React.Component {
 constructor(props) {
     super(props);
 
@@ -32,6 +33,21 @@ constructor(props) {
     this.changeSpecialisation= this.changeSpecialisation.bind(this);
     this.changeResidence= this.changeResidence.bind(this);
     this.generateOptions =this.generateOptions.bind(this);
+}
+
+callBackendAPI = () => {
+  const headers = { headers: {'accept': 'application/json'}}
+      axios.get('http://172.19.162.53:3000/account')
+  .then(res => {
+      console.log(res)
+  }) 
+  .catch(err => {
+      console.log(err)
+  });
+}
+
+componentDidMount () {
+this.callBackendAPI()
 }
 
 changeFaculty(value, index) {
@@ -113,6 +129,20 @@ changeFaculty(value, index) {
     });
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     render() {
         return (
             <div>
@@ -133,16 +163,6 @@ changeFaculty(value, index) {
           specialisation={this.state.specialisation}
           residence={this.state.residence}
           />
-
-              <Link
-                to="/dashboard"
-                style={{
-                  fontFamily: "monospace"
-                }}
-                className="col s5 brand-logo center black-text"
-              >
-                dashboard
-              </Link>
             </div>
         );
     }
@@ -150,4 +170,4 @@ changeFaculty(value, index) {
 
 
 
-export default FirstSetting;
+export default AcadSettings;

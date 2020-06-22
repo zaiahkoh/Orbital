@@ -1,14 +1,24 @@
 import React from "react";
+import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 
-export class CAPCalculatorPage extends React.Component {
+
+class CAPCalculatorPage extends React.Component {
+
+    componentDidMount () {
+        
+    }
+
     render() {
         return(
             <div className="ml-4">
             <h1 className="display-3">CAP Calculator</h1>
-            <h3>CAP at the beginning of the semester</h3>
+            <h3>CAP at the beginning of the semester: {this.props.user.name} </h3>
+            <h5 onClick={() => {this.setState({open: true})}}>Or click here to manually input CAP</h5>
+            {/* {this.state.open && (<input type="text"/>)} */}
             <label>Semester: </label>
             <select id="time">
-                <option>Year 1 Semester 1</option>
+                <option id='year 1 semester 1'>Year 1 Semester 1</option>
                 <option>Year 1 Semester 2</option>
                 <option>Year 2 Semester 1</option>
                 <option>Year 2 Semester 2</option>
@@ -22,19 +32,37 @@ export class CAPCalculatorPage extends React.Component {
                 <option>Year 6 Semester 2</option>
             </select>
             <br/>
-            <label>CAP: </label>
-            <input type="text" name="prevCAP" />
-            <label>Credits Earned: </label>
-            <input type="text" name="prevCreditsEarned" />
-            <br/>
-            <br/>
+           
             <h3>Courses taken this semester</h3>
-            <label>Module</label>
-            <label>Grade</label>
-            <br/>
-            <input type="text" placeholder="Credits"/>
-            <input type="text" placeholder="MCs" />
+           
             </div>
         )
     }
 }
+
+CAPCalculatorPage.propType = {
+    user: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    user: state.auth.user
+});
+
+export default connect(mapStateToProps)(CAPCalculatorPage);
+
+
+
+ {/* <label>CAP: </label>
+            <input type="text" name="prevCAP" />
+            <label>Credits Earned: </label>
+            <input type="text" name="prevCreditsEarned" />
+            <br/>
+            <br/> */}
+
+
+
+ {/* <label>Module</label>
+            <label>Grade</label>
+            <br/>
+            <input type="text" placeholder="Credits"/>
+            <input type="text" placeholder="MCs" /> */}

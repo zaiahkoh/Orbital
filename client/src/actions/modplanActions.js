@@ -5,7 +5,8 @@ import {
     SET_RULES,
     SET_CALL_BACKEND_NOW,
     SET_SELECTED_MODULES,
-    SET_MODULE_LOCATION
+    SET_MODULE_LOCATION,
+    SET_CURRRENT_SEMESTER
 } from './types';
 
 
@@ -65,7 +66,7 @@ export const setRules = (rules) => {
     }
 }
 
-export const setCallBackendNow = (status) => dispatch => {
+export const setCallBackendNow = (status) => {
     return {
         type: SET_CALL_BACKEND_NOW,
         payload: status
@@ -73,7 +74,6 @@ export const setCallBackendNow = (status) => dispatch => {
 }
 
 export const setSelectedModules = (object, selectedModules) => {
-   console.log('action')
     return { 
         type: SET_SELECTED_MODULES,
         moduleAdded: object,
@@ -81,11 +81,20 @@ export const setSelectedModules = (object, selectedModules) => {
     }
 }
 
-export const setModuleLocation = (item, location, selectedModules) => dispatch =>  {
+export const setModuleLocation = (item, location, AY, selectedModules) => {
     return { 
         type: SET_MODULE_LOCATION,
-        item: item,
-        location: location,
+        item,
+        location,
+        AY,
         modules: selectedModules
+    }
+}
+
+export const setCurrentSemester = (AY, semester) => {
+    return {
+        type: SET_CURRRENT_SEMESTER,
+        AY,
+        semester
     }
 }

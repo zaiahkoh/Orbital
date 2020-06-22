@@ -12,8 +12,8 @@ import {
 import { PrivateNav } from './Components/Navbar/PrivateNav';
 import { PublicNav } from './Components/Navbar/PublicNav';
 import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
-import { CAPCalculatorPage } from "./Pages/CAP Calculator Page/CAPCalculatorPage";
-import FirstSetting from './Settings/FirstSetting';
+import  CAPCalculatorPage  from "./Pages/CAP Calculator Page/CAPCalculatorPage";
+import AcadSettings from './Settings/AcadSettings';
 
 import PrivateRoute from './Components/PrivateRoute';
 import jwt_decode from "jwt-decode";
@@ -81,7 +81,7 @@ class App extends React.Component {
 
             <PrivateRouteTemp 
                 exact path="/settings/academics" 
-                component={FirstSetting} /> 
+                component={AcadSettings} /> 
 
             <Route exact path="/500-error" component={ServerError}/>
             <Route component={() => <div className="display-2"><strong>404 NOT FOUND</strong></div>}/>

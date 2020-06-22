@@ -2,6 +2,7 @@ import React from "react";
 import logoImg from "../../textLogo.svg";
 import { Navbar, Nav } from "react-bootstrap"
 import NavIcon from "../NavIcon";
+import { Link } from "react-router-dom";
 
 
 
@@ -20,27 +21,27 @@ export class PrivateNav extends React.Component {
                     />{' '}
                 </Navbar.Brand>
                 
-                    <Nav.Link href="/select-modules" className="navlink">
+                    <Link to="/select-modules" className="navlink">
                             Select Module
-                    </Nav.Link>
+                    </Link>
 
-                    <Nav.Link href="/module-planner" className="navlink">
+                    <Link to="/module-planner" className="navlink">
                         Module Planner
-                    </Nav.Link>
+                    </Link>
 
-                    <Nav.Link href="/cap-calculator" className="navlink">
+                    <Link to="/cap-calculator" className="navlink">
                         CAP Calculator
-                    </Nav.Link>
+                    </Link>
 
-                    <Nav.Link href="/dashboard" className="navlink">
+                    <Link to="/dashboard" className="navlink">
                         Dashboard
-                    </Nav.Link>
+                    </Link>
 
                      {/* <NavIcon icon={this.props.userProfilePicture} /> */}
                      {/* <NavIcon icon={logoImg} /> */}
-                     <Nav.Link href="/settings" className="navlink">
+                     <Link to="/settings/academics" className="navlink">
                          Settings
-                     </Nav.Link>
+                     </Link>
 
             </Navbar>
 
