@@ -9,7 +9,7 @@ import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { connect } from 'react-redux';
 import { callBackendAPI, setCallBackendNow, setCurrentSemester } from '../../actions/modplanActions';
-import { updateUserSettings } from "../../actions/settingsActions";
+import { updateSettings } from "../../actions/settingsActions";
 import PropTypes from 'prop-types';
 import isEmpty from 'is-empty'
 
@@ -25,24 +25,7 @@ class ModulePlannerPageTemp extends React.Component {
             this.props.callBackendAPI('NUSMods');
         }
 
-        if(!this.props.modplan.AY) {
-            const time = new Date();
-            const month = time.getMonth() + 1;
-            const year = time.getFullYear();
-            const isSem2 = (month <= 7);
-            let currentSemester;
-            let currentAY;
-
-            if(isSem2) {
-                currentAY = `${year - 1}/${year}`
-                currentSemester = "Semester 2"
-            } else {
-                currentAY = `${year}/${year + 1}`
-                currentSemester = "Semester 1"
-            }
-
-            this.props.setCurrentSemester(currentAY, currentSemester);
-        }
+       
     }
     
     // updateSelectedModules(object) {
@@ -156,4 +139,4 @@ const mapStateToProps = state => ({
     modplan: state.modplan
 });
 
-export default connect(mapStateToProps, { callBackendAPI, setCallBackendNow, setCurrentSemester, updateUserSettings }) (ModulePlannerPageTemp);
+export default connect(mapStateToProps, { callBackendAPI, setCallBackendNow, setCurrentSemester, updateSettings }) (ModulePlannerPageTemp);

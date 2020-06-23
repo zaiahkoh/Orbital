@@ -9,6 +9,8 @@ export class Options extends React.Component {
     this.handleMajorChange = this.handleMajorChange.bind(this);
     this.handleSpecialisationChange = this.handleSpecialisationChange.bind(this);
     this.handleResidenceChange= this.handleResidenceChange.bind(this);
+    this.handleMatriculationChange= this.handleMatriculationChange.bind(this);
+    this.handleTargetGradChange= this.handleTargetGradChange.bind(this);
     this.handleSubmit= this.handleSubmit.bind(this);
   }
 
@@ -35,6 +37,15 @@ export class Options extends React.Component {
     this.props.onResidenceChange(value);
   }
   
+  handleMatriculationChange(e) {
+    let value = e.target.value;
+    this.props.onMatriculationChange(value);
+  }
+
+  handleTargetGradChange(e) {
+    let value = e.target.value;
+    this.props.onTargetGradChange(value);
+  }
   // requestRules = async() => {
   //   try{
   //     const response = await fetch('http://localhost:5001/', { cache: 'no-cache'})
@@ -61,7 +72,7 @@ export class Options extends React.Component {
       return (
        <div>
       <form onSubmit={this.handleSubmit}>
-       <label>Your Faculty  </label>
+       <label>Your Faculty:  </label>
        <select
           id="Faculty" 
           onChange={this.handleFacultyChange}>
@@ -112,7 +123,7 @@ export class Options extends React.Component {
         <label>Year of Matriculation  </label>
         <select
           id="matriculationYear"
-          onChange={this.handleSpecialisationChange}>
+          onChange={this.handleMatriculationChange}>
              (<option selected disabled>
               Choose Your Year of Matriculation
              </option>)
@@ -124,7 +135,7 @@ export class Options extends React.Component {
         <label>Target Graduation Year</label>
         <select
           id="graduationYear"
-          onChange={this.handleSpecialisationChange}>
+          onChange={this.handleTargetGradChange}>
              (<option selected disabled>
               Choose Your Year of Matriculation
              </option>)
@@ -144,13 +155,6 @@ export class Options extends React.Component {
         <br/>
         <br/> */}
 
-        <input 
-          type="submit" 
-          name="submit" 
-          value="Save Settings" 
-          className="btn btn-secondary"/>
-        <br/>
-        <br/>
       </form>
       </div>
       )}};
