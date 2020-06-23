@@ -137,9 +137,9 @@ export class Options extends React.Component {
           id="graduationYear"
           onChange={this.handleTargetGradChange}>
              (<option selected disabled>
-              Choose Your Year of Matriculation
+              Choose Your Target Graduation Year
              </option>)
-           {this.props.matriculationYearOptions}
+           {this.props.targetGradYearOptions}
         </select>
         <br/>
         <br/>

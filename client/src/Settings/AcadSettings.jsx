@@ -71,6 +71,7 @@ componentWillMount () {
 
   if(!this.props.settings.matriculationYearOptions) {
     this.props.setMatriculationYearOptions(currentAY, currentSemester)
+    this.props.setTargetGradYearOptions(currentAY, currentSemester)
   }
 }
 

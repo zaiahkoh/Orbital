@@ -48,10 +48,10 @@ export const setMatriculationYearOptions = (currentAY, currentSemester) => {
     }
 }
 
-export const setTargetGradYearOptions = (currentAY, currentSemester) => {
+export const setTargetGradYearOptions = (AY, Semester) => {
     return {
         type: SET_TARGET_GRAD_OPTIONS,
-        currentAY,
-        currentSemester
+        AY,
+        Semester
     }
 }

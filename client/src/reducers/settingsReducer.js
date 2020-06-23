@@ -30,22 +30,35 @@ export default function (state = initialState, action ) {
         
         case SET_MATRICULATION_OPTIONS:
             const { currentAY, currentSemester } = action;
-            let matriculationOptions = []
+            const year = Number(currentAY.substr(5,4));
+            let matriculationOptions = [];
+            let value;
 
             if(currentSemester === "Semester 1") { 
-                for(let i = 0; i <= 5; i++) {
-                    const year = Number(currentAY.substr(0,4));
+                for(let i = 0; i <= 6; i++) {
                     const start = year - i;
                     const end = start + 1;
-                    const value = `AY ${start} / ${end} (Year ${i+ 1})`
+
+                    if(i === 0) {
+                        value = `AY ${start}/${end} (Next Year)`
+                    } else {
+                        value = `AY ${start}/${end} (Year ${i})`
+                    }
+
                     matriculationOptions[i] = value;
                 }
             } else {
-                for(let i = 0; i <= 5; i++ ) {
-                    const year = Number(currentAY.substr(5,4));
-                    const end = year - i;
-                    const start = end - 1;
-                    const value = `AY ${start} / ${end} (Year ${i+ 1})`
+                for(let i = 0; i <= 6; i++ ) {
+                    const start = year - i;
+                    const end = start + 1;
+
+                    if(i === 0) {
+                        value = `AY ${start}/${end} (Next Semester)`
+                    }
+                    else {
+                        value = `AY ${start}/${end} (Year ${i})`
+                    }
+                    
                     matriculationOptions[i] = value;
                 }
             }
@@ -57,30 +70,29 @@ export default function (state = initialState, action ) {
         
         case SET_TARGET_GRAD_OPTIONS:
             const { AY, Semester } = action;
+            const Year = Number(AY.substr(0,4));
             let targetGradOptions = []
+            let option;
 
-            if(currentSemester === "Semester 1") { 
-                for(let i = 0; i <= 5; i++) {
-                    const year = Number(AY.substr(0,4));
-                    const start = year - i;
+                for(let i = 0; i <= 6; i++) {
+                    const start = Year + i;
                     const end = start + 1;
-                    const value = `In AY ${start} / ${end} (Year ${i+ 1})`
-                    matriculationOptions[i] = value;
+
+                    if(i === 0) {
+                        option = `In AY ${AY} (This Year)`
+                    } else if (i === 1) {
+                        option = `In AY ${start}/${end} (Next Year)`
+                    } else {
+                        option = `In AY ${start}/${end} (In ${i} Years)`
+                    }
+                    targetGradOptions[i] = option;
                 }
-            } else {
-                for(let i = 0; i <= 5; i++ ) {
-                    const year = Number(currentAY.substr(5,4));
-                    const end = year - i;
-                    const start = end - 1;
-                    const value = `AY ${start} / ${end} (Year ${i+ 1})`
-                    matriculationOptions[i] = value;
-                }
-            }
 
             return{
                 ...state,
-                targetGradOptions: matriculationOptions    
+                targetGradOptions: targetGradOptions    
             }
+
         default:
             return state;
     }
