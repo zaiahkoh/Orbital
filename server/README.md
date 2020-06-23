@@ -77,9 +77,13 @@ Also relies on NUSmods API to run functions.
 > Should include a request body with the attributes of the user that the client wants to update
 > Possible attributes are
 > 
-> * modPlan: String
+> * modPlan: Object
 > * name: String
 > * residential: String
+> * major: String
+> * matriculationYear: Number
+> * targetGradYear: Number
+> * transcript: Object
 > 
 > If successful, responds with 200 OK and JSON with attributes
 > * success: Boolean (true if update successful)
