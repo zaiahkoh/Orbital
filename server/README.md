@@ -81,8 +81,8 @@ Also relies on NUSmods API to run functions.
 > * name: String
 > * residential: String
 > * major: String
-> * matriculationYear: Number
-> * targetGradYear: Number
+> * matriculationYear: String
+> * targetGradYear: String
 > * transcript: Object
 > 
 > If successful, responds with 200 OK and JSON with attributes
