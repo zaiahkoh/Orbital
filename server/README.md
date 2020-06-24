@@ -58,8 +58,8 @@ Also relies on NUSmods API to run functions.
 >
 > Receives a request body containing the following:
 > 
-> network: String ['facebook', 'google']
-> token: String (access_token for Facebook and id_token for Google)
+> * network: String ['facebook', 'google']
+> * token: String (access_token for Facebook and id_token for Google)
 > 
 > If the user has not signed up before, the server will automatically create an account and return a JWT for future authentication.
 > If the user has already signed up, returns a JWT that is linked to the existing account.
@@ -70,3 +70,22 @@ Also relies on NUSmods API to run functions.
 > The request must include a JSON Web Token in the Authorisation header under the Bearer schema
 > 
 > Returns all information about the user as a JS Object
+
+> PUT /
+> 
+> The request must include a JSON Web Token in the Authorisation header under the Bearer schema
+> Should include a request body with the attributes of the user that the client wants to update
+> Possible attributes are
+> 
+> * modPlan: Object
+> * name: String
+> * residential: String
+> * major: String
+> * matriculationYear: String
+> * targetGradYear: String
+> * transcript: Object
+> 
+> If successful, responds with 200 OK and JSON with attributes
+> * success: Boolean (true if update successful)
+> * updated: Object (list of attributes that were updated)
+> 
