@@ -14,16 +14,34 @@ const UserSchema = new Schema({
   socialLogin: {
     type: String,
     required: true,
-    enum: ['facebook', 'google']
+    enum: ['facebook', 'google', 'local']
   },
   password: {
-    type: String,
+    type: String
   },
   residential: {
-    type: String,
+    type: String
+  },
+  major: {
+    type: String
+  }, 
+  matriculationYear: {
+    type: String
+  },
+  targetGradYear: {
+    type: String
+  },
+  transcript: {
+    type: Array
   },
   modPlan: {
-      type: Object
+      type: Array
+  },
+  cap: {
+    type: Number
+  },
+  specialisation: {
+    type: String
   }
 });
 

@@ -42,6 +42,5 @@ client.connect(function (err, client) {
   //helper('r_cs_degree').then(obj => console.log(stringify(obj, 1)));
 
 
-
 });
 
