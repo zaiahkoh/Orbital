@@ -5,7 +5,8 @@ import {
 } from "../actions/types";
 
 const initialState = {
-    CAPModules: []
+    CAPModules: [],
+    semesterOptions: []
 };
 
 export default function(state = initialState, action) {
@@ -15,6 +16,25 @@ export default function(state = initialState, action) {
                 ...state, 
                 CAPModules: action.payload
             }
+        
+        case SET_SEMESTER_OPTIONS: 
+            let sem1;
+            let sem2;
+            let semesterOptions = [];
+
+            for(let i = 1; i < (action.payload * 2); i += 2) {
+                const year = Math.ceil(i / 2);
+                sem1 = `Year ${year} Semester 1`;
+                sem2 = `Year ${year} Semester 2`;
+                semesterOptions[i - 1] = sem1;
+                semesterOptions[i] = sem2;
+            }
+
+            return {
+                ...state,
+                semesterOptions: semesterOptions
+            }
+
         default: 
             return state;
     }

@@ -1,54 +1,69 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
+import { setSemesterOptions } from '../../actions/capActions';
+import { updateSettings, initialSettings } from "../../actions/settingsActions";
+import { generateOptions } from "../../utils/optionGenerator";
+import isEmpty from 'is-empty';
 
 
-class CAPCalculatorPage extends React.Component {
+const CAPCalculatorPage = (props) => {
 
-    componentDidMount () {
+    useEffect(() => {
+        return () => {
+            if(isEmpty(props.settings.userInfo)) {
+                props.initialSettings();
+            }
+
+            if(isEmpty(props.semesterOptions) && !isEmpty(props.settings.userInfo)){
+                const start = props.settings.userInfo.matriculationYear.substr(0, 4);
+                const end = props.settings.userInfo.targetGradYear.substr(5, 4);
+                const diff = end - start;
+                props.setSemesterOptions(diff);
+            }
+        };
+    }, [props.settings.userInfo])
+    
+
+
+    return(
+        <div className="ml-4">
+        <h1 className="display-3">CAP Calculator</h1>
+        <h3>CAP at the beginning of the semester: {props.user.name} </h3>
+        {/* <h5 onClick={() => {this.setState({open: true})}}>Or click here to manually input CAP</h5> */}
+        {/* {this.state.open && (<input type="text"/>)} */}
+        <label>Semester: </label>
+        <select id="time">
+            {generateOptions(props.cap.semesterOptions)}
+        </select>
+        <br/>
         
-    }
-
-    render() {
-        return(
-            <div className="ml-4">
-            <h1 className="display-3">CAP Calculator</h1>
-            <h3>CAP at the beginning of the semester: {this.props.user.name} </h3>
-            <h5 onClick={() => {this.setState({open: true})}}>Or click here to manually input CAP</h5>
-            {/* {this.state.open && (<input type="text"/>)} */}
-            <label>Semester: </label>
-            <select id="time">
-                <option id='year 1 semester 1'>Year 1 Semester 1</option>
-                <option>Year 1 Semester 2</option>
-                <option>Year 2 Semester 1</option>
-                <option>Year 2 Semester 2</option>
-                <option>Year 3 Semester 1</option>
-                <option>Year 3 Semester 2</option>
-                <option>Year 4 Semester 1</option>
-                <option>Year 4 Semester 2</option>
-                <option>Year 5 Semester 1</option>
-                <option>Year 5 Semester 2</option>
-                <option>Year 6 Semester 1</option>
-                <option>Year 6 Semester 2</option>
-            </select>
-            <br/>
-           
-            <h3>Courses taken this semester</h3>
-           
-            </div>
-        )
-    }
+        <h3>Courses taken this semester</h3>
+        
+        </div>
+    );
 }
 
+
 CAPCalculatorPage.propType = {
-    user: PropTypes.object.isRequired
+    setSemesterOptions: PropTypes.func.isRequired,
+    updateSettings: PropTypes.func.isRequired,
+    initialSettings: PropTypes.func.isRequired,
+    generateOptions: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    settings: PropTypes.object.isRequired,
+    cap: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    user: state.auth.user
+    user: state.auth.user,
+    settings: state.settings,
+    cap: state.cap
 });
 
-export default connect(mapStateToProps)(CAPCalculatorPage);
+export default connect(mapStateToProps,
+                        { setSemesterOptions, updateSettings, initialSettings })
+                        (CAPCalculatorPage);
 
 
 

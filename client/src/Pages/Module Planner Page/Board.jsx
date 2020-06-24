@@ -13,7 +13,6 @@ import { setModuleLocation } from "../../actions/modplanActions";
 function Board (props) {
     const [isBoardFilled, setIsBoardFilled] = useState(false);
     const [isTextBoxOpen, setIsTextBoxOpen] = useState(false);
-    const [display, setDisplay] = useState();
     const selectedModules = props.modplan.selectedModules;
     let totalMCs = 0;
     

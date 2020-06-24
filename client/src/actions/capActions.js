@@ -4,21 +4,23 @@ import {
     SET_SEMESTER_OPTIONS
 } from "./types";
 
-const setModulesForCap = (modplan) => {
+export const setModulesForCap = (modplan) => {
     return {
         type: SET_MODULES_FOR_CAP,
         payload: modplan
     }
 }
 
-const calculateCAP = (prevCAP) => {
+export const calculateCAP = (prevCAP) => {
     return {
         type: CALCULATE_CAP
     }
 }
 
-const setSemesterOptions = () => {
+export const setSemesterOptions = (years) => {
     return {
-        type: SET_SEMESTER_OPTIONS
+        type: SET_SEMESTER_OPTIONS,
+        payload: years
     }
 }
+

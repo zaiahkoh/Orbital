@@ -25,6 +25,7 @@ export const registerUser = (userData, social) => dispatch => {
       }
 
       else {
+        console.log(err);
         window.location.replace("/500-error")
       }
     }

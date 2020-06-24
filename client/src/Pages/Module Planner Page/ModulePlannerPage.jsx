@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Board from './Board';
 import Rules from './Rules';
 import TrashBox from './TrashBox';
@@ -8,135 +8,119 @@ import { Button, Card } from 'react-bootstrap';
 import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { connect } from 'react-redux';
-import { callBackendAPI, setCallBackendNow, setCurrentSemester } from '../../actions/modplanActions';
-import { updateSettings } from "../../actions/settingsActions";
+import { callBackendAPI, setCallBackendNow, setSelectedModules } from '../../actions/modplanActions';
+import { updateSettings, initialSettings } from "../../actions/settingsActions";
 import PropTypes from 'prop-types';
 import isEmpty from 'is-empty'
 
 
-class ModulePlannerPageTemp extends React.Component {
+const ModulePlannerPageTemp = (props) => {
 
-    componentDidMount() {
-        if(isEmpty(this.props.modplan.rules)) {
-            this.props.callBackendAPI('Rules');
-        }
-        
-        if(isEmpty(this.props.modplan.modules)){
-            this.props.callBackendAPI('NUSMods');
-        }
+    const module = props.modplan.modules;
 
-       
-    }
-    
-    // updateSelectedModules(object) {
-    //     let newSelectedModules = this.state.selectedModules ? this.state.selectedModules : [];
-    //     let unique = true;
-    //     let indexOfDuplicate;
-        
-    //     for(let i = 0; i < newSelectedModules.length; i++) {
-    //         if(newSelectedModules[i].moduleCode === object.moduleCode) {
-    //             unique = false;
-    //             indexOfDuplicate = i;
-    //         }
-    //     }
+    useEffect(() => {
+        return () => {
+            if(isEmpty(props.settings.userInfo)) {
+                props.initialSettings();
+            }
 
-    //      if (!newSelectedModules.includes(object) && unique) {
-    //          if(unique) {
-    //             newSelectedModules.push(object);
-                
-    //          } else {
-    //             newSelectedModules.splice(indexOfDuplicate, 1);
-    //             newSelectedModules.push(object);           
-    //          }
-    //          this.setState({selectedModules: newSelectedModules});
-    //     }
-         
-    //      console.log(this.state.selectedModules);
-    //  }
-    
-    //  updateModuleLocation(item, location) {
-    //      let changedModule;
-    //      if(!location) {
-    //          changedModule = this.state.selectedModules.filter((object) => object.moduleCode !== item.id);
-    //      } else {
-    //         const moduleToChange = this.state.selectedModules.filter((object) => object.moduleCode === item.id);
-    //         moduleToChange[0].location =  location;
-    //         changedModule = this.state.selectedModules.filter((object) => object.moduleCode !== item.id).concat(moduleToChange[0])
-    //      }
-    //      this.setState({selectedModules: changedModule});
-    //     console.log(changedModule);
-    // }
-    
-    // updateCallBackendNow() {
-    //     // this.setState({callBackendNow: false});
-    //     this.props.setCallBackendNow(false);
-    // }
+            if(!isEmpty(props.settings.userInfo.modPlan)) {
+                // props.setSelectedModules(props.settings.userInfo.modPlan)
+                console.log('called');
+            }
+        };
+    }, [props.settings.userInfo])
 
-    handleEvalButtonClick() {
-        const modules = this.props.modplan.selectedModules;
+    useEffect(() => {
+        return () => {
+            if(isEmpty(props.modplan.rules)) {
+                props.callBackendAPI('Rules');
+            }
+            
+            if(isEmpty(props.modplan.modules)){
+                props.callBackendAPI('NUSMods');
+            }
+        };
+    }, [])
+
+    const handleEvalButtonClick = () => {
+        const modules = props.modplan.selectedModules;
         if (isEmpty(modules)) {
             alert('Please add modules before evaluating');
         } else {
             this.props.setCallBackendNow(true);
         }
     }
-    
-    render () {
-        const module = this.props.modplan.modules
-        return (
-            <DndProvider backend={Backend} >
-                <div className="container-module-planner">
-                    <YearDisplay
-                            year="Year 1"
-                            AY="2018/2019"
-                            module={this.props.modplan.modules} />
 
-                    <YearDisplay
-                            year="Year 2"
-                            AY="2019/2020"
-                            module={this.props.modplan.modules}/> 
+    const handleSaveClick = () => {
+        const userData = {
+            modPlan: props.modplan.selectedModules,
+            name: props.settings.userInfo.name,
+            residential: props.settings.userInfo.residential,
+            major: props.settings.userInfo.major,
+            matriculationYear: props.settings.userInfo.matriculationYear,
+            targetGradYear: props.settings.userInfo.targetGradYear,
+            transcript: {}
+        }
 
-                    <YearDisplay
-                            year="Year 3"
-                            AY="2020/2021"
-                            module={this.props.modplan.modules} />
-
-                    <YearDisplay
-                            year="Year 4"
-                            AY="2022/2023"
-                            module={this.props.modplan.modules} /> 
-                    
-                    <TrashBox
-                            module={this.props.modplan.selectedModules}/>
-
-
-                    <br/>
-
-                    <Button className="button" id="eval-button" onClick={() => this.handleEvalButtonClick()}>Evaluate</Button>
-                    <Button className="button" onClick={() => this.props.updateUserSettings("modplan", this.props.modplan.selectedModules)} >Save</Button>
-                    <br/>
-                    <br/>
-                    <Card>
-                        <Rules
-                            rules={this.props.modplan.rules}/>
-                    </Card>
-                    <br/>
-                </div>
-           </DndProvider>
-        )
+        this.props.updateSettings(userData);
     }
+    
+    return (
+        <DndProvider backend={Backend} >
+            <div className="container-module-planner">
+                <YearDisplay
+                        year="Year 1"
+                        AY="2018/2019"
+                        module={props.modplan.modules} />
+
+                <YearDisplay
+                        year="Year 2"
+                        AY="2019/2020"
+                        module={props.modplan.modules}/> 
+
+                <YearDisplay
+                        year="Year 3"
+                        AY="2020/2021"
+                        module={props.modplan.modules} />
+
+                <YearDisplay
+                        year="Year 4"
+                        AY="2022/2023"
+                        module={props.modplan.modules} /> 
+                
+                <TrashBox
+                        module={props.modplan.selectedModules}/>
+
+
+                <br/>
+
+                <Button className="button" id="eval-button" onClick={() => handleEvalButtonClick()}>Evaluate</Button>
+                <Button className="button" onClick={handleSaveClick} >Save</Button>
+                <br/>
+                <br/>
+                <Card>
+                    <Rules
+                        rules={props.modplan.rules}/>
+                </Card>
+                <br/>
+            </div>
+        </DndProvider>
+    )
 }
 
 ModulePlannerPageTemp.propTypes = {
     callBackendAPI: PropTypes.func.isRequired,
     setCallBackendNow: PropTypes.func.isRequired,
-    setCurrentSemester: PropTypes.func.isRequired,
-    updateUserSettings: PropTypes.func.isRequired,
+    updateSettings: PropTypes.func.isRequired,
     modplan: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    modplan: state.modplan
+    modplan: state.modplan,
+    settings: state.settings
 });
 
-export default connect(mapStateToProps, { callBackendAPI, setCallBackendNow, setCurrentSemester, updateSettings }) (ModulePlannerPageTemp);
+export default connect(mapStateToProps, 
+                    { callBackendAPI, setCallBackendNow, updateSettings, setSelectedModules, initialSettings }) 
+                    (ModulePlannerPageTemp);

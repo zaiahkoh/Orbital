@@ -46,7 +46,13 @@ export default function (state = initialState, action) {
             let indexOfDuplicate;
             const module = [...action.currentSelectedModules];
             const { moduleAdded } = action;
-    
+            
+            if(!moduleAdded) {
+                return {
+                    ...state,
+                    selectedModules: module
+                }
+            }
             for(let i = 0; i < module.length; i++) {
                 if(module[i].moduleCode === moduleAdded.moduleCode) {
                     unique = false;

@@ -10,7 +10,7 @@ const initialState = {
     currentSemester: null,
     matriculationOptions:[],
     targetGradOptions: [],
-    userInfo: null
+    userInfo: {}
 }
 
 export default function (state = initialState, action ) {

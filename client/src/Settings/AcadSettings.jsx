@@ -5,9 +5,8 @@ import axios from "axios";
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
-import { updateSettings, initialSettings, setCurrentSemester, 
-          setMatriculationYearOptions, setTargetGradYearOptions } from "../actions/settingsActions";
-
+import { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions } from "../actions/settingsActions";
+import isEmpty from "is-empty";
 
 
 
@@ -17,12 +16,16 @@ constructor(props) {
 
     this.state = {
         faculty: null,
-        major: null,
-        specialisation: null,
+        major: this.props.userInfo.major,
+        specialisation: this.props.userInfo.specialisation,
         residenceOptions: ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'],
-        residence: 'N/A',
-        matriculationYear: null,
-        targetGraduationYear: null,
+        residence: this.props.userInfo.residential,
+        matriculationYear: this.props.userInfo.matriculationYear,
+        targetGradYear: this.props.userInfo.targetGradYear,
+        // dummyfac: {faculty: [{ name: 'Business',
+        //                         major: [{name: }]
+        //                         specialisation: [{name: 'A'}, ]
+        // }] }
         dummyfac: [{'Business': [{'Business Administration': ['A', 'B']},
                                 {'Accountancy': ['C', 'D']}]},
                 {'FASS': [{'C': ['N/A']},
@@ -46,32 +49,9 @@ constructor(props) {
 }
 
 componentWillMount () {
-  const time = new Date();
-  const month = time.getMonth() + 1;
-  const year = time.getFullYear();
-  const isSem2 = (month <= 7);
-  let currentSemester;
-  let currentAY;
-
-  if(isSem2) {
-    currentAY = `${year - 1}/${year}`
-    currentSemester = "Semester 2"
-  } else {
-      currentAY = `${year}/${year + 1}`
-      currentSemester = "Semester 1"
-  }
-    
-  if(!this.props.settings.currentAY) {
-    this.props.setCurrentSemester(currentAY, currentSemester);
-  }
-
-  if(!this.props.settings.userInfo) {
-    this.props.initialSettings();
-  }
-
-  if(!this.props.settings.matriculationYearOptions) {
-    this.props.setMatriculationYearOptions(currentAY, currentSemester)
-    this.props.setTargetGradYearOptions(currentAY, currentSemester)
+  if(isEmpty(this.props.settings.matriculationOptions)) {
+    this.props.setMatriculationYearOptions(this.props.settings.currentAY, this.props.settings.currentSemester)
+    this.props.setTargetGradYearOptions(this.props.settings.currentAY, this.props.settings.currentSemester)
   }
 }
 
@@ -103,19 +83,22 @@ changeFaculty(value, index) {
   }
 
   changeMatriculationYear(value) {
+    const year = value.substr(3,9);
     this.setState({
-      matriculationYear: value,
+      matriculationYear: year,
     });
   }
 
   changeTargetGradYear(value) {
+    const year = value.substr(6,9);
+    console.log(year);
     this.setState({
-      targetGraduationYear: value,
+      targetGradYear: year,
     });
   }
 
 
-  //turn array of choices into options dropdown
+//   //turn array of choices into options dropdown
   generateOptions(choices) {
     let facIndex = this.state.facIndex;
   if(choices === 'faculty'){
@@ -179,12 +162,11 @@ changeFaculty(value, index) {
 
 handleSubmit = () => {
   const userData = {
-    faculty: this.state.faculty,
     major: this.state.major,
     specialisation: this.state.specialisation,
     residential: this.state.residence,
     matriculationYear: this.state.matriculationYear,
-    targetGraduationYear: this.state.targetGraduationYear,
+    targetGradYear: this.state.targetGradYear,
     name: this.props.settings.userInfo.name,
     modPlan: this.props.modplan
   }
@@ -219,8 +201,6 @@ handleSubmit = () => {
 }
 
 AcadSettings.propTypes = {
-  setUserSettings: PropTypes.func.isRequired,
-  initialSettings: PropTypes.func.isRequired,
   updateSettings: PropTypes.func.isRequired,
   setMatriculationYearOptions: PropTypes.func.isRequired,
   modplan: PropTypes.object.isRequired,
@@ -229,8 +209,9 @@ AcadSettings.propTypes = {
 
 const mapStateToProps = state => ({
   modplan: state.modplan.selectedModules,
-  settings: state.settings
+  settings: state.settings,
+  userInfo: state.settings.userInfo
 });
 
 export default connect(mapStateToProps, 
-  { initialSettings, updateSettings, setCurrentSemester, setMatriculationYearOptions, setTargetGradYearOptions }) (AcadSettings);
+  { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions }) (AcadSettings);
