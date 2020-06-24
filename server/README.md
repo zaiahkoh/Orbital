@@ -77,14 +77,24 @@ Also relies on NUSmods API to run functions.
 > Should include a request body with the attributes of the user that the client wants to update
 > Possible attributes are
 > 
-> * modPlan: Object
+> * modPlan: Array
 > * name: String
 > * residential: String
 > * major: String
 > * matriculationYear: String
 > * targetGradYear: String
-> * transcript: Object
+> * transcript: Array
+> * cap: Number
+> * specialisation: String
 > 
+> If successful, responds with 200 OK and JSON with attributes
+> * success: Boolean (true if update successful)
+> * updated: Object (list of attributes that were updated)
+> 
+
+> DELETE /
+>
+> Deletes the account on the database.
 > If successful, responds with 200 OK and JSON with attributes
 > * success: Boolean (true if update successful)
 > * updated: Object (list of attributes that were updated)
