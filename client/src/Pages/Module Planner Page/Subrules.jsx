@@ -8,6 +8,7 @@ function Subrules(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isRuleFulfilled, setIsRuleFulfilled] = useState();
     const [isBackendCalled, setIsBackendCalled] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const modules = props.modplan.selectedModules ? props.modplan.selectedModules.map((object) => object.moduleCode) : null;
 
     useEffect(() => {
@@ -52,11 +53,13 @@ function Subrules(props) {
 
     return (    
         <div>
-            <Card.Title 
-                        style={{color: isBackendCalled ? (isRuleFulfilled ? 'green' : 'red') : 'black'}}>{props.ruleName}</Card.Title>
+            <Card.Title onClick={() => setIsOpen(!isOpen)}
+                        style={{color: isBackendCalled ? (isRuleFulfilled ? 'green' : 'red') : 'black', cursor: 'pointer'}}>{props.ruleName}</Card.Title>
             {isLoading && <Spinner animation="border" variant="success" role="status" as="span">
                 <span className="sr-only">Loading...</span>
             </Spinner>}
+            {isOpen && <Card.Subtitle>{props.ruleDesc}</Card.Subtitle>}
+            
         </div>
     )
 

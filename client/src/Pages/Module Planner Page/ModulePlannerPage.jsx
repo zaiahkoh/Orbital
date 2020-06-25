@@ -19,29 +19,24 @@ const ModulePlannerPageTemp = (props) => {
     const module = props.modplan.modules;
 
     useEffect(() => {
-        return () => {
-            if(isEmpty(props.settings.userInfo)) {
-                props.initialSettings();
-            }
-
-            if(!isEmpty(props.settings.userInfo.modPlan)) {
-                // props.setSelectedModules(props.settings.userInfo.modPlan)
-                console.log('called');
-            }
-        };
-    }, [props.settings.userInfo])
+        if(isEmpty(props.modplan.rules)) {
+            props.callBackendAPI('Rules');
+        }
+        
+        if(isEmpty(props.modplan.modules)){
+            props.callBackendAPI('NUSMods');
+        }
+    }, [])
 
     useEffect(() => {
-        return () => {
-            if(isEmpty(props.modplan.rules)) {
-                props.callBackendAPI('Rules');
+            if(!isEmpty(props.settings.userInfo.modPlan)) {
+                console.log(props.settings.userInfo.modPlan)
+                props.setSelectedModules(null, props.settings.userInfo.modPlan)
+                console.log('called');
             }
-            
-            if(isEmpty(props.modplan.modules)){
-                props.callBackendAPI('NUSMods');
-            }
-        };
-    }, [])
+    }, [props.settings.userInfo])
+
+    
 
     const handleEvalButtonClick = () => {
         const modules = props.modplan.selectedModules;
@@ -63,7 +58,7 @@ const ModulePlannerPageTemp = (props) => {
             transcript: {}
         }
 
-        this.props.updateSettings(userData);
+        props.updateSettings(userData);
     }
     
     return (

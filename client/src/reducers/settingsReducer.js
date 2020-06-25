@@ -2,7 +2,8 @@ import {
     SET_USER_SETTINGS,
     SET_CURRENT_SEMESTER,
     SET_MATRICULATION_OPTIONS,
-    SET_TARGET_GRAD_OPTIONS
+    SET_TARGET_GRAD_OPTIONS,
+    CLEAN_UP_SETTINGS
 } from "../actions/types";
 
 const initialState = {
@@ -74,24 +75,27 @@ export default function (state = initialState, action ) {
             let targetGradOptions = []
             let option;
 
-                for(let i = 0; i <= 6; i++) {
-                    const start = Year + i;
-                    const end = start + 1;
+            for(let i = 0; i <= 6; i++) {
+                const start = Year + i;
+                const end = start + 1;
 
-                    if(i === 0) {
-                        option = `In AY ${AY} (This Year)`
-                    } else if (i === 1) {
-                        option = `In AY ${start}/${end} (Next Year)`
-                    } else {
-                        option = `In AY ${start}/${end} (In ${i} Years)`
-                    }
-                    targetGradOptions[i] = option;
+                if(i === 0) {
+                    option = `In AY ${AY} (This Year)`
+                } else if (i === 1) {
+                    option = `In AY ${start}/${end} (Next Year)`
+                } else {
+                    option = `In AY ${start}/${end} (In ${i} Years)`
                 }
+                targetGradOptions[i] = option;
+            }
 
             return{
                 ...state,
                 targetGradOptions: targetGradOptions    
             }
+        
+        case CLEAN_UP_SETTINGS:
+            return initialState;
 
         default:
             return state;

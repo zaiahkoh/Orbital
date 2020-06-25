@@ -5,7 +5,8 @@ import {
     SET_CALL_BACKEND_NOW,
     SET_SELECTED_MODULES,
     SET_MODULE_LOCATION,
-    SET_CURRRENT_SEMESTER 
+    SET_CURRRENT_SEMESTER, 
+    CLEAN_UP_MODPLAN
 } from "../actions/types";
 
 const initialState = {
@@ -101,6 +102,9 @@ export default function (state = initialState, action) {
                AY: action.AY,
                semester: action.semester
            }
+        
+        case CLEAN_UP_MODPLAN:
+            return initialState;
 
         default:
             return state

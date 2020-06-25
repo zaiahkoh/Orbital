@@ -2,7 +2,8 @@ import {
     SET_USER_SETTINGS,
     SET_CURRENT_SEMESTER,
     SET_MATRICULATION_OPTIONS,
-    SET_TARGET_GRAD_OPTIONS
+    SET_TARGET_GRAD_OPTIONS,
+    CLEAN_UP_SETTINGS
 } from "./types";
 
 import axios from "axios";
@@ -21,7 +22,7 @@ export const initialSettings = () => dispatch => {
         .then(res => dispatch(setUserSettings(res.data)))
         .catch(err => {
             console.log(err);
-            window.location.replace("/500-error")
+            // window.location.replace("/500-error")
         })
 }
 
@@ -61,6 +62,11 @@ export const setTargetGradYearOptions = (AY, Semester) => {
     }
 }
 
+export const cleanUpSettings = () => {
+    return { 
+        type: CLEAN_UP_SETTINGS
+    }
+}
 //turn array of choices into options dropdown
 // export const generateOptions = (optionList, category,) {
 

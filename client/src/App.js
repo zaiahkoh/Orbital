@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import React from "react";
+import React, { useEffect } from "react";
 import { ModuleSelectionPage } from "./Pages/Module Selection Page/ModuleSelectionPage"
 import { LoginPage } from './Pages/Login/LoginPage'
 import "./login.css";
@@ -76,18 +76,18 @@ if (localStorage.jwtToken) {
   }
 }
 
-class App extends React.Component {
-  componentWillMount () {
+const App = (props) => {
+  // useEffect(() => {
+  //   return () => {
+      
+  //   };
+  // }, [input])
 
-  }
 
-  render() {
        return (
         <div>
-          {this.props.isAuthenticated ? <PrivateNav class="navbar" /> : <PublicNav class="navbar" />}
-          
-          
-
+          {props.isAuthenticated ? <PrivateNav class="navbar" /> : <PublicNav class="navbar" />}
+        
           <Switch>
           <Route exact path="/" component={LoginPage} />
           <Route exact path="/login" component={LoginPage} />
@@ -119,7 +119,7 @@ class App extends React.Component {
            </div>
 
    );
-    }
+
 }
 
 const mapStateToProps = state => ({

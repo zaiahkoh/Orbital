@@ -1,7 +1,8 @@
 import {
     SET_MODULES_FOR_CAP,
     CALCULATE_CAP,
-    SET_SEMESTER_OPTIONS
+    SET_SEMESTER_OPTIONS,
+    CLEAN_UP_CAP
 } from "./types";
 
 export const setModulesForCap = (modplan) => {
@@ -24,3 +25,8 @@ export const setSemesterOptions = (years) => {
     }
 }
 
+export const cleanUpCAP = () => {
+    return { 
+        type: CLEAN_UP_CAP
+    }
+}

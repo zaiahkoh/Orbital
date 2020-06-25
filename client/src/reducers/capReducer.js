@@ -1,7 +1,8 @@
 import {
     SET_MODULES_FOR_CAP,
     CALCULATE_CAP,
-    SET_SEMESTER_OPTIONS
+    SET_SEMESTER_OPTIONS,
+    CLEAN_UP_CAP
 } from "../actions/types";
 
 const initialState = {
@@ -34,6 +35,9 @@ export default function(state = initialState, action) {
                 ...state,
                 semesterOptions: semesterOptions
             }
+
+        case CLEAN_UP_CAP:
+            return initialState;
 
         default: 
             return state;

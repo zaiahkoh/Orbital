@@ -24,6 +24,7 @@ class Rules extends React.Component {
                                             <Subrules
                                                 ruleName={rule.name}
                                                 ruleTag={rule.tag}
+                                                ruleDesc= {rule.desc}
                                                 callBackendNow={this.props.callBackendNow}
                                                 selectedModules={this.props.selectedModules}
                                                 updateCallBackendNow={this.props.updateCallBackendNow}/>

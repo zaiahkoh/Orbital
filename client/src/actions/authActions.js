@@ -5,9 +5,11 @@ import {
   GET_ERRORS,
   SET_CURRENT_USER,
   USER_LOADING,
-  USER_REGISTERED
+  USER_REGISTERED,
 } from "./types";
-
+import { setCurrentSemester, initialSettings, cleanUpSettings } from "./settingsActions";
+import { cleanUpModPlan } from "./modplanActions";
+import { cleanUpCAP } from "./capActions";
 
 // Register User
 export const registerUser = (userData, social) => dispatch => {
@@ -49,7 +51,25 @@ export const loginUser = (userData, status, social) => dispatch => {
       const decoded = jwt_decode(token);
       // Set current user
       dispatch(setCurrentUser(decoded, status));
-    })
+      dispatch(initialSettings());
+
+      //Set current AY and sem
+      const time = new Date();
+      const month = time.getMonth() + 1;
+      const year = time.getFullYear();
+      const isSem2 = (month <= 7);
+      let currentSemester;
+      let currentAY;
+
+      if(isSem2) {
+          currentAY = `${year - 1}/${year}`
+          currentSemester = "Semester 2"
+      } else {
+          currentAY = `${year}/${year + 1}`
+          currentSemester = "Semester 1"
+      }
+        dispatch(setCurrentSemester(currentAY, currentSemester));
+      })
     .catch(err => {
       if(err.response) {
         dispatch({
@@ -95,4 +115,8 @@ export const logoutUser = () => dispatch => {
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}, false));
+  dispatch(cleanUpSettings());
+  dispatch(cleanUpModPlan());
+  dispatch(cleanUpCAP());
+
 };
