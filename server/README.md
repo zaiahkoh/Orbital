@@ -99,3 +99,20 @@ Also relies on NUSmods API to run functions.
 > * success: Boolean (true if update successful)
 > * updated: Object (list of attributes that were updated)
 > 
+
+### '/info'
+> GET /faculties
+> 
+> Returns an array containing all the faculties. Each faculty is contained as a separate object.
+> Each object has the following keys:
+>
+> * name: String
+> * majors: Array (of objects)
+> * minors: Array (of objects)
+
+> GET /residences
+> 
+> Returns an array containing all the residences. Each residence is contained as a separate object.
+> Each object has the following keys:
+>
+> * name: String
