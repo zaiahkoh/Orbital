@@ -9,6 +9,7 @@ import {
 const initialState = {
     currentAY: null,
     currentSemester: null,
+    month: null,
     matriculationOptions:[],
     targetGradOptions: [],
     userInfo: {}
@@ -26,7 +27,8 @@ export default function (state = initialState, action ) {
             return {
                 ...state,
                 currentAY: action.currentAY,
-                currentSemester: action.currentSemester
+                currentSemester: action.currentSemester,
+                month: action.month
             }
         
         case SET_MATRICULATION_OPTIONS:

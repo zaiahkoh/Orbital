@@ -17,8 +17,8 @@ export const SET_CURRRENT_SEMESTER = "SET_CURRENT_SEMESTER";
 export const CLEAN_UP_MODPLAN = "CLEAN_UP_MODPLAN";
 
 //cap actions
-export const SET_MODULES_FOR_CAP = "SET_MODULES_FOR_CAP";
 export const SET_SEMESTER_OPTIONS = "SET_SEMESTER_OPTIONS";
+export const SET_CAP = "SET_CAP";
 export const CALCULATE_CAP = "CALCULATE_CAP";
 export const CLEAN_UP_CAP = "CLEAN_UP_CAP";
 

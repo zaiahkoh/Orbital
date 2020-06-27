@@ -61,7 +61,7 @@ if (localStorage.jwtToken) {
         currentAY = `${year}/${year + 1}`
         currentSemester = "Semester 1"
     }
-    store.dispatch(setCurrentSemester(currentAY, currentSemester));
+    store.dispatch(setCurrentSemester(currentAY, currentSemester, month));
 
     // Set user academic info 
     store.dispatch(initialSettings());

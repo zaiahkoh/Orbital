@@ -91,7 +91,6 @@ changeFaculty(value, index) {
 
   changeTargetGradYear(value) {
     const year = value.substr(6,9);
-    console.log(year);
     this.setState({
       targetGradYear: year,
     });

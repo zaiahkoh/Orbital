@@ -1,20 +1,23 @@
 import {
-    SET_MODULES_FOR_CAP,
     CALCULATE_CAP,
     SET_SEMESTER_OPTIONS,
-    CLEAN_UP_CAP
+    CLEAN_UP_CAP,
+    SET_CAP
 } from "./types";
 
-export const setModulesForCap = (modplan) => {
+export const calculateCAP = (selectedModules) => {
     return {
-        type: SET_MODULES_FOR_CAP,
-        payload: modplan
+        type: CALCULATE_CAP,
+        payload: selectedModules
     }
 }
 
-export const calculateCAP = (prevCAP) => {
+export const setCAP = (CAP, category) => {
+    console.log('called')
     return {
-        type: CALCULATE_CAP
+        type: SET_CAP,
+        payload: CAP,
+        category
     }
 }
 

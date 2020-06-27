@@ -1,23 +1,18 @@
 import {
-    SET_MODULES_FOR_CAP,
-    CALCULATE_CAP,
     SET_SEMESTER_OPTIONS,
-    CLEAN_UP_CAP
+    CALCULATE_CAP,
+    CLEAN_UP_CAP,
+    SET_CAP
 } from "../actions/types";
 
 const initialState = {
-    CAPModules: [],
+    cap: 5,
+    targetCAP: 5,
     semesterOptions: []
 };
 
 export default function(state = initialState, action) {
     switch (action.type) {
-        case SET_MODULES_FOR_CAP: 
-            return {
-                ...state, 
-                CAPModules: action.payload
-            }
-        
         case SET_SEMESTER_OPTIONS: 
             let sem1;
             let sem2;
@@ -34,6 +29,48 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 semesterOptions: semesterOptions
+            }
+        
+        case CALCULATE_CAP:
+            let totalMC = 0;
+            let totalGradePoint = 0;
+            let totalTargetMC = 0;
+            let totalTargetGradePoint = 0;
+
+            for(let i = 0; i < action.payload.length; i ++) {
+                const module = action.payload[i];
+                const MC = Number(module.moduleCredit);
+                if(module.grade && !module.SU) {
+                    totalGradePoint += (module.gradePoint * MC);
+                    totalMC += MC;
+                    totalTargetGradePoint += (module.gradePoint * MC);
+                    totalTargetMC += MC;
+                } else if (module.targetGrade) {
+                    totalTargetGradePoint += (module.gradePoint * MC);
+                    totalTargetMC += MC;
+                    console.log(module);
+                    console.log(totalTargetMC);
+                    console.log(totalTargetGradePoint);
+                }
+            }
+            // console.log(totalGradePoint);
+            // console.log(totalMC)
+            // console.log(totalTargetMC);
+            // console.log(totalTargetGradePoint);
+            const cap = totalMC === 0 ? 5 : totalGradePoint / totalMC;
+            const targetCAP = totalTargetMC === 0 ? 5 : totalTargetGradePoint / totalTargetMC;
+
+            return {
+                ...state,
+                cap: cap,
+                targetCAP: targetCAP
+            }
+    
+        case SET_CAP:
+            const cat = action.category === "target" ? "cap" : "targetCAP"
+            return {
+                ...state,
+                [cat]: action.payload,
             }
 
         case CLEAN_UP_CAP:

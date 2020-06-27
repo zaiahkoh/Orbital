@@ -28,7 +28,6 @@ export const initialSettings = () => dispatch => {
 
 export const updateSettings = (userData) => dispatch => {
     axios.defaults.timeout = 6000;
-    console.log('to send' + userData)
     axios
         .put("http://172.19.162.53:3000/account", userData)
         .then(res => dispatch(setUserSettings(res.data.updated)))
@@ -38,11 +37,12 @@ export const updateSettings = (userData) => dispatch => {
             })
 };
 
-export const setCurrentSemester = (currentAY, currentSemester) => {
+export const setCurrentSemester = (currentAY, currentSemester, month) => {
     return {
         type: SET_CURRENT_SEMESTER,
         currentAY,
-        currentSemester
+        currentSemester,
+        month
     }
 }
 

@@ -66,8 +66,7 @@ export default function (state = initialState, action) {
                     module.push(moduleAdded);
                 } else {
                     
-                    module.splice(indexOfDuplicate, 1);
-                    module.push(moduleAdded);           
+                    module.splice(indexOfDuplicate, 1, moduleAdded);         
                 }
             }
 

@@ -9,7 +9,8 @@ import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { connect } from 'react-redux';
 import { callBackendAPI, setCallBackendNow, setSelectedModules } from '../../actions/modplanActions';
-import { updateSettings, initialSettings } from "../../actions/settingsActions";
+import { updateSettings } from "../../actions/settingsActions";
+import { handleSaveClick } from "../../utils/commonFunctions";
 import PropTypes from 'prop-types';
 import isEmpty from 'is-empty'
 
@@ -30,9 +31,7 @@ const ModulePlannerPageTemp = (props) => {
 
     useEffect(() => {
             if(!isEmpty(props.settings.userInfo.modPlan)) {
-                console.log(props.settings.userInfo.modPlan)
                 props.setSelectedModules(null, props.settings.userInfo.modPlan)
-                console.log('called');
             }
     }, [props.settings.userInfo])
 
@@ -46,8 +45,8 @@ const ModulePlannerPageTemp = (props) => {
             this.props.setCallBackendNow(true);
         }
     }
-
-    const handleSaveClick = () => {
+    
+    const handleSaveButton = () => {
         const userData = {
             modPlan: props.modplan.selectedModules,
             name: props.settings.userInfo.name,
@@ -55,34 +54,34 @@ const ModulePlannerPageTemp = (props) => {
             major: props.settings.userInfo.major,
             matriculationYear: props.settings.userInfo.matriculationYear,
             targetGradYear: props.settings.userInfo.targetGradYear,
-            transcript: {}
+            transcript: props.cap.transcript
         }
-
+    
         props.updateSettings(userData);
     }
-    
+
     return (
         <DndProvider backend={Backend} >
             <div className="container-module-planner">
                 <YearDisplay
                         year="Year 1"
                         AY="2018/2019"
-                        module={props.modplan.modules} />
+                        module={module} />
 
                 <YearDisplay
                         year="Year 2"
                         AY="2019/2020"
-                        module={props.modplan.modules}/> 
+                        module={module}/> 
 
                 <YearDisplay
                         year="Year 3"
                         AY="2020/2021"
-                        module={props.modplan.modules} />
+                        module={module} />
 
                 <YearDisplay
                         year="Year 4"
                         AY="2022/2023"
-                        module={props.modplan.modules} /> 
+                        module={module} /> 
                 
                 <TrashBox
                         module={props.modplan.selectedModules}/>
@@ -90,8 +89,8 @@ const ModulePlannerPageTemp = (props) => {
 
                 <br/>
 
-                <Button className="button" id="eval-button" onClick={() => handleEvalButtonClick()}>Evaluate</Button>
-                <Button className="button" onClick={handleSaveClick} >Save</Button>
+                <button className="button" id="eval-button" onClick={() => handleEvalButtonClick()}>Evaluate</button>
+                <button className="button" onClick={() => handleSaveClick(props)} >Save</button>
                 <br/>
                 <br/>
                 <Card>
@@ -108,14 +107,17 @@ ModulePlannerPageTemp.propTypes = {
     callBackendAPI: PropTypes.func.isRequired,
     setCallBackendNow: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
-    modplan: PropTypes.object.isRequired
+    modplan: PropTypes.object.isRequired,
+    settings: PropTypes.object.isRequired,
+    cap: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    modplan: state.modplan,
-    settings: state.settings
+    settings: state.settings,
+    cap: state.cap,
+    modplan: state.modplan
 });
 
 export default connect(mapStateToProps, 
-                    { callBackendAPI, setCallBackendNow, updateSettings, setSelectedModules, initialSettings }) 
+                    { callBackendAPI, setCallBackendNow, updateSettings, setSelectedModules }) 
                     (ModulePlannerPageTemp);
