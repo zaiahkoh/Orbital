@@ -37,8 +37,7 @@ const CAPCalculatorPage = (props) => {
             props.setTranscript(null, props.settings.userInfo.transcript)
         }
 
-        if(props.settings.userInfo.cap && !props.cap.cap) {
-            console.log('this');
+        if(props.settings.userInfo.cap) {
             props.setCAP(props.settings.userInfo.cap);
             props.setCAP(props.settings.userInfo.targetCAP, "target");
         }
@@ -216,7 +215,7 @@ const CAPCalculatorPage = (props) => {
                             <td>
                                 <select 
                                     name={object}
-                                    value={object.grade}
+                                    value={object.grade || object.targetGrade} 
                                     onChange={(e) => handleGradeClick(e, object)}>
                                     <option selected disabled>Grade</option>
                                     {generateOptions(gradeList, "grade")}

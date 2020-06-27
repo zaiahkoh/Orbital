@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Board from './Board';
 import Rules from './Rules';
 import TrashBox from './TrashBox';
@@ -18,7 +18,7 @@ import isEmpty from 'is-empty'
 const ModulePlannerPageTemp = (props) => {
 
     const module = props.modplan.modules;
-
+    const [noOfYear, setNoOfYear] = useState(4)
     useEffect(() => {
         if(isEmpty(props.modplan.rules)) {
             props.callBackendAPI('Rules');
@@ -35,35 +35,55 @@ const ModulePlannerPageTemp = (props) => {
             }
     }, [props.settings.userInfo])
 
-    
+    useEffect(() => {
+        if(!isEmpty(props.settings.userInfo)) {
+            const start = props.settings.userInfo.matriculationYear.substr(0, 4);
+            const end = props.settings.userInfo.targetGradYear.substr(5, 4);
+            const noOfYear = end - start;
+            setNoOfYear(noOfYear);
+        }
+
+    }, [props.settings.userInfo.matriculationYear, props.settings.userInfo.targetGradYear])
 
     const handleEvalButtonClick = () => {
         const modules = props.modplan.selectedModules;
         if (isEmpty(modules)) {
             alert('Please add modules before evaluating');
         } else {
-            this.props.setCallBackendNow(true);
+            props.setCallBackendNow(true);
         }
     }
-    
-    const handleSaveButton = () => {
-        const userData = {
-            modPlan: props.modplan.selectedModules,
-            name: props.settings.userInfo.name,
-            residential: props.settings.userInfo.residential,
-            major: props.settings.userInfo.major,
-            matriculationYear: props.settings.userInfo.matriculationYear,
-            targetGradYear: props.settings.userInfo.targetGradYear,
-            transcript: props.cap.transcript
+
+    const generateYearObject = (noOfYear) => {
+        const year = Number(props.settings.userInfo.matriculationYear.substr(0,4));
+        let display = [];
+        for(let i = 1; i <= noOfYear; i ++) {
+            const start = year + i - 1;
+            display.push({
+                year: `Year ${i}`,
+                AY: `${start}/${start + 1}`
+            })
         }
-    
-        props.updateSettings(userData);
+        return display;
+    }
+
+    const generateYearDisplay = (yearObject) => {
+        console.log(yearObject)
+        return yearObject.map((object) => {
+            return (
+                <YearDisplay
+                    year={object.year}
+                    AY={object.AY}
+                    module={module} />
+            )
+        })
     }
 
     return (
         <DndProvider backend={Backend} >
             <div className="container-module-planner">
-                <YearDisplay
+                {!isEmpty(props.settings.userInfo) && generateYearDisplay(generateYearObject(noOfYear))}
+                {/* <YearDisplay
                         year="Year 1"
                         AY="2018/2019"
                         module={module} />
@@ -81,7 +101,7 @@ const ModulePlannerPageTemp = (props) => {
                 <YearDisplay
                         year="Year 4"
                         AY="2022/2023"
-                        module={module} /> 
+                        module={module} />  */}
                 
                 <TrashBox
                         module={props.modplan.selectedModules}/>

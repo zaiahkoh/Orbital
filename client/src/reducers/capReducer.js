@@ -48,15 +48,10 @@ export default function(state = initialState, action) {
                 } else if (module.targetGrade) {
                     totalTargetGradePoint += (module.gradePoint * MC);
                     totalTargetMC += MC;
-                    console.log(module);
-                    console.log(totalTargetMC);
-                    console.log(totalTargetGradePoint);
+                   
                 }
             }
-            // console.log(totalGradePoint);
-            // console.log(totalMC)
-            // console.log(totalTargetMC);
-            // console.log(totalTargetGradePoint);
+          
             const cap = totalMC === 0 ? 5 : totalGradePoint / totalMC;
             const targetCAP = totalTargetMC === 0 ? 5 : totalTargetGradePoint / totalTargetMC;
 
