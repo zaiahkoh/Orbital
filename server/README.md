@@ -85,7 +85,7 @@ Also relies on NUSmods API to run functions.
 > * targetGradYear: String
 > * transcript: Object
 > * cap: Number
-> * targetCap: String
+> * targetCap: Number
 > 
 > If successful, responds with 200 OK and JSON with attributes
 > * success: Boolean (true if update successful)
