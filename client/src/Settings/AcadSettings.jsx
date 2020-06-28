@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import { Options } from '../Pages/Module Selection Page/ModuleList';
 import { Link } from 'react-router-dom';
 import axios from "axios";
@@ -6,102 +6,83 @@ import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions } from "../actions/settingsActions";
+import { deleteUser } from "../actions/authActions";
 import isEmpty from "is-empty";
+import { generateOptions } from '../utils/commonFunctions';
 
 
 
-class AcadSettings extends React.Component {
-constructor(props) {
-    super(props);
+const AcadSettings = (props) => {
+  const [userInput, setUserInput] = useReducer(
+    (state, newState) => ({...state, ...newState}), 
+    {
+      faculty: props.userInfo.faculty,
+      facIndex: 2, //TEMPORARY
+      major: props.userInfo.major,
+      majorIndex: 0, //TEMPORARY
+      specialisation: props.userInfo.specialisation,
+      residence: props.userInfo.residential,
+      matriculationYear: props.userInfo.matriculationYear,
+      targetGradYear: props.userInfo.targetGradYear
+    }
+  )
 
-    this.state = {
-        faculty: null,
-        major: this.props.userInfo.major,
-        specialisation: this.props.userInfo.specialisation,
-        residenceOptions: ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'],
-        residence: this.props.userInfo.residential,
-        matriculationYear: this.props.userInfo.matriculationYear,
-        targetGradYear: this.props.userInfo.targetGradYear,
-        // dummyfac: {faculty: [{ name: 'Business',
-        //                         major: [{name: }]
-        //                         specialisation: [{name: 'A'}, ]
-        // }] }
-        dummyfac: [{'Business': [{'Business Administration': ['A', 'B']},
-                                {'Accountancy': ['C', 'D']}]},
-                {'FASS': [{'C': ['N/A']},
-                            {'D': ['N/A']}]},
-                {
-                    'Computing': [
-                                    {'Computer Science': ['N/A']},
-                                    {'Business Analytics': ['N/A']}
-                    ]
-                }],
-        
-    };
+  const residenceOptions = ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'];
+  const dummyfac = [{'Business': [{'Business Administration': ['A', 'B']},
+                    {'Accountancy': ['C', 'D']}]},
+                  {'FASS': [{'C': ['N/A']},
+                  {'D': ['N/A']}]},
+                  {
+                  'Computing': [
+                        {'Computer Science': ['N/A']},
+                        {'Business Analytics': ['N/A']}
+                  ] 
+  }];
 
-    this.changeFaculty = this.changeFaculty.bind(this);
-    this.changeMajor=this.changeMajor.bind(this);
-    this.changeSpecialisation= this.changeSpecialisation.bind(this);
-    this.changeResidence= this.changeResidence.bind(this);
-    this.changeMatriculationYear= this.changeMatriculationYear.bind(this);
-    this.changeTargetGradYear= this.changeTargetGradYear.bind(this);
-    this.generateOptions =this.generateOptions.bind(this);
-}
+  useEffect(() => {
+    if(!isEmpty(props.settings.userInfo)) {
 
-componentWillMount () {
-  if(isEmpty(this.props.settings.matriculationOptions)) {
-    this.props.setMatriculationYearOptions(this.props.settings.currentAY, this.props.settings.currentSemester)
-    this.props.setTargetGradYearOptions(this.props.settings.currentAY, this.props.settings.currentSemester)
-  }
-}
+      if (isEmpty(props.settings.matriculationOptions)) {
+        props.setMatriculationYearOptions(props.settings.currentAY, props.settings.currentSemester);
+        props.setTargetGradYearOptions(props.settings.currentAY, props.settings.currentSemester);
+      } 
 
-changeFaculty(value, index) {
-    this.setState({
-      faculty: value,
-      facIndex: index,
-      major: null
-    });
-  }
+      setUserInput({
+        faculty: props.userInfo.faculty,
+        facIndex: 2, //TEMPORARY
+        major: props.userInfo.major,
+        majorIndex: 0, //TEMPORARY
+        specialisation: props.userInfo.specialisation,
+        residence: props.userInfo.residential,
+        matriculationYear: props.userInfo.matriculationYear,
+        targetGradYear: props.userInfo.targetGradYear
+      });
+    }
+  }, [props.settings.userInfo]);
 
-  changeMajor(value, index) {
-    this.setState({
-      major: value,
-      majorIndex: index
-    });
-  }
+  const handleChange = (e) => {
+    const {name, value, selectedIndex} = e.target;
 
-  changeSpecialisation(value) {
-    this.setState({
-      specialisation: value,
-    });
-  }
+    if(name === "faculty") {
+      setUserInput({[name]: value,
+                      facIndex: (selectedIndex - 1),
+                      major: null});
 
-  changeResidence(value) {
-    this.setState({
-      residence: value,
-    });
-  }
+    } else if(name === "major") {
+      setUserInput({[name]: value,
+                      majorIndex: (selectedIndex - 1)});
 
-  changeMatriculationYear(value) {
-    const year = value.substr(3,9);
-    this.setState({
-      matriculationYear: year,
-    });
-  }
+    } else {
+      setUserInput({[name]: value});
+    } 
 
-  changeTargetGradYear(value) {
-    const year = value.substr(6,9);
-    this.setState({
-      targetGradYear: year,
-    });
-  }
+  };
 
-
-//   //turn array of choices into options dropdown
-  generateOptions(choices) {
-    let facIndex = this.state.facIndex;
+ //turn array of choices into options dropdown
+  const generateOptions = (choices) => {
+    let facIndex = userInput.facIndex;
   if(choices === 'faculty'){
-    return this.state.dummyfac.map((obj) => {
+    return dummyfac.map((obj) => {
       return (
       <option value={Object.keys(obj)}>
         {Object.keys(obj)}
@@ -109,99 +90,191 @@ changeFaculty(value, index) {
       );
     });
   } else if(choices === 'major') {
-      if(this.state.faculty) {
-    return this.state.dummyfac
-           [facIndex]
-           [this.state.faculty].map((obj) => {
-                  return (
-                    <option value={Object.keys(obj)}>
-                      {Object.keys(obj)}
-                    </option>
-                  )
-              }
-    )}
-  } else if(choices === 'specialisation') {
-      if(this.state.major && this.state.faculty) {
-      return this.state.dummyfac
-             [facIndex]
-             [this.state.faculty][this.state.majorIndex][this.state.major].map((item) => {
-                  return (
-                    <option>
-                      {item}
-                    </option>
-                  )
-                }    
+      if(userInput.faculty) {
+      return dummyfac
+            [facIndex]
+            [userInput.faculty].map((obj) => {
+                    return (
+                      <option value={Object.keys(obj)}>
+                        {Object.keys(obj)}
+                      </option>
+                    )
+                }
       )}
-  } else if(choices === 'residence') {
-    return this.state.residenceOptions.map((obj) => {
-      return (
-      <option value={obj}>
-        {obj}
-      </option>
-      );
-    });
-  } else {
-      let options;
-
-      if(choices === 'matriculationYear') {
-        options = this.props.settings.matriculationOptions
-      } else {
-        options = this.props.settings.targetGradOptions
-      }
-
-    return options.map((option) => {
-      return (
-      <option value={option}>
-        {option}
-      </option>
-      );
-    });
-  }
-}
-
-handleSubmit = () => {
-  const userData = {
-    major: this.state.major,
-    specialisation: this.state.specialisation,
-    residential: this.state.residence,
-    matriculationYear: this.state.matriculationYear,
-    targetGradYear: this.state.targetGradYear,
-    name: this.props.settings.userInfo.name,
-    modPlan: this.props.modplan
-  }
-
-  this.props.updateSettings(userData);
-}
-
-    render() {
+    } else if(choices === 'specialisation') {
+        if(userInput.major && userInput.faculty) {
+        return dummyfac
+              [facIndex]
+              [userInput.faculty][userInput.majorIndex][userInput.major].map((item) => {
+                    return (
+                      <option>
+                        {item}
+                      </option>
+                    )
+                  }    
+        )}
+    } else if(choices === 'residence') {
+      return residenceOptions.map((obj) => {
         return (
-            <div>
-              <h5>Enter your particulars so that we can personalise your user experience!</h5>
-
-              <Options 
-                onFacultyChange={this.changeFaculty}
-                onMajorChange={this.changeMajor}
-                onSpecialisationChange={this.changeSpecialisation}
-                onResidenceChange={this.changeResidence}
-                onMatriculationChange={this.changeMatriculationYear}
-                onTargetGradChange={this.changeTargetGradYear}
-                facultyOptions={this.generateOptions('faculty')}
-                majorOptions={this.generateOptions('major')}
-                specialisationOptions={this.generateOptions('specialisation')}
-                residenceOptions={this.generateOptions('residence')}
-                matriculationYearOptions={this.generateOptions('matriculationYear')}
-                targetGradYearOptions={this.generateOptions('targetGradYear')}
-              />
-
-              <Button class='button' onClick={this.handleSubmit}>Save Academic Settings</Button>
-            </div>
+        <option value={obj}>
+          {obj}
+        </option>
         );
-    }
+      });
+    } else {
+        if(choices === 'matriculationYear') {
+          return props.settings.matriculationOptions.map((option) => {
+            return (
+            <option value={option.substr(3,9)}>
+              {option}
+            </option>
+            );
+          });
+        } else {
+            return props.settings.targetGradOptions.map((option) => {
+              return (
+              <option value={option.substr(6,9)}>
+                {option}
+              </option>
+              );
+            });
+          }
+      }
 }
+
+const handleSubmit = () => {
+  const userData = {
+    faculty: userInput.faculty,
+    facIndex: userInput.facIndex,
+    major: userInput.major,
+    major: userInput.majorIndex,
+    specialisation: userInput.specialisation,
+    residential: userInput.residence,
+    matriculationYear: userInput.matriculationYear,
+    targetGradYear: userInput.targetGradYear,
+    name: props.settings.userInfo.name,
+    modPlan: props.modplan
+  }
+
+  props.updateSettings(userData);
+}
+
+  return (
+      <div className="container">
+        <h5>Enter your particulars so that we can personalise your user experience!</h5>
+
+        <form>
+          <label>Your Faculty: {userInput.faculty}</label>
+          <select
+              name="faculty" 
+              onChange={handleChange}
+              value={userInput.faculty}>
+                <option selected disabled>
+                  Choose Your Faculty
+                </option>
+              {generateOptions("faculty")}
+            </select>   
+            <br/>
+            <br/>
+
+            <label>Your Major: {userInput.major}</label>
+            <select
+              name="major"
+              onChange={handleChange}
+              value={userInput.major}>
+                (<option selected disabled>
+                  Choose Your Major
+                </option>)
+              {generateOptions("major") }
+            </select>
+            <br/>
+            <br/>
+
+            <label>Your Specialisation: {userInput.specialisation}  </label>
+            <select
+              name="specialisation"
+              onChange={handleChange}
+              value={userInput.specialisation}>
+                (<option selected disabled>
+                  Choose Your Specialisation
+                </option>)
+              {generateOptions("specialisation")}
+            </select>
+            <br/>
+            <br/>
+
+            <label>Your Residential College: {userInput.residence}</label>
+            <select
+              name="residence"
+              onChange={handleChange}
+              value={userInput.residence}>
+                (<option selected disabled>
+                  Choose Your Residence
+                </option>)
+              {generateOptions("residence")}
+            </select>
+            <br/>
+            <br/>
+
+            <label>Year of Matriculation: {userInput.matriculationYear}</label>
+            <select
+              name="matriculationYear"
+              onChange={handleChange}
+              value={userInput.matriculationYear}>
+                (<option selected disabled>
+                  Choose Your Year of Matriculation
+                </option>)
+              {generateOptions("matriculationYear")}
+            </select>
+            <br/>
+            <br/>
+
+            <label>Target Graduation Year: {userInput.targetGradYear}</label>
+            <select
+              name="targetGradYear"
+              onChange={handleChange}
+              value={userInput.targetGradYear}>
+                (<option selected disabled>
+                  Choose Your Target Graduation Year
+                </option>)
+              {generateOptions("targetGradYear")}
+            </select>
+            <br/>
+            <br/>
+          </form>
+        {/* <Options 
+          faculty={this.state.faculty}
+          major={this.state.major}
+          specialisation={this.state.specialisation}
+          residential={this.state.residence}
+          matriculationYear={this.state.matriculationYear}
+          targetGradYear={this.state.targetGradYear}
+          onFacultyChange={this.changeFaculty}
+          onMajorChange={this.changeMajor}
+          onSpecialisationChange={this.changeSpecialisation}
+          onResidenceChange={this.changeResidence}
+          onMatriculationChange={this.changeMatriculationYear}
+          onTargetGradChange={this.changeTargetGradYear}
+          facultyOptions={this.generateOptions('faculty')}
+          majorOptions={this.generateOptions('major')}
+          specialisationOptions={this.generateOptions('specialisation')}
+          residenceOptions={this.generateOptions('residence')}
+          matriculationYearOptions={this.generateOptions('matriculationYear')}
+          targetGradYearOptions={this.generateOptions('targetGradYear')}
+        /> */}
+
+        <Button className='button' id='save' onClick={() => handleSubmit()}>Save Settings</Button>
+        <Button className='button' id='delete' onClick={() => props.deleteUser()}>Delete Account</Button>
+      </div>
+  );
+}
+
 
 AcadSettings.propTypes = {
   updateSettings: PropTypes.func.isRequired,
   setMatriculationYearOptions: PropTypes.func.isRequired,
+  setTargetGradYearOptions: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
   modplan: PropTypes.object.isRequired,
   settings: PropTypes.object.isRequired
 };
@@ -213,4 +286,4 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, 
-  { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions }) (AcadSettings);
+  { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions, deleteUser }) (AcadSettings);

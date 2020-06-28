@@ -72,10 +72,11 @@ export class Options extends React.Component {
       return (
        <div>
       <form onSubmit={this.handleSubmit}>
-       <label>Your Faculty:  </label>
+       <label>Your Faculty: {this.props.faculty}</label>
        <select
           id="Faculty" 
-          onChange={this.handleFacultyChange}>
+          onChange={this.handleFacultyChange}
+          value={this.props.faculty}>
             <option selected disabled>
               Choose Your Faculty
              </option>
@@ -84,10 +85,11 @@ export class Options extends React.Component {
         <br/>
         <br/>
 
-        <label>Your Major  </label>
+        <label>Your Major: {this.props.major}</label>
         <select
           id="Major"
-          onChange={this.handleMajorChange}>
+          onChange={this.handleMajorChange}
+          value={this.props.major}>
             (<option selected disabled>
               Choose Your Major
              </option>)
@@ -96,10 +98,11 @@ export class Options extends React.Component {
         <br/>
         <br/>
 
-        <label>Your Specialisation  </label>
+        <label>Your Specialisation: {this.props.specialisation}  </label>
         <select
           id="Specialisation"
-          onChange={this.handleSpecialisationChange}>
+          onChange={this.handleSpecialisationChange}
+          value={this.props.specialisation}>
              (<option selected disabled>
               Choose Your Specialisation
              </option>)
@@ -108,10 +111,11 @@ export class Options extends React.Component {
         <br/>
         <br/>
 
-        <label>Your Residential College  </label>
+        <label>Your Residential College: {this.props.residential}</label>
         <select
           id="Residence"
-          onChange={this.handleResidenceChange}>
+          onChange={this.handleResidenceChange}
+          value={this.props.residential}>
              (<option selected disabled>
               Choose Your Residence
              </option>)
@@ -120,10 +124,11 @@ export class Options extends React.Component {
         <br/>
         <br/>
 
-        <label>Year of Matriculation  </label>
+        <label>Year of Matriculation: {this.props.matriculationYear}</label>
         <select
           id="matriculationYear"
-          onChange={this.handleMatriculationChange}>
+          onChange={this.handleMatriculationChange}
+          value={this.props.matriculationYear}>
              (<option selected disabled>
               Choose Your Year of Matriculation
              </option>)
@@ -132,10 +137,11 @@ export class Options extends React.Component {
         <br/>
         <br/>
 
-        <label>Target Graduation Year</label>
+        <label>Target Graduation Year: {this.props.targetGradYear}</label>
         <select
           id="graduationYear"
-          onChange={this.handleTargetGradChange}>
+          onChange={this.handleTargetGradChange}
+          value={this.props.targetGradYear}>
              (<option selected disabled>
               Choose Your Target Graduation Year
              </option>)

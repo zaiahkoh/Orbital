@@ -99,6 +99,7 @@ input {
 	width: 768px;
 	max-width: 100%;
 	min-height: 480px;
+	margin-bottom: 20px;
 }
 
 .form-container {
@@ -257,13 +258,37 @@ footer a {
 	height: 60px;
 	align-items: center;
 	justify-items: center;
+	position: sticky;
   }
 
 .navlink, .navbrand {
 	color: #fff;
 	text-decoration: none;
 	margin-top: 15px;
+	margin-right: 100px;
+	transition: all 0.15s ease-in;
 }
+.navlink:hover {
+	color: grey;
+	text-decoration: none;
+}
+
+/* Settings */
+#delete {
+	background-color: #de4949;
+	border: none;
+	margin-left: 10px;
+	margin-bottom: 20px;
+}
+
+#save {
+	align-items: center;
+	justify-items: center;
+	margin-left: 215px;
+	margin-bottom: 20px;
+}
+
+
 
 /* Module Planner CSS */
 .container-module-planner {
@@ -277,7 +302,16 @@ footer a {
 .button {
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #11224b;
+	border: none;
 	width: 150px;
+}
+
+#addModule {
+	margin-top: 20px;
+}
+
+#module-card {
+
 }
 
 .button #eval-button {
@@ -300,6 +334,12 @@ h2 .year-title {
 }
 
 .AutoCompleteText .autocomplete-input{
-	width: 150px;
+	width: 250px;
 	margin: 0;
+}
+
+.col-3 {
+	display: flex;
+	align-items: center;	
+	justify-content: center;
 }

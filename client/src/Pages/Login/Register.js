@@ -36,7 +36,7 @@ class Register extends React.Component {
           this.props.loginUser(userData, true)
         } 
          else {
-          this.props.history.push('/first-setting');
+          this.props.history.push('/settings/academics');
         }
       
       }

@@ -73,7 +73,7 @@ function Board (props) {
                                             AY={props.AY}
                                             location={props.id}
                                             module={props.module}/>}
-                <Button className="button" onClick={handleButtonClick}>Add Module</Button>
+                <Button className="button" id="addModule" onClick={handleButtonClick}>Add Module</Button>
                 <h5>Total MCs: {totalMCs}</h5>
                 
                 </div>

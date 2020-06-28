@@ -30,7 +30,8 @@ const ModulePlannerPageTemp = (props) => {
     }, [])
 
     useEffect(() => {
-            if(!isEmpty(props.settings.userInfo.modPlan)) {
+            if(!isEmpty(props.settings.userInfo.modPlan) && isEmpty(props.modplan.selectedModules)) {
+                console.log(props.modplan.selectedModules)
                 props.setSelectedModules(null, props.settings.userInfo.modPlan)
             }
     }, [props.settings.userInfo])

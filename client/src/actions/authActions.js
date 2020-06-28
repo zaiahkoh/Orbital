@@ -28,7 +28,7 @@ export const registerUser = (userData, social) => dispatch => {
 
       else {
         console.log(err);
-        window.location.replace("/500-error")
+        // window.location.replace("/500-error")
       }
     }
     );
@@ -68,7 +68,7 @@ export const loginUser = (userData, status, social) => dispatch => {
           currentAY = `${year}/${year + 1}`
           currentSemester = "Semester 1"
       }
-        dispatch(setCurrentSemester(currentAY, currentSemester));
+        dispatch(setCurrentSemester(currentAY, currentSemester, month));
       })
     .catch(err => {
       if(err.response) {
@@ -77,7 +77,8 @@ export const loginUser = (userData, status, social) => dispatch => {
           payload: err.response.data
         })
       } else {
-        window.location.replace("/500-error")
+        console.log(err)
+        // window.location.replace("/500-error")
       } 
     
     }
@@ -120,3 +121,9 @@ export const logoutUser = () => dispatch => {
   dispatch(cleanUpCAP());
 
 };
+
+export const deleteUser = () => dispatch => {
+  axios.delete("http://172.19.162.53:3000/account")
+    .then(res => dispatch(logoutUser()))
+    .catch(err => console.log(err))
+}
