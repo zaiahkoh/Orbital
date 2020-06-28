@@ -44,7 +44,7 @@ const UserSchema = new Schema({
     type: String
   },
   targetCap: {
-    type: String
+    type: Number
   }
 });
 
