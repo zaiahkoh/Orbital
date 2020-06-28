@@ -28,7 +28,9 @@ function Board (props) {
                     id={object.moduleCode}
                     location={props.id}
                     title={`${object.moduleCode}: ${object.title}`}
-                    MCs={object.moduleCredit}/>)});
+                    MCs={object.moduleCredit}
+                    del={props.setModuleLocation}
+                    selectedModules={props.modplan.selectedModules}/>)});
 
     const [{ isOver }, drop] = useDrop({
             accept: ItemTypes.CARD,
@@ -59,10 +61,10 @@ function Board (props) {
             <div   
                 ref={drop}
                 id={props.id}
-                style={{width: '20rem'}}
+                style={{width: '250px'}}
             >
 
-            <div className="" style={{width: '165px', 
+            <div className="" style={{width: '250px', 
                         height: (!isBoardFilled) && '59px', 
                         outline: isBoardFilled ? 'none' : '1px dotted'}}>
                             {isBoardFilled ? generateCards : 'Drop module here'}

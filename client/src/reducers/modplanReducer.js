@@ -31,7 +31,6 @@ export default function (state = initialState, action) {
         }
         case SET_RULES: 
             return {
-                
                 ...state,
                 rules: action.payload
         }
@@ -82,6 +81,8 @@ export default function (state = initialState, action) {
 
             if(!location) {
                 changedModule = modulesToFilter.filter((object) => object.moduleCode !== item.id);
+                console.log(modulesToFilter.filter((object) => object.moduleCode === item.id));
+                console.log(changedModule);
             } else {
                 const temp = modulesToFilter.filter((object) => object.moduleCode === item.id);
                 const moduleToChange = [...temp];

@@ -6,7 +6,7 @@ function YearDisplay(props) {
     return (
         <div className="year-display">
 
-        <Card style={{width: '360px'}}>
+        <Card style={{width: '600px'}}>
             <Card.Title>{props.year}</Card.Title>
             <Card.Subtitle>{props.AY}</Card.Subtitle>
             <Card.Body>

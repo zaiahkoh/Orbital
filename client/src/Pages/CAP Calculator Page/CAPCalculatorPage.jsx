@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import AutoCompleteText from "../Module Planner Page/AutocompleteText";
+import { Button } from "react-bootstrap";
 import PropTypes from 'prop-types';
 import { setSemesterOptions, calculateCAP, setCAP } from '../../actions/capActions';
 import { updateSettings } from "../../actions/settingsActions";
-import { setSelectedModules } from "../../actions/modplanActions";
+import { setSelectedModules, callBackendAPI, setModuleLocation } from "../../actions/modplanActions";
 import { generateOptions, handleSaveClick } from "../../utils/commonFunctions";
 import isEmpty from 'is-empty';
 
@@ -27,9 +29,17 @@ const CAPCalculatorPage = (props) => {
     const [isPast, setIsPast] = useState();
     const [userSemester, setUserSemester] = useState();
     const [semester, setSemester] = useState("Year 1 Semester 1");
-    
+    const [AY, setAY] = useState();
+    const [isTextBoxOpen, setIsTextBoxOpen] = useState(false);
+
     useEffect(() => {
-        if (!isEmpty(props.settings.userInfo.modPlan) && isEmpty(props.selectedModules)) {
+        if(isEmpty(props.modplan.modules)) {
+            props.callBackendAPI("NUSMods");
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!isEmpty(props.settings.userInfo.modPlan) && isEmpty(props.modplan.selectedModules)) {
             props.setSelectedModules(null, props.settings.userInfo.modPlan)
         } 
 
@@ -38,8 +48,11 @@ const CAPCalculatorPage = (props) => {
         }
 
         if(props.settings.userInfo.cap) {
-            props.setCAP(props.settings.userInfo.cap);
-            props.setCAP(props.settings.userInfo.targetCAP, "target");
+            if (!props.settings.userInfo.targetCap) {
+                props.setCAP(props.settings.userInfo.cap, 5);
+            } else {
+                props.setCAP(props.settings.userInfo.cap, props.settings.userInfo.targetCap);
+            }
         }
     }, [props.settings.userInfo])
 
@@ -84,10 +97,18 @@ const CAPCalculatorPage = (props) => {
         } else {
             setIsPast(false);
         }
+
+        //convert semester chosen to AY
+        const year = Number(semester.substr(5, 1));
+        const matYear = !isEmpty(props.settings.userInfo) ? Number(props.settings.userInfo.matriculationYear.substr(0,4)) : 0;
+        const end =  matYear + year;
+        setAY(`${end - 1}/${end}`);
     }, [semester])
 
     useEffect(() => {
-        props.calculateCAP(props.modplan.selectedModules);
+        if(!isEmpty(props.modplan.selectedModules)) {
+            props.calculateCAP(props.modplan.selectedModules);
+        }
     }, [props.modplan.selectedModules])
 
     // const checkDuplicate = (moduleAdded, transcript) => {
@@ -228,6 +249,12 @@ const CAPCalculatorPage = (props) => {
                                     checked={object.SU}
                                     onChange={(e) => handleCheckboxChange(e, object)}/>
                             </td>}
+                            <td>
+                                <i  
+                                    class="fa fa-trash-alt"
+                                    style={{cursor: "pointer"}}
+                                    onClick={() => props.setModuleLocation({id: object.moduleCode}, null, null, props.modplan.selectedModules)} />
+                            </td>
                         </tr>
                     )
                 })   
@@ -237,7 +264,7 @@ const CAPCalculatorPage = (props) => {
         <div className="ml-4">
             <h1 className="display-3">CAP Calculator</h1>
             <h3>Current CAP: {props.cap.cap}</h3>
-            <h3>Target CAP: {props.cap.targetCAP}</h3>
+            <h3>Target CAP: {props.cap.targetCap}</h3>
             {/* <h5 onClick={() => {this.setState({open: true})}}>Or click here to manually input CAP</h5> */}
             {/* {this.state.open && (<input type="text"/>)} */}
             <label>Semester: </label>
@@ -252,6 +279,7 @@ const CAPCalculatorPage = (props) => {
             </select>
             <br/>
             
+            {/* Table to display modules taken according to modulePlanner */}
             <h3>Courses taken this semester</h3>
             <table className="table table-hover">
                 <th>Module Title</th>
@@ -259,11 +287,23 @@ const CAPCalculatorPage = (props) => {
                 <th>Modular Credits</th>
                 <th>{isPast ? "Grade" : "Target Grade"}</th>
                 {isPast && <th>S/U</th>}
+                <th></th>
                 <tbody>
                     {!isEmpty(props.settings.userInfo) && generateTable()}
                 </tbody>
             </table>
-            <button onClick={() => handleSaveClick(props)}>{isPast ? "Save Transcript" : "Save Target Grade" }</button>
+
+            {/* For users to add modules directly from CAP Calculator */}
+            {isTextBoxOpen && <AutoCompleteText 
+                                            AY={AY}
+                                            location={semester}
+                                            module={props.modplan.modules}/>}
+            <Button className="button" onClick={() => setIsTextBoxOpen(!isTextBoxOpen)}>Add Module</Button>
+            
+            <br/>
+            <br/>
+
+            <Button className="button" onClick={() => handleSaveClick(props)}>{isPast ? "Save Transcript" : "Save Target Grade" }</Button>
         
         </div>
     );
@@ -273,6 +313,8 @@ const CAPCalculatorPage = (props) => {
 CAPCalculatorPage.propType = {
     setSemesterOptions: PropTypes.func.isRequired,
     setSelectedModules: PropTypes.func.isRequired,
+    callBackendAPI: PropTypes.func.isRequired,
+    setModuleLocation: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
     generateOptions: PropTypes.func.isRequired,
     calculateCAP: PropTypes.func.isRequired,
@@ -289,7 +331,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps,
-                        { setSemesterOptions, setSelectedModules, updateSettings, calculateCAP, setCAP })
+                        { setSemesterOptions, setSelectedModules, callBackendAPI, setModuleLocation, updateSettings, calculateCAP, setCAP })
                         (CAPCalculatorPage);
 
 

@@ -9,6 +9,7 @@ import {
     SET_CURRRENT_SEMESTER,
     CLEAN_UP_MODPLAN
 } from './types';
+import setAuthToken from '../utils/setAuthToken';
 
 
 
@@ -18,22 +19,31 @@ export const setIsBoardFilled = () => {
     }
 }
 
-export const callBackendAPI = (backend) => dispatch => {
-    let link = backend === 'NUSMods' ? 'https://api.nusmods.com/v2/2018-2019/moduleInfo.json' 
-                    : 'http://172.19.162.53:3000/rules/r_cs_degree';
-    let func = (backend === 'NUSMods') ? setModules : setRules;
-    return fetch(link)
-    .then(response => {
-            if(response.ok) {
-                return response.json()
-            } else {
-                throw Error(response.json().message)
-            }
-        }) 
-    .then(res => dispatch(func(res)))
-    .catch(err => {
-        console.log(err)
-    });
+export const callBackendAPI = (backend, ulrTag, degreeTag) => dispatch => {
+
+    if(backend === 'NUSMods') {
+        setAuthToken(false);
+
+        axios.get('https://api.nusmods.com/v2/2018-2019/moduleInfo.json' )
+        .then(res => dispatch(setModules(res.data)))
+        .then(setAuthToken(localStorage.jwtToken))
+        .catch(err => {
+            console.log(err)
+        });
+        
+    } else {
+        axios.all([
+            axios.get('http://172.19.162.53:3000/rules/' + ulrTag),
+            axios.get('http://172.19.162.53:3000/rules/' + degreeTag)
+        ])
+        .then(resArr => {
+                dispatch(setRules([resArr[0].data, resArr[1].data]));
+            }) 
+        .catch(err => {
+            console.log(err)
+        });
+    }
+    
 }
 
 //AXIOS CALL BUT IT DOESNT WORK -- FOR FUTURE REFERENCE

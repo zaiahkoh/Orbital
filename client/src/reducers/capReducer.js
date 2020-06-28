@@ -7,7 +7,7 @@ import {
 
 const initialState = {
     cap: 5,
-    targetCAP: 5,
+    targetCap: 5,
     semesterOptions: []
 };
 
@@ -53,19 +53,21 @@ export default function(state = initialState, action) {
             }
           
             const cap = totalMC === 0 ? 5 : totalGradePoint / totalMC;
-            const targetCAP = totalTargetMC === 0 ? 5 : totalTargetGradePoint / totalTargetMC;
+            const roundedCap = Math.round((cap + Number.EPSILON) * 100) / 100;
+            const targetCap = totalTargetMC === 0 ? 5 : totalTargetGradePoint / totalTargetMC;
+            const roundedTargetCap = Math.round((targetCap + Number.EPSILON) * 100) / 100;
 
             return {
                 ...state,
-                cap: cap,
-                targetCAP: targetCAP
+                cap: roundedCap,
+                targetCap: roundedTargetCap
             }
     
         case SET_CAP:
-            const cat = action.category === "target" ? "cap" : "targetCAP"
             return {
                 ...state,
-                [cat]: action.payload,
+                cap: action.cap,
+                targetCap: action.targetCap
             }
 
         case CLEAN_UP_CAP:

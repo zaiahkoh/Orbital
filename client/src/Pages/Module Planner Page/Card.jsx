@@ -14,20 +14,26 @@ const ModuleCard = props => {
         })
     })
    
-
+    let message = false;
     return (
         <Button
             ref={drag}
             id={props.id}
             className="button"
             style={{
-                width: '165px',
+                width: '250px',
                 opacity: isDragging ? 0 : 1,
-                cursor: 'grabbing'}}
+                cursor: isDragging ? 'grabbing' : 'grab'}}
         >
-            <small>{props.title}</small>
+            <span>{props.title}</span>
                 <br/>
-            <small>{props.MCs + ' MCs'}</small>
+            <span>{props.MCs + ' MCs'}</span>
+            <br />
+            <i  
+                class="fa fa-trash-alt"
+                style={{cursor: "pointer"}}
+                onClick={() => {}} 
+                onDoubleClick={() => props.del({id: props.id}, null, null, props.selectedModules)} />
         </Button>
     )
 }

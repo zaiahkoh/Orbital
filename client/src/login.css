@@ -294,7 +294,12 @@ h2 .year-title {
 	justify-items: left;
 }
 
-.AutoCompleteText .autocomplete-input {
-	width: 165px;
+.AutoCompleteText {
+	width: 150px;
+	margin: 0;
+}
+
+.AutoCompleteText .autocomplete-input{
+	width: 150px;
 	margin: 0;
 }

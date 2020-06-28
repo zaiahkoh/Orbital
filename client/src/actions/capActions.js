@@ -12,12 +12,12 @@ export const calculateCAP = (selectedModules) => {
     }
 }
 
-export const setCAP = (CAP, category) => {
-    console.log('called')
+export const setCAP = (cap, targetCap) => {
     return {
         type: SET_CAP,
-        payload: CAP,
-        category
+        cap,
+        targetCap
+
     }
 }
 

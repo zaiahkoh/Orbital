@@ -67,19 +67,18 @@ class AutoCompleteText extends React.Component {
     render () {
         const { text } = this.state;
         return (
-            <div>
+
                 <div className="AutoCompleteText">
-                <input 
-                       className="autocomplete-input"
-                       value={text}
-                       onChange={this.handleTextChange}
-                       type="text"
-                       placeholder="Enter module code" />
-                {this.renderSuggestions()}
+                    <input 
+                        className="autocomplete-input"
+                        value={text}
+                        onChange={this.handleTextChange}
+                        type="text"
+                        placeholder="Enter module code" />
+                    {this.renderSuggestions()}
                 
                 </div>
 
-                </div>
         )
     }
 }

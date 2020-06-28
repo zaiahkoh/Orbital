@@ -21,7 +21,7 @@ const ModulePlannerPageTemp = (props) => {
     const [noOfYear, setNoOfYear] = useState(4)
     useEffect(() => {
         if(isEmpty(props.modplan.rules)) {
-            props.callBackendAPI('Rules');
+            props.callBackendAPI('Rules', "r_ulr", "r_cs_degree");
         }
         
         if(isEmpty(props.modplan.modules)){
@@ -68,7 +68,6 @@ const ModulePlannerPageTemp = (props) => {
     }
 
     const generateYearDisplay = (yearObject) => {
-        console.log(yearObject)
         return yearObject.map((object) => {
             return (
                 <YearDisplay
@@ -115,7 +114,8 @@ const ModulePlannerPageTemp = (props) => {
                 <br/>
                 <Card>
                     <Rules
-                        rules={props.modplan.rules}/>
+                        rules={props.modplan.rules}
+                        settings={props.settings}/>
                 </Card>
                 <br/>
             </div>
