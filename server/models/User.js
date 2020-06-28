@@ -32,15 +32,18 @@ const UserSchema = new Schema({
     type: String
   },
   transcript: {
-    type: Array
+    type: Object
   },
   modPlan: {
-      type: Array
+      type: Object
   },
   cap: {
     type: Number
   },
   specialisation: {
+    type: String
+  },
+  targetCap: {
     type: String
   }
 });

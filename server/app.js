@@ -9,6 +9,7 @@ const evalRouter = require('./routes/eval');
 const rulesRouter = require('./routes/rules');
 const userRouter = require("./routes/user");
 const accountRouter = require('./routes/account');
+const infoRouter = require('./routes/info');
 
 const app = express();
 app.use(bodyParser.json());
@@ -33,6 +34,7 @@ app.use('/', indexRouter);
 app.use('/eval', evalRouter);
 app.use('/rules', rulesRouter);
 app.use('/user', userRouter);
+app.use('/info', infoRouter);
 app.use('/account', passport.authenticate('jwt', {session: false}), accountRouter);
 
 

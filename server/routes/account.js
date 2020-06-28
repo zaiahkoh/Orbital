@@ -20,8 +20,12 @@ router.put('/', (req, res) => {
     targetGradYear, 
     transcript,
     specialisation,
-    cap
+    cap,
+    targetCap
   } = req.body;
+  console.log('req received')
+  console.log('direct',req.body.modPlan);
+  console.log('indirect', modPlan);
   if (modPlan) user.modPlan = modPlan;
   if (name) user.name = name;
   if (residential) user.residential = residential;
@@ -31,6 +35,7 @@ router.put('/', (req, res) => {
   if (transcript) user.transcript = transcript;
   if (specialisation) user.specialisation = specialisation;
   if (cap) user.cap = cap;
+  if (targetCap) user.targetCap = targetCap;
   user.save()
   .then(user => {
     res.status(200).json({
@@ -44,7 +49,8 @@ router.put('/', (req, res) => {
         targetGradYear: targetGradYear,
         transcript: transcript,
         specialisation: specialisation,
-        cap: cap
+        cap: cap,
+        targetCap: targetCap
       }
     });
   })

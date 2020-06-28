@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon dev.js"
   },
   "author": "Isaiah Koh",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "validator": "^13.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "request": "^2.88.2"
   }
 }
