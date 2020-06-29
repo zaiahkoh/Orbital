@@ -34,8 +34,8 @@ const ModuleCard = props => {
                 </div>
                 <div className="col-3">
                 <i  
-                class="fa fa-trash-alt"
-                style={{cursor: "pointer"}}
+                class="fa fa-trash-alt fa-border"
+                id="mod-plan-trash"
                 onClick={() => {}} 
                 onDoubleClick={() => props.del({id: props.id}, null, null, props.selectedModules)} />
                 </div>

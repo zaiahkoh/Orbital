@@ -9,7 +9,8 @@ import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { connect } from 'react-redux';
 import { callBackendAPI, setCallBackendNow, setSelectedModules } from '../../actions/modplanActions';
-import { updateSettings } from "../../actions/settingsActions";
+import { updateSettings, initialSettings } from "../../actions/settingsActions";
+import { removeSuccess } from "../../actions/successActions";
 import { handleSaveClick } from "../../utils/commonFunctions";
 import PropTypes from 'prop-types';
 import isEmpty from 'is-empty'
@@ -26,7 +27,10 @@ const ModulePlannerPageTemp = (props) => {
         
         if(isEmpty(props.modplan.modules)){
             props.callBackendAPI('NUSMods');
-        }
+        } 
+        // if(isEmpty(props.settings.userInfo)) {
+        //     props.initialSettings()
+        // }
     }, [])
 
     useEffect(() => {
@@ -79,6 +83,7 @@ const ModulePlannerPageTemp = (props) => {
         })
     }
 
+
     return (
         <DndProvider backend={Backend} >
             <div className="container-module-planner">
@@ -109,10 +114,24 @@ const ModulePlannerPageTemp = (props) => {
 
                 <br/>
 
-                <button className="button" id="eval-button" onClick={() => handleEvalButtonClick()}>Evaluate</button>
-                <button className="button" onClick={() => handleSaveClick(props)} >Save</button>
+                <Button className="button" id="eval-button" onClick={() => handleEvalButtonClick()}>Evaluate</Button>
+                <br/>
+
+                <Button className="button" onClick={() => handleSaveClick(props)} >Save</Button>
+                {!isEmpty(props.success) && 
+                <p style={{color: "green"}}>
+                    {props.success}
+                </p>
+                
+                }
+                
+                {!isEmpty(props.success) && 
+                    setTimeout(props.removeSuccess, 500) &&
+                    clearTimeout(setTimeout(props.removeSuccess, 2000))}
+
                 <br/>
                 <br/>
+                <p>Click on each requirement for further information</p>
                 <Card>
                     <Rules
                         rules={props.modplan.rules}
@@ -128,6 +147,7 @@ ModulePlannerPageTemp.propTypes = {
     callBackendAPI: PropTypes.func.isRequired,
     setCallBackendNow: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
+    removeSuccess: PropTypes.func.isRequired,
     modplan: PropTypes.object.isRequired,
     settings: PropTypes.object.isRequired,
     cap: PropTypes.object.isRequired
@@ -136,9 +156,10 @@ ModulePlannerPageTemp.propTypes = {
 const mapStateToProps = state => ({
     settings: state.settings,
     cap: state.cap,
-    modplan: state.modplan
+    modplan: state.modplan,
+    success: state.success
 });
 
 export default connect(mapStateToProps, 
-                    { callBackendAPI, setCallBackendNow, updateSettings, setSelectedModules }) 
+                    { callBackendAPI, setCallBackendNow, updateSettings, initialSettings, setSelectedModules, removeSuccess }) 
                     (ModulePlannerPageTemp);

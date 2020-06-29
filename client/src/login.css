@@ -261,12 +261,18 @@ footer a {
 	position: sticky;
   }
 
+#logout{
+	margin-top: 0px;
+	cursor: pointer;
+}
+
 .navlink, .navbrand {
 	color: #fff;
 	text-decoration: none;
 	margin-top: 15px;
-	margin-right: 100px;
+	margin-right: 70px;
 	transition: all 0.15s ease-in;
+	font-size: 15px;
 }
 .navlink:hover {
 	color: grey;
@@ -287,7 +293,11 @@ footer a {
 	margin-left: 215px;
 	margin-bottom: 20px;
 }
-
+ .success {
+	 color: green;
+	 margin-left: 215px;
+	 margin-top: 10px;
+ }
 
 
 /* Module Planner CSS */
@@ -342,4 +352,33 @@ h2 .year-title {
 	display: flex;
 	align-items: center;	
 	justify-content: center;
+}
+
+/* CAP calculator  */
+ .fa-arrow-right, .fa-arrow-left, .fa-trash-alt {
+	margin-left: 20px;
+	cursor: pointer;
+	border-color: #f6f5f7;;
+
+} 
+
+.fa-arrow-right {
+	margin-left: 5px;
+}
+
+.fa-trash-alt {
+	border-color: transparent;
+	/* border-color: black; */
+	padding: 3px 5px;
+}
+
+#mod-plan-trash {
+	padding: 10px;
+	margin-right: 15px;
+}
+
+/* Year display */
+.year-display {
+	margin-top: 25px;
+	margin-left: 20px;
 }

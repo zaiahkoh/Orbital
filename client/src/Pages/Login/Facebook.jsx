@@ -8,14 +8,21 @@ import { registerUser } from "../../actions/authActions";
 
  class Facebook extends React.Component {
     
+
     responseFacebook = response => {
         console.log(response);
         const userData = {
             network: 'facebook',
             token: response.accessToken
         };
+        
+        if(!this.props.auth.isAuthenticated) {
+          if(this.props.source === "login") {
             this.props.loginUser(userData, false, true);
-
+          } else {
+            this.props.registerUser(userData, true);
+          }
+        }
     };
 
     failureFacebook = () => {

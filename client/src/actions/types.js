@@ -1,6 +1,10 @@
 //error actions
 export const GET_ERRORS = "GET_ERRORS";
 
+//success actions
+export const GET_SUCCESS = "GET_SUCCESS";
+export const REMOVE_SUCCESS =  "REMOVE_SUCCESS";
+
 //auth actions
 export const USER_LOADING = "USER_LOADING";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";

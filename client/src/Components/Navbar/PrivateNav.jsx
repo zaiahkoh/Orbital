@@ -3,10 +3,11 @@ import logoImg from "../../textLogo.svg";
 import { Navbar, Nav } from "react-bootstrap"
 import NavIcon from "../NavIcon";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../../actions/authActions";
+import { connect} from "react-redux"
 
 
-
-export class PrivateNav extends React.Component {
+class PrivateNav extends React.Component {
     
     render() {
         return (
@@ -22,7 +23,7 @@ export class PrivateNav extends React.Component {
                 </Navbar.Brand>
                 
                     <Link to="/select-modules" className="navlink">
-                            Select Module
+                            Module Information
                     </Link>
 
                     <Link to="/module-planner" className="navlink">
@@ -33,9 +34,9 @@ export class PrivateNav extends React.Component {
                         CAP Calculator
                     </Link>
 
-                    <Link to="/dashboard" className="navlink">
+                    {/* <Link to="/dashboard" className="navlink">
                         Dashboard
-                    </Link>
+                    </Link> */}
 
                      {/* <NavIcon icon={this.props.userProfilePicture} /> */}
                      {/* <NavIcon icon={logoImg} /> */}
@@ -43,8 +44,15 @@ export class PrivateNav extends React.Component {
                          Settings
                      </Link>
 
+                     <span className="navlink" id="logout" onClick={() => this.props.logoutUser()}>
+                         Log Out
+                     </span>
+
+
             </Navbar>
 
       )
    }
 }
+
+export default connect(null, {logoutUser})(PrivateNav);

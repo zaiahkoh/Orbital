@@ -15,7 +15,12 @@ class Google extends React.Component {
             network: 'google',
             token: response.tokenObj.id_token
         };
+        
+        if(this.props.source === "login") {
             this.props.loginUser(userData, false, true);
+          } else {
+            this.props.registerUser(userData, true);
+          }
         
     };
 

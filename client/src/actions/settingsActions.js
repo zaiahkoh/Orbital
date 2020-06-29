@@ -3,7 +3,8 @@ import {
     SET_CURRENT_SEMESTER,
     SET_MATRICULATION_OPTIONS,
     SET_TARGET_GRAD_OPTIONS,
-    CLEAN_UP_SETTINGS
+    CLEAN_UP_SETTINGS,
+    GET_SUCCESS
 } from "./types";
 
 import axios from "axios";
@@ -31,6 +32,10 @@ export const updateSettings = (userData) => dispatch => {
     axios
         .put("http://172.19.162.53:3000/account", userData)
         .then(res => dispatch(setUserSettings(res.data.updated)))
+        .then(dispatch({
+            type: GET_SUCCESS,
+            payload: "Saved successfully!"
+        }))
         .catch(err => {
                 console.log(err);
                 // window.location.replace("/500-error")

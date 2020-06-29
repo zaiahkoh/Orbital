@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions } from "../actions/settingsActions";
 import { deleteUser } from "../actions/authActions";
+import { removeSuccess } from "../actions/successActions";
 import isEmpty from "is-empty";
 import { generateOptions } from '../utils/commonFunctions';
 
@@ -147,13 +148,15 @@ const handleSubmit = () => {
     faculty: userInput.faculty,
     facIndex: userInput.facIndex,
     major: userInput.major,
-    major: userInput.majorIndex,
+    majorIndex: userInput.majorIndex,
     specialisation: userInput.specialisation,
     residential: userInput.residence,
     matriculationYear: userInput.matriculationYear,
     targetGradYear: userInput.targetGradYear,
     name: props.settings.userInfo.name,
-    modPlan: props.modplan
+    modPlan: props.modplan,
+    cap: props.cap.cap,
+    targetCap: props.cap.targetCap
   }
 
   props.updateSettings(userData);
@@ -242,29 +245,22 @@ const handleSubmit = () => {
             <br/>
             <br/>
           </form>
-        {/* <Options 
-          faculty={this.state.faculty}
-          major={this.state.major}
-          specialisation={this.state.specialisation}
-          residential={this.state.residence}
-          matriculationYear={this.state.matriculationYear}
-          targetGradYear={this.state.targetGradYear}
-          onFacultyChange={this.changeFaculty}
-          onMajorChange={this.changeMajor}
-          onSpecialisationChange={this.changeSpecialisation}
-          onResidenceChange={this.changeResidence}
-          onMatriculationChange={this.changeMatriculationYear}
-          onTargetGradChange={this.changeTargetGradYear}
-          facultyOptions={this.generateOptions('faculty')}
-          majorOptions={this.generateOptions('major')}
-          specialisationOptions={this.generateOptions('specialisation')}
-          residenceOptions={this.generateOptions('residence')}
-          matriculationYearOptions={this.generateOptions('matriculationYear')}
-          targetGradYearOptions={this.generateOptions('targetGradYear')}
-        /> */}
 
         <Button className='button' id='save' onClick={() => handleSubmit()}>Save Settings</Button>
+        {!isEmpty(props.success) && 
+                    setTimeout(props.removeSuccess, 500) &&
+                    clearTimeout(setTimeout(props.removeSuccess, 2000))}
+        {!isEmpty(props.success) && alert("Saved successfully!")
+                // <p className="success">
+                //     {props.success}
+                // </p>
+                
+                }
+                
+               
+
         <Button className='button' id='delete' onClick={() => props.deleteUser()}>Delete Account</Button>
+        
       </div>
   );
 }
@@ -274,6 +270,7 @@ AcadSettings.propTypes = {
   updateSettings: PropTypes.func.isRequired,
   setMatriculationYearOptions: PropTypes.func.isRequired,
   setTargetGradYearOptions: PropTypes.func.isRequired,
+  removeSuccess: PropTypes.func.isRequired,
   deleteUser: PropTypes.func.isRequired,
   modplan: PropTypes.object.isRequired,
   settings: PropTypes.object.isRequired
@@ -282,8 +279,10 @@ AcadSettings.propTypes = {
 const mapStateToProps = state => ({
   modplan: state.modplan.selectedModules,
   settings: state.settings,
-  userInfo: state.settings.userInfo
+  userInfo: state.settings.userInfo,
+  cap: state.cap,
+  success: state.success
 });
 
 export default connect(mapStateToProps, 
-  { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions, deleteUser }) (AcadSettings);
+  { updateSettings, setMatriculationYearOptions, setTargetGradYearOptions, removeSuccess, deleteUser }) (AcadSettings);

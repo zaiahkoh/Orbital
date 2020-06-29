@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { setSemesterOptions, calculateCAP, setCAP } from '../../actions/capActions';
 import { updateSettings } from "../../actions/settingsActions";
 import { setSelectedModules, callBackendAPI, setModuleLocation } from "../../actions/modplanActions";
+import { removeSuccess } from "../../actions/successActions";
 import { generateOptions, handleSaveClick } from "../../utils/commonFunctions";
 import isEmpty from 'is-empty';
 
@@ -251,7 +252,7 @@ const CAPCalculatorPage = (props) => {
                             </td>}
                             <td>
                                 <i  
-                                    class="fa fa-trash-alt"
+                                    className="fa fa-trash-alt fa-border"
                                     style={{cursor: "pointer"}}
                                     onClick={() => props.setModuleLocation({id: object.moduleCode}, null, null, props.modplan.selectedModules)} />
                             </td>
@@ -264,7 +265,7 @@ const CAPCalculatorPage = (props) => {
         <div className="ml-4">
             <h1 className="display-3">CAP Calculator</h1>
             <h3>Current CAP: {props.cap.cap}</h3>
-            <h3>Target CAP: {props.cap.targetCap}</h3>
+            <h3>Target Future CAP: {props.cap.targetCap}</h3>
             {/* <h5 onClick={() => {this.setState({open: true})}}>Or click here to manually input CAP</h5> */}
             {/* {this.state.open && (<input type="text"/>)} */}
             <label>Semester: </label>
@@ -277,6 +278,10 @@ const CAPCalculatorPage = (props) => {
                 {isEmpty(props.cap.semesterOptions) && <option>Year 1 Semester 1</option>}
                 {generateOptions(props.cap.semesterOptions)}
             </select>
+
+            {/* <span className="fa-layers fa-fw " */}
+            {/* <i className="fas fa-arrow-left fa-lg fa-border"/>
+            <i className="fas fa-arrow-right fa-lg fa-border"/> */}
             <br/>
             
             {/* Table to display modules taken according to modulePlanner */}
@@ -304,7 +309,16 @@ const CAPCalculatorPage = (props) => {
             <br/>
 
             <Button className="button" onClick={() => handleSaveClick(props)}>{isPast ? "Save Transcript" : "Save Target Grade" }</Button>
-        
+            {!isEmpty(props.success) && 
+                <p style={{color: "green"}}>
+                    {props.success}
+                </p>
+                
+                }
+                
+                {!isEmpty(props.success) && 
+                    setTimeout(props.removeSuccess, 500) &&
+                    clearTimeout(setTimeout(props.removeSuccess, 2000))}
         </div>
     );
 }
@@ -327,11 +341,12 @@ CAPCalculatorPage.propType = {
 const mapStateToProps = state => ({
     settings: state.settings,
     cap: state.cap,
-    modplan: state.modplan
+    modplan: state.modplan,
+    success: state.success
 });
 
 export default connect(mapStateToProps,
-                        { setSemesterOptions, setSelectedModules, callBackendAPI, setModuleLocation, updateSettings, calculateCAP, setCAP })
+                        { setSemesterOptions, setSelectedModules, callBackendAPI, setModuleLocation, updateSettings, calculateCAP, setCAP, removeSuccess })
                         (CAPCalculatorPage);
 
 
