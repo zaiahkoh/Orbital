@@ -21,7 +21,8 @@ router.put('/', (req, res) => {
     transcript,
     specialisation,
     cap,
-    targetCap
+    targetCap,
+    faculty
   } = req.body;
   console.log('req received')
   console.log('direct',req.body.modPlan);
@@ -36,6 +37,7 @@ router.put('/', (req, res) => {
   if (specialisation) user.specialisation = specialisation;
   if (cap) user.cap = cap;
   if (targetCap) user.targetCap = targetCap;
+  if (faculty) user.faculty = faculty;
   user.save()
   .then(user => {
     res.status(200).json({
@@ -50,7 +52,8 @@ router.put('/', (req, res) => {
         transcript: transcript,
         specialisation: specialisation,
         cap: cap,
-        targetCap: targetCap
+        targetCap: targetCap,
+        faculty: faculty
       }
     });
   })

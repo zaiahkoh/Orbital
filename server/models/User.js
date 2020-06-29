@@ -22,6 +22,9 @@ const UserSchema = new Schema({
   residential: {
     type: String
   },
+  faculty: {
+    type: String
+  },
   major: {
     type: String
   }, 
