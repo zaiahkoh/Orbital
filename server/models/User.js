@@ -38,7 +38,9 @@ const UserSchema = new Schema({
     type: Object
   },
   modPlan: {
-      type: Object
+      type: Object,
+      required: true,
+      default: []
   },
   cap: {
     type: Number
@@ -47,6 +49,12 @@ const UserSchema = new Schema({
     type: String
   },
   targetCap: {
+    type: Number
+  },
+  facIndex: {
+    type: Number
+  }, 
+  majorIndex: {
     type: Number
   }
 });

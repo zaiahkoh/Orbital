@@ -22,11 +22,10 @@ router.put('/', (req, res) => {
     specialisation,
     cap,
     targetCap,
-    faculty
+    faculty,
+    facIndex,
+    majorIndex
   } = req.body;
-  console.log('req received')
-  console.log('direct',req.body.modPlan);
-  console.log('indirect', modPlan);
   if (modPlan) user.modPlan = modPlan;
   if (name) user.name = name;
   if (residential) user.residential = residential;
@@ -38,6 +37,8 @@ router.put('/', (req, res) => {
   if (cap) user.cap = cap;
   if (targetCap) user.targetCap = targetCap;
   if (faculty) user.faculty = faculty;
+  if (facIndex) user.facIndex = facIndex;
+  if (majorIndex) user.majorIndex = majorIndex;
   user.save()
   .then(user => {
     res.status(200).json({
@@ -53,7 +54,9 @@ router.put('/', (req, res) => {
         specialisation: specialisation,
         cap: cap,
         targetCap: targetCap,
-        faculty: faculty
+        faculty: faculty,
+        facIndex: facIndex,
+        majorIndex: majorIndex
       }
     });
   })
