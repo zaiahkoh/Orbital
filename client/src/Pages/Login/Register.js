@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useReducer, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -7,73 +7,73 @@ import classnames from "classnames";
 import Facebook from "./Facebook";
 import Google from "./Google";
 
-class Register extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-          name: "",
+const Register = (props) => {
+
+  const [userInput, setUserInput] = useReducer(
+    (state, newState) => ({...state, ...newState}),
+    {
+      name: "",
           email: "",
           password: "",
           password2: "",
           errors: {}
-        };
-      }
+    }
+  );
   
-    componentWillReceiveProps(nextProps) {
+  useEffect(() => {
+    if (props.errors) {
+      setUserInput({errors: props.errors})
+    }
+  }, [props.errors]);
 
-      if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
-        } 
-        
-      if(nextProps.auth.firstTimeRegistered) {
-        if(!nextProps.auth.isAuthenticated) {
-          const userData = {
-            email: this.state.email,
-            password: this.state.password
-          };  
-          this.props.loginUser(userData, true)
-        } 
-         else {
-          this.props.history.push('/settings/academics');
-        }
-      
+  useEffect(() => {
+    if(props.auth.firstTimeRegistered) {
+      if(!props.auth.isAuthenticated) {
+        const userData = {
+          email: userInput.email,
+          password: userInput.password
+        };  
+        props.loginUser(userData, true, false)
+      } 
+       else if (!props.auth.loading) {
+        props.history.push('/settings/academics');
       }
     }
+  }, [props.auth.loading, props.auth.firstTimeRegistered])
 
-    onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
-      };
-
-    onSubmit = e => {
-      e.preventDefault();
-
-      const newUser = {
-          name: this.state.name,
-          email: this.state.email,
-          password: this.state.password,
-          password2: this.state.password2
-          };
-  
-      this.props.registerUser(newUser, false); 
+    const onChange = e => {
+      const { id, value } = e.target; 
+      setUserInput({[id]: value});
     };
 
-    render() {
-        const { errors } = this.state;
+
+    const onSubmit = e => {
+      e.preventDefault();
+      const newUser = {
+        name: userInput.name,
+        email: userInput.email,
+        password: userInput.password,
+        password2: userInput.password2
+        }; 
+        props.registerUser(newUser, false); 
+    };
+
+
+
+      const { errors } = userInput;
         return (
-            <form noValidate onSubmit={this.onSubmit}>
+            <form noValidate onSubmit={onSubmit}>
                 <h1>Create Account</h1>
                 <div className="social-container">
                   <Facebook source="register"/>
                   <Google source="register"/>
-                  <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
+                  <a href="#" class="social"><i class="fab fa-instagram"></i></a>
                 </div>
                 <span>or use your email for registration</span>
                 
                 <input
-                  onChange={this.onChange}
-                  value={this.state.name}
+                  onChange={onChange}
+                  value={userInput.name}
                   error={errors.name}
                   id="name"
                   type="text"
@@ -85,8 +85,8 @@ class Register extends React.Component {
                 <span style={{color: "red"}}>{errors.name}</span>
                 
                 <input
-                  onChange={this.onChange}
-                  value={this.state.email}
+                  onChange={onChange}
+                  value={userInput.email}
                   error={errors.email}
                   id="email"
                   type="email"
@@ -98,8 +98,8 @@ class Register extends React.Component {
                 <span style={{color: "red"}}>{errors.email}</span>
 
                 <input
-                  onChange={this.onChange}
-                  value={this.state.password}
+                  onChange={onChange}
+                  value={userInput.password}
                   error={errors.password}
                   id="password"
                   type="password"
@@ -111,8 +111,8 @@ class Register extends React.Component {
                 <span style={{color: "red"}}>{errors.password}</span>
 
                 <input
-                  onChange={this.onChange}
-                  value={this.state.password2}
+                  onChange={onChange}
+                  value={userInput.password2}
                   error={errors.password2}
                   id="password2"
                   type="password"
@@ -126,7 +126,6 @@ class Register extends React.Component {
                 <button type="submit" >Sign Up</button>
             </form>
        );
-    }
     
 }
 

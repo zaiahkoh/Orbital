@@ -9,6 +9,7 @@ import {
   Route,
 } from "react-router-dom";
 
+import AboutPage from "./Pages/About Page/AboutPage";
 import PrivateNav from './Components/Navbar/PrivateNav';
 import { PublicNav } from './Components/Navbar/PublicNav';
 import  ModulePlannerPageTemp  from "./Pages/Module Planner Page/ModulePlannerPage";
@@ -28,6 +29,7 @@ import ServerError from './Pages/Error Page/ServerError';
 
 import store from './store';
 import { connect } from 'react-redux';
+
 
 
 let totalGEMMCs = 0;
@@ -65,6 +67,7 @@ if (localStorage.jwtToken) {
 
     // Set user academic info 
     store.dispatch(initialSettings());
+
     
   // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
@@ -77,53 +80,54 @@ if (localStorage.jwtToken) {
 }
 
 const App = (props) => {
-  // useEffect(() => {
-  //   return () => {
-      
-  //   };
-  // }, [input])
+  return (
+    <div>
+      {props.isAuthenticated ? <PrivateNav class="navbar" /> : <PublicNav class="navbar" />}
+    
+      <Switch>
+        <Route 
+          exact path="/" 
+          component={AboutPage} />
 
+        <Route 
+          exact path="/login" 
+          component={LoginPage} />
 
-       return (
-        <div>
-          {props.isAuthenticated ? <PrivateNav class="navbar" /> : <PublicNav class="navbar" />}
-        
-          <Switch>
-          <Route exact path="/" component={LoginPage} />
-          <Route exact path="/login" component={LoginPage} />
-            <PrivateRouteTemp 
-              exact path="/dashboard" 
-              component={Dashboard} />
+        <PrivateRouteTemp 
+          exact path="/dashboard" 
+          component={Dashboard} />
 
-            <PrivateRouteTemp 
-                exact path="/select-modules" 
-                component={ModuleSelectionPage} />
+        <PrivateRouteTemp 
+            exact path="/select-modules" 
+            component={ModuleSelectionPage} />
 
-            <PrivateRouteTemp 
-                exact path="/module-planner" 
-                component={ModulePlannerPageTemp} />
+        <PrivateRouteTemp 
+            exact path="/module-planner" 
+            component={ModulePlannerPageTemp} />
 
-            <PrivateRouteTemp 
-                exact path="/cap-calculator" 
-                component={CAPCalculatorPage} /> 
+        <PrivateRouteTemp 
+            exact path="/cap-calculator" 
+            component={CAPCalculatorPage} /> 
 
-            <PrivateRouteTemp 
-                exact path="/settings/academics" 
-                component={AcadSettings} /> 
+        <PrivateRouteTemp 
+            exact path="/settings/academics" 
+            type="settings"
+            component={AcadSettings} /> 
 
-            <Route exact path="/500-error" component={ServerError}/>
-            <Route component={() => <div className="display-2"><strong>404 NOT FOUND</strong></div>}/>
-            
-          </Switch>
+        <Route 
+          exact path="/500-error" 
+          component={ServerError}/>
 
-           </div>
-
-   );
-
+        <Route 
+          component={() => <div className="display-2"><strong>404 NOT FOUND</strong></div>}/>
+      </Switch>
+    </div>
+  );
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading
 })
 
 export default connect(mapStateToProps)(App);

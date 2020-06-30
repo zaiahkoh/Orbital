@@ -20,7 +20,8 @@ import {
           ...state,
           isAuthenticated: !isEmpty(action.payload),
           user: action.payload,
-          firstTimeRegistered: action.firstTimeRegistered
+          firstTimeRegistered: action.firstTimeRegistered,
+          socialLogin: action.socialLogin
         };
       case USER_REGISTERED:
         return {
@@ -30,7 +31,7 @@ import {
       case USER_LOADING:
         return {
           ...state,
-          loading: true
+          loading: action.payload
         };
       default:
         return state;

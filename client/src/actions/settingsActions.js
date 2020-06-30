@@ -6,7 +6,7 @@ import {
     CLEAN_UP_SETTINGS,
     GET_SUCCESS
 } from "./types";
-
+import { setUserLoading } from "./authActions";
 import axios from "axios";
 
 export const setUserSettings = (userData) => {
@@ -16,27 +16,43 @@ export const setUserSettings = (userData) => {
     }
 }
 
-export const initialSettings = () => dispatch => {
-    axios.defaults.timeout = 2000;
-    axios  
-        .get('http://172.19.162.53:3000/account')
-        .then(res => dispatch(setUserSettings(res.data)))
-        .catch(err => {
-            console.log(err);
+export const initialSettings = () => async dispatch => {
+    try {
+        axios.defaults.timeout = 2000;
+        dispatch(setUserLoading(true));
+        
+        const isFetched = await axios  
+                        .get('http://172.19.162.53:3000/account')
+                        .then(res => {
+                                dispatch(setUserSettings(res.data))
+                            })
+                        .then(res => {return true})
+        if(isFetched) {
+            dispatch(setUserLoading(false))
+        }
+    }
+    catch (err) {
+            dispatch(setUserLoading(false));
+            console.log(err)
             // window.location.replace("/500-error")
-        })
+        }
 }
 
 export const updateSettings = (userData) => dispatch => {
     axios.defaults.timeout = 6000;
     axios
         .put("http://172.19.162.53:3000/account", userData)
-        .then(res => dispatch(setUserSettings(res.data.updated)))
-        .then(dispatch({
-            type: GET_SUCCESS,
-            payload: "Saved successfully!"
-        }))
+        .then(res => {console.log(res); dispatch(setUserSettings(res.data.updated))})
+        .then(res => {
+            dispatch({
+                        type: GET_SUCCESS,
+                        payload: "Saved successfully!"
+            });
+            dispatch(setUserLoading(false))
+            }
+        )
         .catch(err => {
+                dispatch(setUserLoading(false))
                 console.log(err);
                 // window.location.replace("/500-error")
             })

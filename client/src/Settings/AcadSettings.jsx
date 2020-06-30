@@ -18,9 +18,9 @@ const AcadSettings = (props) => {
     (state, newState) => ({...state, ...newState}), 
     {
       faculty: props.userInfo.faculty,
-      facIndex: 2, //TEMPORARY
+      facIndex: props.userInfo.facIndex,
       major: props.userInfo.major,
-      majorIndex: 0, //TEMPORARY
+      majorIndex: props.userInfo.majorIndex,
       specialisation: props.userInfo.specialisation,
       residence: props.userInfo.residential,
       matriculationYear: props.userInfo.matriculationYear,
@@ -28,6 +28,8 @@ const AcadSettings = (props) => {
     }
   )
 
+
+  console.log(userInput.facIndex);
   const residenceOptions = ['N/A','CAPT', 'RC4', 'RVRC','Tembusu', 'USP'];
   const dummyfac = [{'Business': [{'Business Administration': ['A', 'B']},
                     {'Accountancy': ['C', 'D']}]},
@@ -41,18 +43,19 @@ const AcadSettings = (props) => {
   }];
 
   useEffect(() => {
-    if(!isEmpty(props.settings.userInfo)) {
-
-      if (isEmpty(props.settings.matriculationOptions)) {
+    if(props.settings.currentAY && isEmpty(props.settings.matriculationOptions)) {
         props.setMatriculationYearOptions(props.settings.currentAY, props.settings.currentSemester);
         props.setTargetGradYearOptions(props.settings.currentAY, props.settings.currentSemester);
-      } 
+    }
+  }, [props.settings.currentAY]);
 
+  useEffect(() => {
+    if(!isEmpty(props.settings.userInfo)) {
       setUserInput({
         faculty: props.userInfo.faculty,
-        facIndex: 2, //TEMPORARY
+        facIndex: props.userInfo.facIndex,
         major: props.userInfo.major,
-        majorIndex: 0, //TEMPORARY
+        majorIndex: props.userInfo.majorIndex,
         specialisation: props.userInfo.specialisation,
         residence: props.userInfo.residential,
         matriculationYear: props.userInfo.matriculationYear,
@@ -68,7 +71,7 @@ const AcadSettings = (props) => {
       setUserInput({[name]: value,
                       facIndex: (selectedIndex - 1),
                       major: null});
-
+        
     } else if(name === "major") {
       setUserInput({[name]: value,
                       majorIndex: (selectedIndex - 1)});
@@ -76,7 +79,7 @@ const AcadSettings = (props) => {
     } else {
       setUserInput({[name]: value});
     } 
-
+    console.log(userInput.facIndex);
   };
 
  //turn array of choices into options dropdown
@@ -143,6 +146,23 @@ const AcadSettings = (props) => {
       }
 }
 
+//Check if there is any part of userData that is undefined/falsy
+const checkSubmission = (userData) => {
+  const keys = Object.keys(userData);
+  let status;
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    status = userData[key] ? true : false;
+    console.log(status);
+    console.log(userData[key]);
+    if(!status) {
+      return status = false;
+    }
+  }
+  return status;
+}
+
 const handleSubmit = () => {
   const userData = {
     faculty: userInput.faculty,
@@ -153,14 +173,16 @@ const handleSubmit = () => {
     residential: userInput.residence,
     matriculationYear: userInput.matriculationYear,
     targetGradYear: userInput.targetGradYear,
-    name: props.settings.userInfo.name,
     modPlan: props.modplan,
     cap: props.cap.cap,
     targetCap: props.cap.targetCap
   }
 
-  props.updateSettings(userData);
-}
+  //if all props of userData is filled, allow user to save
+  //else alert popup to redirect user back to filling in their data (TEMPORARY)
+  return checkSubmission(userData) ?  props.updateSettings(userData) : alert("Please fill in all the fields before saving!");
+
+} 
 
   return (
       <div className="container">
@@ -175,7 +197,7 @@ const handleSubmit = () => {
                 <option selected disabled>
                   Choose Your Faculty
                 </option>
-              {generateOptions("faculty")}
+              {!isEmpty(props.settings.userInfo) && generateOptions("faculty")}
             </select>   
             <br/>
             <br/>
@@ -188,7 +210,7 @@ const handleSubmit = () => {
                 (<option selected disabled>
                   Choose Your Major
                 </option>)
-              {generateOptions("major") }
+              {!isEmpty(props.settings.userInfo) && generateOptions("major") }
             </select>
             <br/>
             <br/>
@@ -201,7 +223,7 @@ const handleSubmit = () => {
                 (<option selected disabled>
                   Choose Your Specialisation
                 </option>)
-              {generateOptions("specialisation")}
+              {!isEmpty(props.settings.userInfo) && generateOptions("specialisation")}
             </select>
             <br/>
             <br/>
@@ -214,7 +236,7 @@ const handleSubmit = () => {
                 (<option selected disabled>
                   Choose Your Residence
                 </option>)
-              {generateOptions("residence")}
+              {!isEmpty(props.settings.userInfo) && generateOptions("residence")}
             </select>
             <br/>
             <br/>
@@ -227,7 +249,7 @@ const handleSubmit = () => {
                 (<option selected disabled>
                   Choose Your Year of Matriculation
                 </option>)
-              {generateOptions("matriculationYear")}
+              {!isEmpty(props.settings.userInfo) && generateOptions("matriculationYear")}
             </select>
             <br/>
             <br/>
@@ -240,7 +262,7 @@ const handleSubmit = () => {
                 (<option selected disabled>
                   Choose Your Target Graduation Year
                 </option>)
-              {generateOptions("targetGradYear")}
+              {!isEmpty(props.settings.userInfo) && generateOptions("targetGradYear")}
             </select>
             <br/>
             <br/>

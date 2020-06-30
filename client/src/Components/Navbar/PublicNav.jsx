@@ -18,11 +18,11 @@ export class PublicNav extends React.Component {
                     />{' '}
                 </Navbar.Brand>
                 
-                    <Link href="/" className="navlink">
+                    <Link to="/" className="navlink">
                         About
                     </Link>
                      
-                     <Link href="/login" className="navlink">
+                     <Link to="/login" className="navlink">
                          Login
                      </Link>
 

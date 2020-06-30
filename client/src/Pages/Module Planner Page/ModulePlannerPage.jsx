@@ -19,7 +19,8 @@ import isEmpty from 'is-empty'
 const ModulePlannerPageTemp = (props) => {
 
     const module = props.modplan.modules;
-    const [noOfYear, setNoOfYear] = useState(4)
+    const [noOfYear, setNoOfYear] = useState(4);
+
     useEffect(() => {
         if(isEmpty(props.modplan.rules)) {
             props.callBackendAPI('Rules', "r_ulr", "r_cs_degree");
@@ -28,9 +29,6 @@ const ModulePlannerPageTemp = (props) => {
         if(isEmpty(props.modplan.modules)){
             props.callBackendAPI('NUSMods');
         } 
-        // if(isEmpty(props.settings.userInfo)) {
-        //     props.initialSettings()
-        // }
     }, [])
 
     useEffect(() => {
@@ -87,7 +85,7 @@ const ModulePlannerPageTemp = (props) => {
     return (
         <DndProvider backend={Backend} >
             <div className="container-module-planner">
-                {!isEmpty(props.settings.userInfo) && generateYearDisplay(generateYearObject(noOfYear))}
+                {!isEmpty(props.settings.userInfo.matriculationYear) && generateYearDisplay(generateYearObject(noOfYear))}
                 {/* <YearDisplay
                         year="Year 1"
                         AY="2018/2019"

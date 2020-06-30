@@ -20,7 +20,7 @@ import { registerUser } from "../../actions/authActions";
           if(this.props.source === "login") {
             this.props.loginUser(userData, false, true);
           } else {
-            this.props.registerUser(userData, true);
+            this.props.loginUser(userData, true, true);
           }
         }
     };
